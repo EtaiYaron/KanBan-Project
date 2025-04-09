@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
+
+namespace IntroSE.Kanban.Backend.ServiceLayer
+{
+    class UserService
+    {
+        private UserFacade userFacade;
+
+        public UserService(UserFacade userFacade)
+        {
+            this.userFacade = userFacade;
+        }
+
+        public string Login(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Register(string username, string password, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Logout(string username)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

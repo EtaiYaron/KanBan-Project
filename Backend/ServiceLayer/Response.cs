@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IntroSE.Kanban.Backend.ServiceLayer
+{
+    class Response
+    {
+        private string errorMessage;
+        private string returnValue;
+
+        public Response() { }
+
+        public Response(string errorMessage) 
+        {
+            this.errorMessage = errorMessage;
+        }
+        public Response(string errorMessage, string returnValue)
+        {
+            this.errorMessage = errorMessage;
+            this.returnValue = returnValue;
+        }
+
+        public string ErrorMessage { get; set; }
+
+        public string ReturnValue { get; set; }
+    }
+}
