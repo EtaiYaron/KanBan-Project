@@ -98,7 +98,7 @@ namespace Tests
         public bool TestDeleteBoardNegativeCase()
         {
             BoardService b = new BoardService();
-            Response res = b.deleteBoard("name");
+            Response res = b.DeleteBoard("name");
             if(res.ErrorMsg == null)
             {
                 return false;
@@ -109,8 +109,8 @@ namespace Tests
 
         public bool TestDeleteBoardPositiveCase()
         {
-            b.createBoard("name");
-            Response res = b.deleteBoard("name");
+            b.CreateBoard("name");
+            Response res = b.DeleteBoard("name");
             if (res.ErrorMsg != null)
             {
                 return false;
@@ -121,8 +121,8 @@ namespace Tests
 
         public bool TestCreateBoardNegativeCase()
         {
-            b.createBoard("name");
-            Response res = b.createBoard("name");
+            b.CreateBoard("name");
+            Response res = b.CreateBoard("name");
             if (res.ErrorMsg == null)
             {
                 return false;
@@ -132,7 +132,7 @@ namespace Tests
 
         public bool TestCreateBoardPositiveCase()
         {
-            Response res = b.createBoard("name");
+            Response res = b.CreateBoard("name");
             if (res.ErrorMsg == null)
             {
                 return true;
@@ -142,8 +142,8 @@ namespace Tests
 
         public bool TestGetBoardNegativeCase()
         {
-            b.createBoard("name");
-            Response res = b.getBoard();
+            b.CreateBoard("name");
+            Response res = b.GetBoard();
 
             if (res.ErrorMsg == null)
             {
@@ -154,8 +154,8 @@ namespace Tests
 
         public bool TestGetBoardPositiveCase()
         {
-            b.createBoard("name");
-            Response res = b.getBoard();
+            b.CreateBoard("name");
+            Response res = b.GetBoard();
 
             if (res.ErrorMsg != null)
             {
@@ -166,9 +166,9 @@ namespace Tests
 
         public bool TestLimitTasksNegativeCase()
         {
-            b.limitTasks("name", 0);
+            b.LimitTasks("name", 0);
 
-            Response res = b.createBoard("name");
+            Response res = b.CreateBoard("name");
 
             if (res.ErrorMsg == null)
             {
@@ -179,9 +179,9 @@ namespace Tests
 
         public bool TestLimitTasksPositiveCase()
         {
-            b.limitTasks("name", 0);
+            b.LimitTasks("name", 0);
 
-            Response res = b.createBoard("name");
+            Response res = b.CreateBoard("name");
 
             if (res.ErrorMsg != null)
             {
