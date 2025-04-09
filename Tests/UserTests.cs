@@ -8,7 +8,7 @@ namespace Tests
 {
     class UserTests
     {
-        private readonly UserService us = new UserService();
+        private UserService us = new UserService();
         public static void UserRunTests()
         {
             Console.WriteLine("Running Tests...");

@@ -164,7 +164,7 @@ namespace Tests
         {
             b.LimitTasks("name", 0);
 
-            Response res = b.AddTask(1, 09/04/2025, "task1", "test limis tasks");
+            Response res = b.AddTask(1, new DateTime(2025, 4, 10), "task1", "test limis tasks");
 
             if (res.ErrorMsg == null)
             {
@@ -177,7 +177,7 @@ namespace Tests
         {
             b.LimitTasks("name", 0);
 
-            Response res = b.AddTask(1, 09 / 04 / 2025, "task1", "test limis tasks");
+            Response res = b.AddTask(1, new DateTime(2025, 4, 10), "task1", "test limis tasks");
 
             if (res.ErrorMsg != null)
             {
