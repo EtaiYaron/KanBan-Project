@@ -21,9 +21,51 @@ namespace Tests
             {
                 Console.WriteLine("TestUserRegisterPositiveCase: Failed");
             }
-            
-            
-
+            tests = TestUserLoginNegativeCase();
+            if (tests)
+            {
+                Console.WriteLine("TestUserLoginNegativeCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestUserLoginNegativeCase: Failed");
+            }
+            tests = TestUserLoginPositiveCase();
+            if (tests)
+            {
+                Console.WriteLine("TestUserLoginPositiveCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestUserLoginPositiveCase: Failed");
+            }
+            tests = TestUserLoginNegativeCase();
+            if (tests)
+            {
+                Console.WriteLine("TestUserLoginNegativeCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestUserLoginNegativeCase: Failed");
+            }
+            tests = TestUserLogoutPositiveCase();
+            if (tests)
+            {
+                Console.WriteLine("TestUserLogoutPositiveCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestUserLogoutPositiveCase: Failed");
+            }
+            tests = TestUserLogoutNegativeCase();
+            if (tests)
+            {
+                Console.WriteLine("TestUserLogoutNegativeCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestUserLogoutNegativeCase: Failed");
+            }
         }
 
         public static bool TestUserRegisterPositiveCase()
@@ -34,7 +76,6 @@ namespace Tests
                 return false;
             }
             return true;
-
         }
         public static bool TestUserRegisterNegativeCase()
         {
@@ -46,7 +87,7 @@ namespace Tests
             return false;
         }
 
-        public static bool TestUserLoginShouldPass()
+        public static bool TestUserLoginPositiveCase()
         {
             Response res = us.Login("EtaiYaron", "Password1");
             if (res.Errormsg != null)
@@ -55,7 +96,7 @@ namespace Tests
             }
             return true;
         }
-        public static bool TestUserLoginShouldFail()
+        public static bool TestUserLoginNegativeCase()
         {
             Response res = us.Login("EtaiYaron", "password1");
             if (res.Errormsg != null)
@@ -64,7 +105,7 @@ namespace Tests
             }
             return false;
         }
-        public static bool TestUserLogoutShouldPass()
+        public static bool TestUserLogoutPositiveCase()
         {
             us.Login("EtaiYaron", "Password1");
             Response res = us.Logout();
@@ -74,7 +115,7 @@ namespace Tests
             }
             return true;
         }
-        public static bool TestUserLogoutShouldFail()
+        public static bool TestUserLogoutNegativeCase()
         {
             us.Login("EtaiYaron", "Password1");
             Response res = us.Logout();
