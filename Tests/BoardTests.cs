@@ -8,7 +8,7 @@ namespace Tests
 {
     class BoardTests
     {
-        public static void RunTests()
+        public static void BoardRunTests()
         {
             // Add your test cases here
             Console.WriteLine("Running Tests...");

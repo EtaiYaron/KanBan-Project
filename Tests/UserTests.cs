@@ -8,9 +8,9 @@ namespace Tests
 {
     class UserTests
     {
-        public static void RunTests()
+        private readonly UserService us = new UserService();
+        public static void UserRunTests()
         {
-            // Add your test cases here
             Console.WriteLine("Running Tests...");
             bool tests = TestUserRegisterPositiveCase();
             if (tests)
@@ -118,6 +118,7 @@ namespace Tests
         public static bool TestUserLogoutNegativeCase()
         {
             us.Login("EtaiYaron", "Password1");
+            us.Logout();
             Response res = us.Logout();
             if (res.Errormsg != null)
             {
