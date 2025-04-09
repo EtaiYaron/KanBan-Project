@@ -13,24 +13,14 @@ namespace Tests
         {
             // Add your test cases here
             Console.WriteLine("Running Tests...");
-            bool tests = TestDeleteBoardNegativeCase();
+            bool tests = TestCreateBoardPositiveCase();
             if (tests)
             {
-                Console.WriteLine("TestDeleteBoardNegativeCase: Passed");
+                Console.WriteLine("TestCreateBoardPositiveCase: Passed");
             }
             else
             {
-                Console.WriteLine("TestDeleteBoardNegativeCase: Failed");
-            }
-
-            bool tests = TestDeleteBoardPositiveCase();
-            if (tests)
-            {
-                Console.WriteLine("TestDeleteBoardPositiveCase: Passed");
-            }
-            else
-            {
-                Console.WriteLine("TestDeleteBoardPositiveCase: Failed");
+                Console.WriteLine("TestCreateBoardPositiveCase: Failed");
             }
 
             bool tests = TestCreateBoardNegativeCase();
@@ -43,14 +33,24 @@ namespace Tests
                 Console.WriteLine("TestCreateBoardNegativeCase: Failed");
             }
 
-            bool tests = TestCreateBoardPositiveCase();
+            bool tests = TestDeleteBoardPositiveCase();
             if (tests)
             {
-                Console.WriteLine("TestCreateBoardPositiveCase: Passed");
+                Console.WriteLine("TestDeleteBoardPositiveCase: Passed");
             }
             else
             {
-                Console.WriteLine("TestCreateBoardPositiveCase: Failed");
+                Console.WriteLine("TestDeleteBoardPositiveCase: Failed");
+            }
+
+            bool tests = TestDeleteBoardNegativeCase();
+            if (tests)
+            {
+                Console.WriteLine("TestDeleteBoardNegativeCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestDeleteBoardNegativeCase: Failed");
             }
 
             bool tests = TestGetBoardNegativeCase();
@@ -95,40 +95,6 @@ namespace Tests
             
         }
 
-        public bool TestDeleteBoardNegativeCase()
-        {
-            BoardService b = new BoardService();
-            Response res = b.DeleteBoard("name");
-            if(res.ErrorMsg == null)
-            {
-                return false;
-            }
-            return true;
-
-        }
-
-        public bool TestDeleteBoardPositiveCase()
-        {
-            b.CreateBoard("name");
-            Response res = b.DeleteBoard("name");
-            if (res.ErrorMsg != null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-
-        public bool TestCreateBoardNegativeCase()
-        {
-            b.CreateBoard("name");
-            Response res = b.CreateBoard("name");
-            if (res.ErrorMsg == null)
-            {
-                return false;
-            }
-            return true;
-        }
 
         public bool TestCreateBoardPositiveCase()
         {
@@ -140,11 +106,9 @@ namespace Tests
             return false;
         }
 
-        public bool TestGetBoardNegativeCase()
+        public bool TestCreateBoardNegativeCase()
         {
-            b.CreateBoard("name");
-            Response res = b.GetBoard();
-
+            Response res = b.CreateBoard("name");
             if (res.ErrorMsg == null)
             {
                 return false;
@@ -152,10 +116,44 @@ namespace Tests
             return true;
         }
 
+
+        public bool TestDeleteBoardPositiveCase()
+        {
+            Response res = b.DeleteBoard("name");
+            if (res.ErrorMsg != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TestDeleteBoardNegativeCase()
+        {
+            Response res = b.DeleteBoard("name");
+            if(res.ErrorMsg == null)
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+        
+
+        public bool TestGetBoardNegativeCase()
+        {
+            Response res = b.GetBoard("name");
+            if (res.ErrorMsg != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool TestGetBoardPositiveCase()
         {
             b.CreateBoard("name");
-            Response res = b.GetBoard();
+            Response res = b.GetBoard("name");
 
             if (res.ErrorMsg != null)
             {
@@ -168,7 +166,7 @@ namespace Tests
         {
             b.LimitTasks("name", 0);
 
-            Response res = b.CreateBoard("name");
+            Response res = b.AddTask(1, 09/04/2025, "task1", "test limis tasks");
 
             if (res.ErrorMsg == null)
             {
@@ -181,7 +179,7 @@ namespace Tests
         {
             b.LimitTasks("name", 0);
 
-            Response res = b.CreateBoard("name");
+            Response res = b.AddTask(1, 09 / 04 / 2025, "task1", "test limis tasks");
 
             if (res.ErrorMsg != null)
             {
