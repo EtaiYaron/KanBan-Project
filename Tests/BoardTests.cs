@@ -7,7 +7,7 @@ namespace Tests
 {
     class BoardTests
     {
-        private readonly BoardService b = new BoardService(new BoardFacade(new AuthenticationFacade()));
+        private readonly BoardService b = new BoardService();
 
         public static void BoardRunTests()
         {

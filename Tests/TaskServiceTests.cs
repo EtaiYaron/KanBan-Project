@@ -11,8 +11,8 @@ namespace Tests
 {
     class TaskServiceTests
     {
-        private TaskService ts = new TaskService(new BoardFacade(new AuthenticationFacade()));
-        private readonly BoardService b = new BoardService(new BoardFacade(new AuthenticationFacade()));
+        private TaskService ts = new TaskService();
+        private readonly BoardService b = new BoardService();
         public void TaskServiceRunTests(){
             Console.WriteLine("Running Tests...");
 

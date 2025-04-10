@@ -13,7 +13,7 @@ namespace Tests
 {
     class UserTests
     {
-        private UserService us = new UserService(new UserFacade(new AuthenticationFacade()));
+        private UserService us = new UserService();
         public static void UserRunTests()
         {
             Console.WriteLine("Running Tests...");
