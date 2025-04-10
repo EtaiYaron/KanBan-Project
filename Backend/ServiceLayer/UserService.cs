@@ -25,19 +25,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.userFacade = userFacade;
         }
 
-        public string Login(string username, string password)
+        public Response Login(string username, string password)
         {
             throw new NotImplementedException();
         }
 
-        public string Register(string username, string password, string email)
+        public Response Register(string username, string password, string email)
         {
             throw new NotImplementedException();
         }
 
-        public string Logout(string username)
+        public Response Logout(string username)
         {
             throw new NotImplementedException();
         }
-    }
+    }  
 }
