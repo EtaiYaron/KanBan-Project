@@ -14,7 +14,7 @@ namespace Tests
     class UserTests
     {
         private UserService us = new UserService();
-        public static void UserRunTests()
+        public void UserRunTests()
         {
             Console.WriteLine("Running Tests...");
             bool tests = TestUserRegisterPositiveCase();
@@ -73,7 +73,7 @@ namespace Tests
             }
         }
 
-        public static bool TestUserRegisterPositiveCase()
+        public bool TestUserRegisterPositiveCase()
         {
             Response res = us.Register("etaiyaron@gmail.com", "EtaiYaron", "Password1");
             if (res.ErrorMessage != null)
@@ -82,7 +82,7 @@ namespace Tests
             }
             return true;
         }
-        public static bool TestUserRegisterNegativeCase()
+        public bool TestUserRegisterNegativeCase()
         {
             Response res = us.Register("Amztia@gmail.com", "Amtzia", "amztia1");
             if (res.ErrorMessage != null)
@@ -92,7 +92,7 @@ namespace Tests
             return false;
         }
 
-        public static bool TestUserLoginPositiveCase()
+        public bool TestUserLoginPositiveCase()
         {
             Response res = us.Login("EtaiYaron", "Password1");
             if (res.ErrorMessage != null)
@@ -101,7 +101,7 @@ namespace Tests
             }
             return true;
         }
-        public static bool TestUserLoginNegativeCase()
+        public bool TestUserLoginNegativeCase()
         {
             Response res = us.Login("EtaiYaron", "password1");
             if (res.ErrorMessage != null)
@@ -110,7 +110,7 @@ namespace Tests
             }
             return false;
         }
-        public static bool TestUserLogoutPositiveCase()
+        public bool TestUserLogoutPositiveCase()
         {
             us.Login("EtaiYaron", "Password1");
             Response res = us.Logout("EtaiYaron");
@@ -120,7 +120,7 @@ namespace Tests
             }
             return true;
         }
-        public static bool TestUserLogoutNegativeCase()
+        public bool TestUserLogoutNegativeCase()
         {
             us.Login("EtaiYaron", "Password1");
             us.Logout("EtaiYaron");
