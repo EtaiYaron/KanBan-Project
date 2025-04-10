@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.BussinesLayer.Board;
+using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace Tests
 {
     class TaskServiceTests
     {
-        private TaskService ts = new TaskService();
-        private Board b = new Board();
+        private TaskService ts = new TaskService(new BoardFacade(new AuthenticationFacade()));
+        private readonly BoardService b = new BoardService(new BoardFacade(new AuthenticationFacade()));
         public void TaskServiceRunTests(){
             Console.WriteLine("Running Tests...");
-            bool tests = TestAddTaskPositiveCase();
+
+            TaskServiceTests testsInstance = new TaskServiceTests();
+            bool tests = testsInstance.TestAddTaskPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestAddTaskPositiveCase: Passed");
@@ -21,7 +26,7 @@ namespace Tests
             {
                 Console.WriteLine("TestAddTaskPositiveCase: Failed");
             }
-            tests = TestAddTaskNegativeCase();
+            tests = testsInstance.TestAddTaskNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestAddTaskNegativeCase: Passed");
@@ -30,7 +35,7 @@ namespace Tests
             {
                 Console.WriteLine("TestAddTaskNegativeCase: Failed");
             }
-            tests = TestEditTaskPositiveCase();
+            tests = testsInstance.TestEditTaskPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestEditTaskPositiveCase: Passed");
@@ -39,7 +44,7 @@ namespace Tests
             {
                 Console.WriteLine("TestEditTaskPositiveCase: Failed");
             }
-            tests = TestEditTaskNegativeCase();
+            tests = testsInstance.TestEditTaskNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestEditTaskNegativeCase: Passed");
@@ -48,7 +53,7 @@ namespace Tests
             {
                 Console.WriteLine("TestEditTaskNegativeCase: Failed");
             }
-            tests = TestMoveTaskPositiveCase();
+            tests = testsInstance.TestMoveTaskPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestMoveTaskPositiveCase: Passed");
@@ -57,7 +62,7 @@ namespace Tests
             {
                 Console.WriteLine("TestMoveTaskPositiveCase: Failed");
             }
-            tests = TestMoveTaskNegativeCase();
+            tests = testsInstance.TestMoveTaskNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestMoveTaskNegativeCase: Passed");
@@ -66,7 +71,7 @@ namespace Tests
             {
                 Console.WriteLine("TestMoveTaskNegativeCase: Failed");
             }
-            tests = TestGetTaskPositiveCase();
+            tests = testsInstance.TestGetTaskPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestGetTaskPositiveCase: Passed");
@@ -75,7 +80,7 @@ namespace Tests
             {
                 Console.WriteLine("TestGetTaskPositiveCase: Failed");
             }
-            tests = TestGetTaskNegativeCase();
+            tests = testsInstance.TestGetTaskNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestGetTaskNegativeCase: Passed");
@@ -84,7 +89,7 @@ namespace Tests
             {
                 Console.WriteLine("TestGetTaskNegativeCase: Failed");
             }
-            tests = TestGetAllTasksPositiveCase();
+            tests = testsInstance.TestGetAllTasksPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestGetAllTasksPositiveCase: Passed");
@@ -93,7 +98,7 @@ namespace Tests
             {
                 Console.WriteLine("TestGetAllTasksPositiveCase: Failed");
             }
-            tests = TestGetTaskNegativeCase();
+            tests = testsInstance.TestGetTaskNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestGetAllTasksNegativeCase: Passed");
@@ -104,109 +109,109 @@ namespace Tests
             }
         }
 
-        public static bool TestAddTaskPositiveCase()
+        public bool TestAddTaskPositiveCase()
         {
             b.CreateBoard("name");
             Response res = ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "checking if task is created");
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return true;
             }
             return false;
         }
-        public static bool TestAddTaskNegativeCase()
+        public bool TestAddTaskNegativeCase()
         {
             b.CreateBoard("name");
             Response res = ts.AddTask(b.GetId() + 1, 100, new DateTime(2025, 4, 10), "task1", "checking if task isn't created");
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return false;
             }
             return true;
         }
-        public static bool TestEditTaskPositiveCase()
+        public bool TestEditTaskPositiveCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.EditTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task2", "checking if task is edited");
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return true;
             }
             return false;
         }
-        public static bool TestEditTaskNegativeCase()
+        public bool TestEditTaskNegativeCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.EditTask(b.GetId() + 1, 100, new DateTime(2025, 4, 10), "task2", "checking if task isn't edited");
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return false;
             }
             return true;
         }
-        public static bool TestMoveTaskPositiveCase()
+        public bool TestMoveTaskPositiveCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.MoveTask(b.GetId(), "name", 100, 2);
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return true;
             }
             return false;
         }
-        public static bool TestMoveTaskNegativeCase()
+        public bool TestMoveTaskNegativeCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.MoveTask(b.GetId() , "name", 100, 7);
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return false;
             }
             return true;
         }
-        public static bool TestGetTaskPositiveCase()
+        public bool TestGetTaskPositiveCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.GetTask(b.GetId(),  100);
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return true;
             }
             return false;
         }
-        public static bool TestGetTaskNegativeCase()
+        public bool TestGetTaskNegativeCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.GetTask(b.GetId(), 101);
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return false;
             }
             return true;
         }
-        public static bool TestGetAllTasksPositiveCase()
+        public bool TestGetAllTasksPositiveCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.GetTask(b.GetId());
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return true;
             }
             return false;
         }
-        public static bool TestGetAllTasksNegativeCase()
+        public bool TestGetAllTasksNegativeCase()
         {
             b.CreateBoard("name");
             ts.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
             Response res = ts.GetTask(b.GetId() + 1);
-            if (res.Errormsg == null)
+            if (res.ErrorMessage == null)
             {
                 return false;
             }

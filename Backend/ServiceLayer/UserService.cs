@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.BussinesLayer.User;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class UserService
+    public class UserService
     {
         private UserFacade userFacade;
 

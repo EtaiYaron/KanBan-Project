@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.BussinesLayer.Board;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class BoardService
+    public class BoardService
     {
         private BoardFacade boardFacade;
 
@@ -16,22 +16,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-        public string CreateBoard(string name)
+        public Response CreateBoard(string name)
         {
             throw new NotImplementedException();
         }
 
-        public string DeleteBoard(string name)
+        public Response DeleteBoard(string name)
         {
             throw new NotImplementedException();
         }
 
-        public string GetBoard(string name)
+        public Response GetBoard(string name)
         {
             throw new NotImplementedException();
         }
 
-        public string LimitTasks(string name, int newLimit)
+        public Response LimitTasks(string name, int newLimit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response GetId(string name)
         {
             throw new NotImplementedException();
         }

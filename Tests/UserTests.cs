@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
+using IntroSE.Kanban.Backend.ServiceLayer;
+
+
 
 namespace Tests
 {
     class UserTests
     {
-        private UserService us = new UserService();
+        private UserService us = new UserService(new UserFacade(new AuthenticationFacade()));
         public static void UserRunTests()
         {
             Console.WriteLine("Running Tests...");
@@ -71,7 +76,7 @@ namespace Tests
         public static bool TestUserRegisterPositiveCase()
         {
             Response res = us.Register("etaiyaron@gmail.com", "EtaiYaron", "Password1");
-            if (res.Errormsg != null)
+            if (res.ErrorMessage != null)
             {
                 return false;
             }
@@ -80,7 +85,7 @@ namespace Tests
         public static bool TestUserRegisterNegativeCase()
         {
             Response res = us.Register("Amztia@gmail.com", "Amtzia", "amztia1");
-            if (res.Errormsg != null)
+            if (res.ErrorMessage != null)
             {
                 return true;
             }
@@ -90,7 +95,7 @@ namespace Tests
         public static bool TestUserLoginPositiveCase()
         {
             Response res = us.Login("EtaiYaron", "Password1");
-            if (res.Errormsg != null)
+            if (res.ErrorMessage != null)
             {
                 return false;
             }
@@ -99,7 +104,7 @@ namespace Tests
         public static bool TestUserLoginNegativeCase()
         {
             Response res = us.Login("EtaiYaron", "password1");
-            if (res.Errormsg != null)
+            if (res.ErrorMessage != null)
             {
                 return true;
             }
@@ -108,8 +113,8 @@ namespace Tests
         public static bool TestUserLogoutPositiveCase()
         {
             us.Login("EtaiYaron", "Password1");
-            Response res = us.Logout();
-            if (res.Errormsg != null)
+            Response res = us.Logout("EtaiYaron");
+            if (res.ErrorMessage != null)
             {
                 return false;
             }
@@ -118,9 +123,9 @@ namespace Tests
         public static bool TestUserLogoutNegativeCase()
         {
             us.Login("EtaiYaron", "Password1");
-            us.Logout();
-            Response res = us.Logout();
-            if (res.Errormsg != null)
+            us.Logout("EtaiYaron");
+            Response res = us.Logout("EtaiYaron");
+            if (res.ErrorMessage != null)
             {
                 return true;
             }
