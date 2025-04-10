@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.User
 {
-    class UserFacade
+    internal class UserFacade
     {
         private Dictionary<string, UserBL> users;
         private AuthenticationFacade authFacade;

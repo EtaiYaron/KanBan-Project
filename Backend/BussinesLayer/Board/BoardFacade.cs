@@ -8,7 +8,7 @@ using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
-    class BoardFacade
+    internal class BoardFacade
     {
         private Dictionary<string, Dictionary<string, BoardBL>> boards;
         private AuthenticationFacade authenticationFacade;

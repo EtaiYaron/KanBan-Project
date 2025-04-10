@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
 {
-    class AuthenticationFacade
+    internal class AuthenticationFacade
     {
         private Dictionary<string, string> loggedUsers;
 

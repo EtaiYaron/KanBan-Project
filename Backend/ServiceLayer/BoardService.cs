@@ -4,14 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
+using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class BoardService
     {
         private BoardFacade boardFacade;
-
-        public BoardService(BoardFacade boardFacade)
+        /// <summary>
+        /// Empty Constructor for the BoardService class just for now.
+        /// </summary>
+        public BoardService()
+        {
+            this.boardFacade = new BoardFacade(new AuthenticationFacade());
+        }
+        internal BoardService(BoardFacade boardFacade)
         {
             this.boardFacade = boardFacade;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.User
 {
-    class UserBL
+    internal class UserBL
     {
         private string username;
         private string password;
