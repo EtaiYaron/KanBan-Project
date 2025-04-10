@@ -7,13 +7,20 @@ namespace Tests
 {
     class BoardTests
     {
-        private static BoardService b = new BoardService();
+        private BoardService b;
+        private TaskService t;
 
-        public static void BoardRunTests()
+        public BoardTests(BoardService b, TaskService t)
+        {
+            this.b = b;
+            this.t = t;
+        }
+
+        public void BoardRunTests()
         {
             Console.WriteLine("Running Tests...");
-            BoardTests testsInstance = new BoardTests();
-            bool tests = testsInstance.TestCreateBoardPositiveCase();
+     
+            bool tests = TestCreateBoardPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestCreateBoardPositiveCase: Passed");
@@ -23,7 +30,7 @@ namespace Tests
                 Console.WriteLine("TestCreateBoardPositiveCase: Failed");
             }
 
-            tests = testsInstance.TestCreateBoardNegativeCase();
+            tests = TestCreateBoardNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestCreateBoardNegativeCase: Passed");
@@ -33,7 +40,7 @@ namespace Tests
                 Console.WriteLine("TestCreateBoardNegativeCase: Failed");
             }
 
-            tests = testsInstance.TestDeleteBoardPositiveCase();
+            tests = TestDeleteBoardPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestDeleteBoardPositiveCase: Passed");
@@ -43,7 +50,7 @@ namespace Tests
                 Console.WriteLine("TestDeleteBoardPositiveCase: Failed");
             }
 
-            tests = testsInstance.TestDeleteBoardNegativeCase();
+            tests = TestDeleteBoardNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestDeleteBoardNegativeCase: Passed");
@@ -53,7 +60,7 @@ namespace Tests
                 Console.WriteLine("TestDeleteBoardNegativeCase: Failed");
             }
 
-            tests = testsInstance.TestGetBoardNegativeCase();
+            tests = TestGetBoardNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestGetBoardNegativeCase: Passed");
@@ -63,7 +70,7 @@ namespace Tests
                 Console.WriteLine("TestGetBoardNegativeCase: Failed");
             }
 
-            tests = testsInstance.TestGetBoardPositiveCase();
+            tests = TestGetBoardPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestGetBoardPositiveCase: Passed");
@@ -73,7 +80,7 @@ namespace Tests
                 Console.WriteLine("TestGetBoardPositiveCase: Failed");
             }
 
-            tests = testsInstance.TestLimitTasksNegativeCase();
+            tests = TestLimitTasksNegativeCase();
             if (tests)
             {
                 Console.WriteLine("TestLimitTasksNegativeCase: Passed");
@@ -83,7 +90,7 @@ namespace Tests
                 Console.WriteLine("TestLimitTasksNegativeCase: Failed");
             }
 
-            tests = testsInstance.TestLimitTasksPositiveCase();
+            tests = TestLimitTasksPositiveCase();
             if (tests)
             {
                 Console.WriteLine("TestLimitTasksPositiveCase: Passed");
@@ -166,7 +173,7 @@ namespace Tests
         {
             b.LimitTasks("name", 0);
 
-            Response res = b.AddTask(1, new DateTime(2025, 4, 10), "task1", "test limis tasks");
+            Response res = t.AddTask("name", 1, "task1", new DateTime(2025, 4, 10), "test limis tasks");
 
             if (res.ErrorMessage == null)
             {
@@ -179,7 +186,7 @@ namespace Tests
         {
             b.LimitTasks("name", 0);
 
-            Response res = b.AddTask(1, new DateTime(2025, 4, 10), "task1", "test limis tasks");
+            Response res = t.AddTask("name", 1, "task1", new DateTime(2025, 4, 10), "test limis tasks");
 
             if (res.ErrorMessage != null)
             {

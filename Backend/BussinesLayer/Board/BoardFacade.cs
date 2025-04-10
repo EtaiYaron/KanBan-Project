@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
     internal class BoardFacade
     {
-        private Dictionary<string, Dictionary<string, BoardBL>> boards;
+        private readonly Dictionary<string, Dictionary<string, BoardBL>> boards;
         private AuthenticationFacade authenticationFacade;
 
         public BoardFacade(AuthenticationFacade authenticationFacade)

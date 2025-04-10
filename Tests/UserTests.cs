@@ -13,7 +13,13 @@ namespace Tests
 {
     class UserTests
     {
-        private UserService us = new UserService();
+        private UserService us;
+
+        public UserTests(UserService us) 
+        { 
+            this.us = us; 
+        }
+
         public void UserRunTests()
         {
             Console.WriteLine("Running Tests...");
