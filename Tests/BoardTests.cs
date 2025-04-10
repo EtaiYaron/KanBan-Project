@@ -7,7 +7,7 @@ namespace Tests
 {
     class BoardTests
     {
-        private readonly BoardService b = new BoardService();
+        private static BoardService b = new BoardService();
 
         public static void BoardRunTests()
         {
