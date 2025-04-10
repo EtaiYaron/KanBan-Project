@@ -119,7 +119,7 @@ namespace Tests
         public bool TestAddTaskPositiveCase()
         {
             b.CreateBoard("name");
-            Response res = t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "checking if task is created");
+            Response res = t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "checking if task is created");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -129,7 +129,7 @@ namespace Tests
         public bool TestAddTaskNegativeCase()
         {
             b.CreateBoard("name");
-            Response res = t.AddTask(b.GetId() + 1, 100, new DateTime(2025, 4, 10), "task1", "checking if task isn't created");
+            Response res = t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "checking if task isn't created");
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -139,8 +139,8 @@ namespace Tests
         public bool TestEditTaskPositiveCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.EditTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task2", "checking if task is edited");
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.EditTask("name", 100, "task2", new DateTime(2025, 4, 10), "checking if task is edited");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -150,8 +150,8 @@ namespace Tests
         public bool TestEditTaskNegativeCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.EditTask(b.GetId() + 1, 100, new DateTime(2025, 4, 10), "task2", "checking if task isn't edited");
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.EditTask("name", 101, "task2", new DateTime(2025, 4, 10), "checking if task isn't edited");
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -161,8 +161,8 @@ namespace Tests
         public bool TestMoveTaskPositiveCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.MoveTask(b.GetId(), "name", 100, 2);
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.MoveTask("name", 100, 1);
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -172,8 +172,8 @@ namespace Tests
         public bool TestMoveTaskNegativeCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.MoveTask(b.GetId() , "name", 100, 7);
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.MoveTask("name", 100, 2);
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -183,8 +183,8 @@ namespace Tests
         public bool TestGetTaskPositiveCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.GetTask(b.GetId(),  100);
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.GetTask("name",  100);
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -194,8 +194,8 @@ namespace Tests
         public bool TestGetTaskNegativeCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.GetTask(b.GetId(), 101);
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.GetTask("name", 101);
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -205,8 +205,8 @@ namespace Tests
         public bool TestGetAllTasksPositiveCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.GetTask(b.GetId());
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.GetAllTasks("name");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -216,8 +216,8 @@ namespace Tests
         public bool TestGetAllTasksNegativeCase()
         {
             b.CreateBoard("name");
-            t.AddTask(b.GetId(), 100, new DateTime(2025, 4, 10), "task1", "task is created");
-            Response res = t.GetTask(b.GetId() + 1);
+            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
+            Response res = t.GetAllTasks("name2");
             if (res.ErrorMessage == null)
             {
                 return false;
