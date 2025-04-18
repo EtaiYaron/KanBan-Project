@@ -18,19 +18,41 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             this.authFacade = authFacade;
         }
 
-        public UserBL Login(string username, string password)
+        public UserBL Login(string email, string password)
+        {
+            if (email == null) throw new ArgumentNullException("email");
+            if (password == null) throw new ArgumentNullException("password");
+
+            if (!users.ContainsKey(email))
+                throw new Exception("User " + email + "doesn't exist");
+
+            UserBL user = users[email];
+            if (user.Login(password))
+            {
+                authFacade.Login(email);
+                return user;
+            }
+            return null;
+        }
+
+        public UserBL Register(string email, string password)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (email == null) throw new ArgumentNullException("email");
+
+            if (!isValidPassword(password)) throw new Exception("Invalid password");
+            return null;
+        }
+
+        public UserBL Logout(string email)
         {
             throw new NotImplementedException();
         }
 
-        public UserBL Register(string username, string password, string email)
+        private bool isValidPassword(string password)
         {
-            throw new NotImplementedException();
-        }
-
-        public UserBL Logout(string username)
-        {
-            throw new NotImplementedException();
+            if (password.Length < 6 || password.Length > 20) return false;
+            return password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(char.IsDigit);
         }
     }
 }
