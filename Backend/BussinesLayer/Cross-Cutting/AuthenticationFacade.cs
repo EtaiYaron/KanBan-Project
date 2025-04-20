@@ -17,17 +17,19 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
 
         public void Login(string email)
         {
-            throw new NotImplementedException();
+            loggedUsers.Add(email);
+            return;
         }
 
         public void Logout(string email) 
         { 
-            throw new NotImplementedException(); 
+            loggedUsers.Remove(email);
+            return;
         }
 
         public bool isLoggedIn(string email)
         {
-            throw new NotImplementedException();
+            return loggedUsers.Contains(email);
         }
     }
 }
