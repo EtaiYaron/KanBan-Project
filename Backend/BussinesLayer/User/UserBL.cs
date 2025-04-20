@@ -8,15 +8,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
 {
     internal class UserBL
     {
-        private string username;
-        private string password;
         private string email;
+        private string password;
 
-        public UserBL(string username, string password, string email)
+        public UserBL(string email, string password)
         {
-            this.username = username;
-            this.password = password;
             this.email = email;
+            this.password = password;
         }
 
         public bool Login(string password)

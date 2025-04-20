@@ -8,26 +8,28 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
 {
     internal class AuthenticationFacade
     {
-        private Dictionary<string, string> loggedUsers;
+        private HashSet<string> loggedUsers;
 
         public AuthenticationFacade() 
         {
-            this.loggedUsers = new Dictionary<string, string>();
+            this.loggedUsers = new HashSet<string>();
         }
 
-        public void Login(string username)
+        public void Login(string email)
         {
-            throw new NotImplementedException();
+            loggedUsers.Add(email);
+            return;
         }
 
-        public void Logout(string username) 
+        public void Logout(string email) 
         { 
-            throw new NotImplementedException(); 
+            loggedUsers.Remove(email);
+            return;
         }
 
-        public bool isLoggedIn(string username)
+        public bool isLoggedIn(string email)
         {
-            throw new NotImplementedException();
+            return loggedUsers.Contains(email);
         }
     }
 }
