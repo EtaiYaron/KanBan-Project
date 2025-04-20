@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
     {
         private readonly Dictionary<string, Dictionary<string, BoardBL>> boards;
         private AuthenticationFacade authenticationFacade;
+        private readonly string currentUserEmail;
 
         public BoardFacade(AuthenticationFacade authenticationFacade)
         {
@@ -19,47 +20,65 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.authenticationFacade = authenticationFacade;
         }
 
-        public BoardBL CreateBoard(string name, int maxTasks = -1)
+        public BoardBL CreateBoard(string boardname, int maxTasks = -1)
+        {
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname");
+            }
+            if (boards.ContainsKey(currentUserEmail) && !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname already exist under the same user");
+            }
+            if (!boards.ContainsKey(currentUserEmail))
+            {
+                boards.Add(currentUserEmail, new Dictionary<string, BoardBL>());
+            }
+            BoardBL curr = new BoardBL(boardname);
+            boards[currentUserEmail].Add(boardname, curr);
+            return curr;
+        }
+
+        public BoardBL DeleteBoard(string boardname)
         {
             throw new NotImplementedException();
         }
 
-        public BoardBL DeleteBoard(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public BoardBL MoveTask(string name, int taskId, int dest)
+        public BoardBL MoveTask(string boardname, int taskId, int dest)
         { 
             throw new NotImplementedException(); 
         }
 
-        public BoardBL AddTask(string name, int taskId, string title, DateTime dueTime, string description)
+        public BoardBL AddTask(string boardname, int taskId, string title, DateTime dueTime, string description)
         {
             throw new NotImplementedException();
         }
 
-        public TaskBL EditTask(string name, int taskId, string title, DateTime dueTime, string description)
+        public TaskBL EditTask(string boardname, int taskId, string title, DateTime dueTime, string description)
         {
             throw new NotImplementedException();
         }
 
-        public BoardBL GetBoard(string name)
+        public BoardBL GetBoard(string boardname)
         {
             throw new NotImplementedException();
         }
 
-        public TaskBL GetTask(string name, int taskId)
+        public TaskBL GetTask(string boardname, int taskId)
         {
             throw new NotImplementedException();
         }
 
-        public List<TaskBL> GetAllTasks(string name)
+        public List<TaskBL> GetAllTasks(string boardname)
         {
             throw new NotImplementedException();
         }
 
-        public BoardBL LimitTasks(string name, int newLimit)
+        public BoardBL LimitTasks(string boardname, int newLimit)
         {
             throw new NotImplementedException();
         }
