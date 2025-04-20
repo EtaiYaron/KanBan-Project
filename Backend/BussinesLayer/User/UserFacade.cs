@@ -47,8 +47,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             if (!isValidPassword(password)) throw new Exception("Invalid password");
             if (users.ContainsKey(email))
                 throw new Exception("User " + email + "already exist");
-            if (authFacade.isLoggedIn(email))
-                throw new Exception("User already logged in");
 
             UserBL user = new UserBL(email, password);
             authFacade.Login(email);
