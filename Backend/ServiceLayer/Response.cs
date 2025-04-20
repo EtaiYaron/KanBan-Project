@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class Response
     {
         private string errorMessage;
-        private string returnValue;
+        private object returnValue;
 
         public Response() { }
 
@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.errorMessage = errorMessage;
         }
-        public Response(string errorMessage, string returnValue)
+        public Response(string errorMessage, object returnValue)
         {
             this.errorMessage = errorMessage;
             this.returnValue = returnValue;
@@ -25,6 +25,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public string ErrorMessage { get; set; }
 
-        public string ReturnValue { get; set; }
+        public object ReturnValue { get; set; }
     }
 }

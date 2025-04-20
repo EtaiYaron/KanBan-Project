@@ -70,5 +70,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             { get { return maxTasks1; } }
         public int MaxTasks2
             { get { return maxTasks2; } }
+        public Dictionary<int, TaskBL> Tasks
+            { get { return tasks; } }
+        public string Name
+            { get { return name; }}
     }
 }

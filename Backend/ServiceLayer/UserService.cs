@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
@@ -25,19 +26,49 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.userFacade = userFacade;
         }
 
-        public Response Login(string email, string password)
+        public string Login(string email, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                UserBL ubl = userFacade.Login(email, password);
+                Response response = new Response(null, ubl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response Register(string email, string password)
+        public string Register(string email, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                UserBL ubl = userFacade.Register(email, password);
+                Response response = new Response(null, ubl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response Logout(string email)
+        public string Logout(string email)
         {
-            throw new NotImplementedException();
+            try
+            {
+                UserBL ubl = userFacade.Logout(email);
+                Response response = new Response(null, ubl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
     }  
 }
