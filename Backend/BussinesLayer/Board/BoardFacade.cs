@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
     {
         private readonly Dictionary<string, Dictionary<string, BoardBL>> boards;
         private AuthenticationFacade authenticationFacade;
+        private readonly string currentUserEmail;
 
         public BoardFacade(AuthenticationFacade authenticationFacade)
         {
@@ -19,49 +20,165 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.authenticationFacade = authenticationFacade;
         }
 
-        public BoardBL CreateBoard(string name, int maxTasks = -1)
+        public BoardBL CreateBoard(string boardname)
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname isn't valid");
+            }
+            if (boards.ContainsKey(currentUserEmail) && boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname already exist under this user");
+            }
+            if (!boards.ContainsKey(currentUserEmail))
+            {
+                boards.Add(currentUserEmail, new Dictionary<string, BoardBL>());
+            }
+            BoardBL curr = new BoardBL(boardname);
+            boards[currentUserEmail].Add(boardname, curr);
+            return curr;
         }
 
-        public BoardBL DeleteBoard(string name)
+        public BoardBL DeleteBoard(string boardname)
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            BoardBL curr = boards[currentUserEmail][boardname];
+            boards[currentUserEmail].Remove(boardname);
+            return curr;
         }
 
-        public BoardBL MoveTask(string name, int taskId, int dest)
-        { 
-            throw new NotImplementedException(); 
+        public BoardBL MoveTask(string boardname, int taskId, int destcolumn)
+        {
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            BoardBL board = boards[currentUserEmail][boardname];
+            if (!(board.Tasks).ContainsKey(taskId))
+            {
+                throw new ArgumentException("taskId doesn't exist under this board");
+            }
+            if (destcolumn < 0 || destcolumn > 2)
+            {
+                throw new ArgumentOutOfRangeException("dest must be between 0 and 2");
+            }
+            int fromcolumn = board.GetTask(taskId).State;
+            if (destcolumn - fromcolumn != 1)
+            {
+                throw new ArgumentException("cannot move the task to this destination");
+            }
+            board.MoveTask(taskId, destcolumn);
+            return board;
         }
 
-        public BoardBL AddTask(string name, int taskId, string title, DateTime dueTime, string description)
+        public BoardBL AddTask(string boardname, int taskId, string title, DateTime dueTime, string description = "")
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            BoardBL board = boards[currentUserEmail][boardname];
+            if ((board.Tasks).ContainsKey(taskId))
+            {
+                throw new ArgumentException("taskId exist task in this board");
+            }
+            if (string.IsNullOrEmpty(title) || title.Length > 50)
+            {
+                throw new ArgumentException("title isn't valid");
+            }
+            if( description.Length > 300)
+            {
+                throw new ArgumentException("title isn't valid");
+            }
+            board.AddTask(taskId, title, dueTime, description);
+            return board;
         }
 
-        public TaskBL EditTask(string name, int taskId, string title, DateTime dueTime, string description)
+        public BoardBL EditTask(string boardname, int taskId, string title, DateTime dueTime, string description = "")
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            BoardBL board = boards[currentUserEmail][boardname];
+            if (!(board.Tasks).ContainsKey(taskId))
+            {
+                throw new ArgumentException("taskId isn't exist task in this board");
+            }
+            if (string.IsNullOrEmpty(title) || title.Length > 50)
+            {
+                throw new ArgumentException("title isn't valid");
+            }
+            if (description.Length > 300)
+            {
+                throw new ArgumentException("title isn't valid");
+            }
+            board.EditTask(taskId, title, dueTime, description);
+            return board;
         }
 
-        public BoardBL GetBoard(string name)
+        public BoardBL GetBoard(string boardname)
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            return boards[currentUserEmail][boardname];
         }
 
-        public TaskBL GetTask(string name, int taskId)
+        public TaskBL GetTask(string boardname, int taskId)
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            BoardBL board = boards[currentUserEmail][boardname];
+            if (!(board.Tasks).ContainsKey(taskId))
+            {
+                throw new ArgumentException("taskId doesn't exist under this board");
+            }
+            return board.GetTask(taskId);
         }
 
-        public List<TaskBL> GetAllTasks(string name)
+        public Dictionary<int, TaskBL> GetAllTasks(string boardname)
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            BoardBL board = boards[currentUserEmail][boardname];
+            return board.Tasks;
         }
 
-        public BoardBL LimitTasks(string name, int newLimit)
+        public BoardBL LimitTasks(string boardname, int column, int newLimit)
         {
-            throw new NotImplementedException();
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
+            if (column > 2 || column < 0)
+            {
+                throw new Exception("column isn't valid");
+            }
+            if (newLimit < 0)
+            {
+                throw new Exception("limit isn't valid");
+
+            }
+            BoardBL board = boards[currentUserEmail][boardname];
+            board.LimitTasks(column, newLimit);
+            return board;
         }
+
+        private void EnsureUserIsLoggedIn()
+        {
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new InvalidOperationException("User is not logged in");
+            }
+        }
+
+        private void ValidateBoardExists(string boardname)
+        {
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException(nameof(boardname), "Board name is not valid");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new KeyNotFoundException("Board does not exist under this user");
+            }
+        }
+
     }
+
+
 }
