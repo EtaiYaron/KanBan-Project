@@ -88,6 +88,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 throw new ArgumentException("title isn't valid");
             }
+            if (DateTime.Now.CompareTo(dueTime) >= 0 )
+            {
+                throw new ArgumentException("duedate isn't valid");
+            }
             board.AddTask(taskId, title, dueTime, description);
             return board;
         }
@@ -108,6 +112,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             if (description.Length > 300)
             {
                 throw new ArgumentException("title isn't valid");
+            }
+            if (DateTime.Now.CompareTo(dueTime) >= 0)
+            {
+                throw new ArgumentException("duedate isn't valid");
             }
             board.EditTask(taskId, title, dueTime, description);
             return board;
