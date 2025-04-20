@@ -27,7 +27,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Login(string email, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                UserBL
+            }
         }
 
         public Response Register(string email, string password)

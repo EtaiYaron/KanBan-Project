@@ -37,11 +37,38 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.taskId = dest; 
         }
 
+
+        public int TaskId
+        {
+            get { return this.taskId; }
+            set { this.taskId = value; }
+        }
+
+        public string Title
+        {
+            get { return this.title; }
+            set { this.title = value; }
+        }
+
+        public DateTime DueDate
+        {
+            get { return this.dueDate; }
+            set { this.dueDate = value; }
+        }
+
+        public string Description
+        {
+            get { return this.description; }
+            set { this.description = value; }
+        }
         public int State
         {
             get { return this.state; }
             set { this.state = value; }
         }
+
+
+
 
 
     }
