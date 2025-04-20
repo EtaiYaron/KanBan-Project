@@ -36,5 +36,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         { 
             this.taskId = dest; 
         }
+
+        public int State
+        {
+            get { return this.state; }
+            set { this.state = value; }
+        }
+
+
     }
 }
