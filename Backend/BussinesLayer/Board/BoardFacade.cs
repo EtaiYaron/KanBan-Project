@@ -20,7 +20,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.authenticationFacade = authenticationFacade;
         }
 
-        public BoardBL CreateBoard(string boardname, int maxTasks = -1)
+        public BoardBL CreateBoard(string boardname)
         {
             if (!authenticationFacade.isLoggedIn(currentUserEmail))
             {
@@ -28,9 +28,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (string.IsNullOrEmpty(boardname))
             {
-                throw new ArgumentNullException("boardname");
+                throw new ArgumentNullException("boardname isn't valid");
             }
-            if (boards.ContainsKey(currentUserEmail) && !boards[currentUserEmail].ContainsKey(boardname))
+            if (boards.ContainsKey(currentUserEmail) && boards[currentUserEmail].ContainsKey(boardname))
             {
                 throw new ArgumentNullException("boardname already exist under the same user");
             }
@@ -45,12 +45,53 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL DeleteBoard(string boardname)
         {
-            throw new NotImplementedException();
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname isn't valid");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname doesn't exist under the same user");
+            }
+            BoardBL curr = boards[currentUserEmail][boardname];
+            boards[currentUserEmail].Remove(boardname);
+            return curr;
         }
 
-        public BoardBL MoveTask(string boardname, int taskId, int dest)
-        { 
-            throw new NotImplementedException(); 
+        public BoardBL MoveTask(string boardname, int taskId, int destcolumn)
+        {
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname isn't valid");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname doesn't exist under the same user");
+            }
+            BoardBL board = boards[currentUserEmail][boardname];
+            if (!(board.Tasks).Contains(taskId))
+            {
+                throw new ArgumentException("taskId doesn't exist under this board");
+            }
+            if (destcolumn < 0 || destcolumn > 2)
+            {
+                throw new ArgumentOutOfRangeException("dest must be between 0 and 2");
+            }
+            int fromcolumn = board.GetTask(taskId).State;
+            if (destcolumn - fromcolumn != 1)
+            {
+                throw new ArgumentException("cannot move the task to this destination");
+            }
+            board.MoveTask(taskId, destcolumn);
+            return board;
         }
 
         public BoardBL AddTask(string boardname, int taskId, string title, DateTime dueTime, string description)
@@ -65,20 +106,62 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL GetBoard(string boardname)
         {
-            throw new NotImplementedException();
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname doesn't exist under the same user");
+            }
+            return boards[currentUserEmail][boardname];
         }
 
         public TaskBL GetTask(string boardname, int taskId)
         {
-            throw new NotImplementedException();
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname isn't valid");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname doesn't exist under the same user");
+            }
+            BoardBL board = boards[currentUserEmail][boardname];
+            if (!(board.Tasks).Contains(taskId))
+            {
+                throw new ArgumentException("taskId doesn't exist under this board");
+            }
+            return board.GetTask(taskId);
         }
 
-        public List<TaskBL> GetAllTasks(string boardname)
+        public Dictionary<int, TaskBL> GetAllTasks(string boardname)
         {
-            throw new NotImplementedException();
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new Exception("User is not logged in");
+            }
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException("boardname isn't valid");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new ArgumentNullException("boardname doesn't exist under the same user");
+            }
+            BoardBL board = boards[currentUserEmail][boardname];
+            return board.Tasks;
         }
 
-        public BoardBL LimitTasks(string boardname, int newLimit)
+        public BoardBL LimitTasks(string boardname, int column, int newLimit)
         {
             throw new NotImplementedException();
         }
