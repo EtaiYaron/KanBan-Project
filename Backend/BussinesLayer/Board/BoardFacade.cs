@@ -22,10 +22,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL CreateBoard(string boardname)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
+            EnsureUserIsLoggedIn();
             if (string.IsNullOrEmpty(boardname))
             {
                 throw new ArgumentNullException("boardname isn't valid");
@@ -45,18 +42,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL DeleteBoard(string boardname)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             BoardBL curr = boards[currentUserEmail][boardname];
             boards[currentUserEmail].Remove(boardname);
             return curr;
@@ -64,18 +51,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL MoveTask(string boardname, int taskId, int destcolumn)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
             if (!(board.Tasks).Contains(taskId))
             {
@@ -96,18 +73,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL AddTask(string boardname, int taskId, string title, DateTime dueTime, string description = "")
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
             if ((board.Tasks).Contains(taskId))
             {
@@ -123,18 +90,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL EditTask(string boardname, int taskId, string title, DateTime dueTime, string description)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
             if (!(board.Tasks).Contains(taskId))
             {
@@ -150,35 +107,15 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL GetBoard(string boardname)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             return boards[currentUserEmail][boardname];
         }
 
         public TaskBL GetTask(string boardname, int taskId)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
             if (!(board.Tasks).Contains(taskId))
             {
@@ -189,36 +126,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public Dictionary<int, TaskBL> GetAllTasks(string boardname)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
             return board.Tasks;
         }
 
         public BoardBL LimitTasks(string boardname, int column, int newLimit)
         {
-            if (!authenticationFacade.isLoggedIn(currentUserEmail))
-            {
-                throw new Exception("User is not logged in");
-            }
-            if (string.IsNullOrEmpty(boardname))
-            {
-                throw new ArgumentNullException("boardname isn't valid");
-            }
-            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
-            {
-                throw new ArgumentNullException("boardname doesn't exist under this user");
-            }
+            EnsureUserIsLoggedIn();
+            ValidateBoardExists(boardname);
             if (column > 2 || column < 0)
             {
                 throw new Exception("column isn't valid");
@@ -232,5 +149,28 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             board.LimitTasks(column, newLimit);
             return board;
         }
+
+        private void EnsureUserIsLoggedIn()
+        {
+            if (!authenticationFacade.isLoggedIn(currentUserEmail))
+            {
+                throw new InvalidOperationException("User is not logged in");
+            }
+        }
+
+        private void ValidateBoardExists(string boardname)
+        {
+            if (string.IsNullOrEmpty(boardname))
+            {
+                throw new ArgumentNullException(nameof(boardname), "Board name is not valid");
+            }
+            if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
+            {
+                throw new KeyNotFoundException("Board does not exist under this user");
+            }
+        }
+
     }
+
+
 }
