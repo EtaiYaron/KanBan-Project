@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (boards.ContainsKey(currentUserEmail) && boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname already exist under the same user");
+                throw new ArgumentNullException("boardname already exist under this user");
             }
             if (!boards.ContainsKey(currentUserEmail))
             {
@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             BoardBL curr = boards[currentUserEmail][boardname];
             boards[currentUserEmail].Remove(boardname);
@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             BoardBL board = boards[currentUserEmail][boardname];
             if (!(board.Tasks).Contains(taskId))
@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             BoardBL board = boards[currentUserEmail][boardname];
             if ((board.Tasks).Contains(taskId))
@@ -133,7 +133,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             BoardBL board = boards[currentUserEmail][boardname];
             if (!(board.Tasks).Contains(taskId))
@@ -160,7 +160,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             return boards[currentUserEmail][boardname];
         }
@@ -177,7 +177,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             BoardBL board = boards[currentUserEmail][boardname];
             if (!(board.Tasks).Contains(taskId))
@@ -199,7 +199,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             BoardBL board = boards[currentUserEmail][boardname];
             return board.Tasks;
@@ -217,7 +217,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
-                throw new ArgumentNullException("boardname doesn't exist under the same user");
+                throw new ArgumentNullException("boardname doesn't exist under this user");
             }
             if (column > 2 || column < 0)
             {
