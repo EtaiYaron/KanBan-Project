@@ -49,13 +49,18 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 throw new Exception("User " + email + "already exist");
 
             UserBL user = new UserBL(email, password);
+            users[email] = user;
             authFacade.Login(email);
             return user;
         }
 
         public UserBL Logout(string email)
         {
-            throw new NotImplementedException();
+            if (email == null) throw new ArgumentNullException("email");
+            if (!authFacade.isLoggedIn(email)) throw new Exception("User not logged in");
+
+            authFacade.Logout(email);
+            return users[email];
         }
 
         private bool isValidPassword(string password)
@@ -66,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
 
         private bool IsValidEmail(string email)
         {
-            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            string emailPattern = @"^[\w._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$";
             return Regex.IsMatch(email, emailPattern);
         }
     }
