@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             EnsureUserIsLoggedIn();
             ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
-            if (!(board.Tasks).Contains(taskId))
+            if (!(board.Tasks).ContainsKey(taskId))
             {
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             EnsureUserIsLoggedIn();
             ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
-            if ((board.Tasks).Contains(taskId))
+            if ((board.Tasks).ContainsKey(taskId))
             {
                 throw new ArgumentException("taskId exist task in this board");
             }
@@ -84,20 +84,28 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 throw new ArgumentException("title isn't valid");
             }
+            if( description.Length > 300)
+            {
+                throw new ArgumentException("title isn't valid");
+            }
             board.AddTask(taskId, title, dueTime, description);
             return board;
         }
 
-        public BoardBL EditTask(string boardname, int taskId, string title, DateTime dueTime, string description)
+        public BoardBL EditTask(string boardname, int taskId, string title, DateTime dueTime, string description = "")
         {
             EnsureUserIsLoggedIn();
             ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
-            if (!(board.Tasks).Contains(taskId))
+            if (!(board.Tasks).ContainsKey(taskId))
             {
                 throw new ArgumentException("taskId isn't exist task in this board");
             }
             if (string.IsNullOrEmpty(title) || title.Length > 50)
+            {
+                throw new ArgumentException("title isn't valid");
+            }
+            if (description.Length > 300)
             {
                 throw new ArgumentException("title isn't valid");
             }
@@ -117,7 +125,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             EnsureUserIsLoggedIn();
             ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
-            if (!(board.Tasks).Contains(taskId))
+            if (!(board.Tasks).ContainsKey(taskId))
             {
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
