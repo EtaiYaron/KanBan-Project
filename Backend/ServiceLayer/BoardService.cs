@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -23,24 +25,65 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-        public Response CreateBoard(string name)
+
+        public string CreateBoard(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.CreateBoard(name);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response DeleteBoard(string name)
+        public string DeleteBoard(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.DeleteBoard(name);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response GetBoard(string name)
+        public string GetBoard(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.GetBoard(name);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response LimitTasks(string name, int newLimit)
+        public string LimitTasks(string name, int column, int newLimit)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.LimitTasks(name, column, newLimit);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
         public Response GetId(string name)
