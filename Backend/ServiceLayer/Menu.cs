@@ -9,88 +9,238 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     class Menu
     {
         private static ServiceFactory serviceFactory = new ServiceFactory();
-
-        public static void ShowMenu()
+        private string email;
+        private string password;
+        private bool isLoggedIn = false;
+        public void ShowMenu()
         {
-            Console.WriteLine("Hello! would you like to:");
-            Console.WriteLine("1. Register or 2. log in");
-            Console.WriteLine("write the number of your desired action");
-            String s = Console.ReadLine();
-            while (s != "1" && s != "2")
+            int entered1, entered2;
+            do
             {
-                Console.WriteLine("Invalid input, please enter 1 or 2 as your desired action");
-                s = Console.ReadLine();
-            }
-            if (s == "1")
+                Console.WriteLine("Hello! would you like to:");
+                Console.WriteLine("1. Register or 2. log in");
+                Console.WriteLine("write the number of your desired action");
+                entered1 = int.Parse(Console.ReadLine());
+            } while (entered1 != 1 && entered1 != 2);
+            if (entered1 == 1)
             {
-                Console.WriteLine("please enter your email");
-                String email = Console.ReadLine();
-                Console.WriteLine("please enter your password");
-                String password = Console.ReadLine();
-                Response response = serviceFactory.UserService.Register(email, password);
-                while (response.ErrorMessage != null)
+                entered1 = 0;
+                do
                 {
-                    Console.WriteLine(response.ErrorMessage);
-                    Console.WriteLine("if you wish to go back to the menu enter 1 if you wish to try again enter 2 if you wish to exit enter 3");
-                    String s1 = Console.ReadLine();
-                    while (s1 != "1" && s1 != "2" && s1 != "3")
+                    do
                     {
-                        Console.WriteLine("Invalid input, please enter 1 or 2 or 3 as your desired action");
-                        s1 = Console.ReadLine();
-                    }
-                    if (s1 == "1")
+                        Console.WriteLine("if you wish to go back to the Menu enter 1 if you wish to proceed enter 2");
+                        entered2 = int.Parse(Console.ReadLine());
+                    } while (entered2 != 1 && entered2 != 2);
+                    if (entered2 == 1)
                     {
                         ShowMenu();
                         return;
                     }
-                    else if (s1 == "3")
-                    {
-                        Console.WriteLine("Goodbye");
-                        return;
-                    }
-                    Console.WriteLine("please enter your email again");
+                    entered2 = 0;
+                    Console.WriteLine("please enter your email");
                     email = Console.ReadLine();
-                    Console.WriteLine("please enter your password again");
+                    Console.WriteLine("please enter your password");
                     password = Console.ReadLine();
-                }
+                    Response response = serviceFactory.UserService.Register(email, password);
+                } while (response.ErrorMessage != null);
                 Console.WriteLine("Registration successful");
                 Console.WriteLine("Welcome " + email);
-            }
-            else
-            {
-                Console.WriteLine("please enter your email");
-                String email = Console.ReadLine();
-                Console.WriteLine("please enter your password");
-                String password = Console.ReadLine();
-                Response response = serviceFactory.UserService.Login(email, password);
-                while (response.ErrorMessage != null)
+
+                do
                 {
-                    Console.WriteLine(response.ErrorMessage);
-                    Console.WriteLine("if you wish to go back to the menu enter 1 if you wish to try again enter 2 if you wish to exit enter 3");
-                    String s1 = Console.ReadLine();
-                    while (s1 != "1" && s1 != "2" && s1 != "3")
+                    Console.WriteLine("if you wish to go Log In enter 2 if you to Exit enter 3");
+                    entered1 = int.Parse(Console.ReadLine());
+                } while (entered1 != 1 && entered1 != 2);
+                if (entered1 == 3)      
+                    return;
+            }
+            if(entered1 == 2)
+            {
+                entered1 = 0;
+                do
+                {
+                    do
                     {
-                        Console.WriteLine("Invalid input, please enter 1 or 2 or 3 as your desired action");
-                        s1 = Console.ReadLine();
-                    }
-                    if (s1 == "1")
+                        Console.WriteLine("if you wish to go back to the Menu enter 1 if you wish to proceed enter 2");
+                        entered2 = int.Parse(Console.ReadLine());
+                    } while (entered2 != 1 && entered2 != 2);
+                    if (entered2 == 1)
                     {
                         ShowMenu();
                         return;
                     }
-                    else if (s1 == "3")
-                    {
-                        Console.WriteLine("Goodbye");
-                        return;
-                    }
-                    Console.WriteLine("please enter your email again");
+                    entered2 = 0;
+                    Console.WriteLine("please enter your email");
                     email = Console.ReadLine();
-                    Console.WriteLine("please enter your password again");
+                    Console.WriteLine("please enter your password");
                     password = Console.ReadLine();
-                }
+                    Response response = serviceFactory.UserService.Login(email, password);
+                } while (response.ErrorMessage != null);
                 Console.WriteLine("Login successful");
                 Console.WriteLine("Welcome " + email);
+                isLoggedIn = true;
+                do
+                {
+                    Console.WriteLine("if you wish to go proceed enter 1 if you to Log Out enter 2");
+                    entered1 = int.Parse(Console.ReadLine());
+                } while (entered1 != 1 && entered1 != 2);
+            }
+            if (entered1 == 2)
+            {
+                Response response = serviceFactory.UserService.Logout(email);
+                if (response.ErrorMessage != null)
+                {
+                    Console.WriteLine(response.ErrorMessage);
+                    return;
+                }
+                Console.WriteLine("Logout successful");
+                return;
+            }
+            int entered3; 
+            if (entered1 == 1)
+            {
+                Console.WriteLine("Welcome to the Kanban board");
+                do
+                {
+                    Console.WriteLine("if you wish to create a board enter 1");
+                    Console.WriteLine("if you wish to delete a board enter 2");
+                    Console.WriteLine("if you wish to get a board enter 3");
+                    Console.WriteLine("if you wish to get all boards enter 4");
+                    Console.WriteLine("if you wish to get all tasks enter 5");
+                    Console.WriteLine("if you wish to get a task enter 6");
+                    Console.WriteLine("if you wish to edit a task enter 7");
+                    Console.WriteLine("if you wish to move a task enter 8");
+                    Console.WriteLine("if you wish to limit tasks enter 9");
+                    Console.WriteLine("if you wish to log out enter 10");
+                    entered3 = int.Parse(Console.ReadLine());
+
+
+                } while (entered3 < 1 || entered1 > 10);
+                if (entered3 == 1)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Response response = serviceFactory.BoardService.CreateBoard(boardName);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Board created successfully");
+                }
+                if (entered3 == 2)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Response response = serviceFactory.BoardService.DeleteBoard(boardName);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Board deleted successfully");
+                }
+                if (entered3 == 3)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Response response = serviceFactory.BoardService.GetId(boardName);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Board retrieved successfully");
+                }
+                if (entered3 == 4)
+                {
+                    Response response = serviceFactory.BoardService.GetAllBoards();
+                    if (response.ErrorMessage != null)
+                    {
+                        Console.WriteLine(response.ErrorMessage);
+                        return;
+                    }
+                    Console.WriteLine("All boards retrieved successfully");
+                }
+                if (entered3 == 5)
+                {
+                    Console.WriteLine("please enter the name of the board");
+                    string boardName = Console.ReadLine();
+                    Response response = serviceFactory.BoardService.GetAllTasks(boardName);
+                    if (response.ErrorMessage != null)
+                    {
+                        Console.WriteLine(response.ErrorMessage);
+                        return;
+                    }
+                    Console.WriteLine("All tasks retrieved successfully");
+                }
+                if (entered3 == 6)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Console.WriteLine("please enter the id of the task");
+                        int taskId = int.Parse(Console.ReadLine());
+                        Response response = serviceFactory.BoardService.GetTask(boardName, taskId);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Task retrieved successfully");
+                }
+                if (entered3 == 7)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Console.WriteLine("please enter the id of the task");
+                        int taskId = int.Parse(Console.ReadLine());
+                        Console.WriteLine("please enter the new title of the task");
+                        string title = Console.ReadLine();
+                        Console.WriteLine("please enter the new due date of the task");
+                        DateTime dueDate = DateTime.Parse(Console.ReadLine());
+                        Console.WriteLine("please enter the new description of the task");
+                        string description = Console.ReadLine();
+                        Response response = serviceFactory.BoardService.EditTask(boardName, taskId, title, dueDate, description);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Task edited successfully");
+                }
+                if (entered3 == 8)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Console.WriteLine("please enter the id of the task");
+                        int taskId = int.Parse(Console.ReadLine());
+                        Console.WriteLine("please enter the destination column of the task");
+                        int dest = int.Parse(Console.ReadLine());
+                        Response response = serviceFactory.BoardService.MoveTask(boardName, taskId, dest);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Task moved successfully");
+                }
+                if (entered3 == 9)
+                {
+                    do
+                    {
+                        Console.WriteLine("please enter the name of the board");
+                        string boardName = Console.ReadLine();
+                        Console.WriteLine("please enter the column of the task");
+                        int col = int.Parse(Console.ReadLine());
+                        Console.WriteLine("please enter the new limit of the task");
+                        int newLimit = int.Parse(Console.ReadLine());
+                        Response response = serviceFactory.BoardService.LimitTasks(boardName, col, newLimit);
+                    } while (response.ErrorMessage != null);
+                    Console.WriteLine("Task limit set successfully");
+                }
+                else
+                {
+                    Response response = serviceFactory.UserService.Logout(email);
+                    if (response.ErrorMessage != null)
+                    {
+                        Console.WriteLine(response.ErrorMessage);
+                        return;
+                    }
+                    Console.WriteLine("Logout successful");
+                    return;
+                }
             }
         }
+
+
     }
 }
