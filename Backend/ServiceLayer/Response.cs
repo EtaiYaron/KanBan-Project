@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response() { }
 
-        public Response(string errorMessage) 
+        public Response(string errorMessage)
         {
             this.errorMessage = errorMessage;
         }

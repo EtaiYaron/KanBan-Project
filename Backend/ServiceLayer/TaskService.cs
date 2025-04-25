@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 
@@ -27,29 +30,79 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-        public Response AddTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public string AddTask(string boardName, int taskId, string title, DateTime dueTime, string description)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.AddTask(boardName, taskId, title, dueTime, description);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response EditTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public String EditTask(string boardName, int taskId, string title, DateTime dueTime, string description)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.EditTask(boardName, taskId, title, dueTime, description);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response MoveTask(string boardName, int taskId, int dest)
+        public String MoveTask(string boardName, int taskId, int dest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BoardBL bbl = boardFacade.MoveTask(boardName, taskId, dest);
+                Response response = new Response(null, bbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response GetTask(string boardName, int taskId)
+        public String GetTask(string boardName, int taskId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                TaskBL tbl = boardFacade.GetTask(boardName, taskId);
+                Response response = new Response(null, tbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
 
-        public Response GetAllTasks(string boardName)
+        public String GetAllTasks(string boardName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Dictionary<int, TaskBL> dtbl = boardFacade.GetAllTasks(boardName);
+                Response response = new Response(null, dtbl);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
         }
     }
 }
