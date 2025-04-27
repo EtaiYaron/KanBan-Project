@@ -114,7 +114,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     }
                     Console.WriteLine("Logout successful");
                     isLoggedIn = false;
-                    return;
+                    ShowMenu();
                 }
                 else
                 {
@@ -128,17 +128,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Console.WriteLine("Welcome to the Kanban board");
             do
             {
-                Console.WriteLine("if you wish to create a board enter 1");
-                Console.WriteLine("if you wish to delete a board enter 2");
-                Console.WriteLine("if you wish to get a board enter 3");
-                Console.WriteLine("if you wish to get all boards enter 4");
-                Console.WriteLine("if you wish to get all tasks enter 5");
-                Console.WriteLine("if you wish to get a task enter 6");
-                Console.WriteLine("if you wish to edit a task enter 7");
-                Console.WriteLine("if you wish to move a task enter 8");
-                Console.WriteLine("if you wish to limit tasks enter 9");
-                Console.WriteLine("if you wish to add task enter 10");
-                Console.WriteLine("if you wish to log out enter 11");
+                Console.WriteLine("click the number that match to the operation you want to do:");
+                Console.WriteLine("1.create a board");
+                Console.WriteLine("2. delete a board");
+                Console.WriteLine("3. get a board");
+                Console.WriteLine("4. get all boards");
+                Console.WriteLine("5. get all tasks");
+                Console.WriteLine("6. get a task");
+                Console.WriteLine("7. edit a task");
+                Console.WriteLine("8. move a task");
+                Console.WriteLine("9. limit tasks");
+                Console.WriteLine("10. add task");
+                Console.WriteLine("11. log out");
                 entered1 = int.Parse(Console.ReadLine());
 
 
@@ -408,7 +409,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 Console.WriteLine("Logout successful");
                 isLoggedIn = false;
-                return;
+                ShowMenu();
             }
         }
     }
