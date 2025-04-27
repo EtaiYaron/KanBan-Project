@@ -10,17 +10,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private static ServiceFactory serviceFactory = new ServiceFactory();
         private string email;
-        private string password;
         private bool isLoggedIn = false;
 
         public Menu()
         {
-           if(!isLoggedIn)
+            if(!isLoggedIn)
                 ShowMenu();
             else
                 BoardActionsMenu();
-
-
         }
         public void ShowMenu()
         {
@@ -51,12 +48,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter your email");
                     email = Console.ReadLine();
                     Console.WriteLine("please enter your password");
-                    password = Console.ReadLine();
+                    string password = Console.ReadLine();
                     Response response = serviceFactory.UserService.Register(email, password);
                 } while (response.ErrorMessage != null);
                 Console.WriteLine("Registration successful");
                 Console.WriteLine("Welcome " + email);
-
+                isLoggedIn = true;
+                serviceFactory.initializeBoardFacade(email);
                 do
                 {
                     Console.WriteLine("if you wish to go Log In enter 2 if you to Exit enter 3");
@@ -84,12 +82,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter your email");
                     email = Console.ReadLine();
                     Console.WriteLine("please enter your password");
-                    password = Console.ReadLine();
+                    string password = Console.ReadLine();
                     Response response = serviceFactory.UserService.Login(email, password);
                 } while (response.ErrorMessage != null);
                 Console.WriteLine("Login successful");
                 Console.WriteLine("Welcome " + email);
                 isLoggedIn = true;
+                serviceFactory.initializeBoardFacade(email);
                 do
                 {
                     Console.WriteLine("if you wish to go proceed enter 1 if you to Log Out enter 2");
@@ -114,6 +113,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                         return;
                     }
                     Console.WriteLine("Logout successful");
+                    isLoggedIn = false;
                     return;
                 }
                 else
@@ -407,6 +407,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     return;
                 }
                 Console.WriteLine("Logout successful");
+                isLoggedIn = false;
                 return;
             }
         }
