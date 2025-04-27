@@ -26,10 +26,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.taskService = new TaskService(boardFacade);
         }
 
-        public UserService UserService { get; }
+        public UserService UserService {
+            get { return this.userService; }}
 
-        public BoardService BoardService { get; }
+        public BoardService BoardService { 
+            get { return this.boardService; }}
 
-        public TaskService TaskService { get; }
+        public TaskService TaskService { 
+            get { return this.taskService; }}
     }
 }
