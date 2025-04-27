@@ -97,6 +97,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 } while (entered1 != 1 && entered1 != 2);
                 if (entered1 == 2)
                 {
+                    do
+                    {
+                        Console.WriteLine("if you wish to go proceed enter 1 if you sure you want to Log Out enter 2");
+                        entered2 = int.Parse(Console.ReadLine());
+                    } while (entered2 != 1 && entered2 != 2);
+                    if (entered2 == 1)
+                    {
+                        BoardActionsMenu();
+                        return;
+                    }
                     Response response = serviceFactory.UserService.Logout(email);
                     if (response.ErrorMessage != null)
                     {
