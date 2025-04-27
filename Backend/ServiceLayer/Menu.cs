@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    class Menu
+    public class Menu
     {
-        private static ServiceFactory serviceFactory = new ServiceFactory();
+        private ServiceFactory serviceFactory;
         private string email;
         private bool isLoggedIn = false;
 
         public Menu()
         {
+            serviceFactory = new ServiceFactory();
             if(!isLoggedIn)
                 ShowMenu();
             else

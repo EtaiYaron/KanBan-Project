@@ -32,6 +32,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Response response = new Response(ex.Message);
                 return response;
             }

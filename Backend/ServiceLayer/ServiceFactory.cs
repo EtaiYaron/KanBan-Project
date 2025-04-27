@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class ServiceFactory
     {
-        private UserService userService;
+        private readonly UserService userService;
         private BoardService boardService;
         private TaskService taskService;
         private AuthenticationFacade authenticationFacade;
