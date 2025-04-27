@@ -14,14 +14,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private UserService userService;
         private BoardService boardService;
         private TaskService taskService;
+        private AuthenticationFacade authenticationFacade;
+        private UserFacade userFacade;
+        private BoardFacade boardFacade;
 
         public ServiceFactory()
         {
-            AuthenticationFacade authenticationFacade = new AuthenticationFacade();
-            UserFacade userFacade = new UserFacade(authenticationFacade);
-            BoardFacade boardFacade = new BoardFacade(authenticationFacade);
-
+            this.authenticationFacade = new AuthenticationFacade();
+            this.userFacade = new UserFacade(authenticationFacade);
             this.userService = new UserService(userFacade);
+        }
+
+        public void initializeBoardFacade(string currEmail)
+        {
+            this.boardFacade = new BoardFacade(authenticationFacade, currEmail);
             this.boardService = new BoardService(boardFacade);
             this.taskService = new TaskService(boardFacade);
         }

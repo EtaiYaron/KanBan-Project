@@ -14,10 +14,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private AuthenticationFacade authenticationFacade;
         private readonly string currentUserEmail;
 
-        public BoardFacade(AuthenticationFacade authenticationFacade)
+        public BoardFacade(AuthenticationFacade authenticationFacade, string currUserEmail)
         {
             this.boards = new Dictionary<string, Dictionary<string, BoardBL>>();
             this.authenticationFacade = authenticationFacade;
+            this.currentUserEmail = currUserEmail;
         }
 
         public BoardBL CreateBoard(string boardname)
