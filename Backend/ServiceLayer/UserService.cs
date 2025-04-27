@@ -16,58 +16,54 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <summary>
         /// Empty Constructor for the UserService class just for now.
         /// </summary>
-        public UserService()
-        {
-            this.userFacade = new UserFacade(new AuthenticationFacade());
-        }
 
         internal UserService(UserFacade userFacade)
         {
             this.userFacade = userFacade;
         }
 
-        public string Login(string email, string password)
+        public Response Login(string email, string password)
         {
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
                 Response response = new Response(null, ubl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
 
-        public string Register(string email, string password)
+        public Response Register(string email, string password)
         {
             try
             {
                 UserBL ubl = userFacade.Register(email, password);
                 Response response = new Response(null, ubl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
 
-        public string Logout(string email)
+        public Response Logout(string email)
         {
             try
             {
                 UserBL ubl = userFacade.Logout(email);
                 Response response = new Response(null, ubl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
     }  

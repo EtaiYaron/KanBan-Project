@@ -149,6 +149,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.Tasks;
         }
 
+        public Dictionary<string, BoardBL> GetAllUserBoards()
+        {
+            EnsureUserIsLoggedIn();
+            return boards[currentUserEmail];
+        }
+
         public BoardBL LimitTasks(string boardname, int column, int newLimit)
         {
             EnsureUserIsLoggedIn();

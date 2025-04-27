@@ -16,92 +16,87 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private BoardFacade boardFacade;
 
-
         /// <summary>
         /// Empty Constructor for the TaskService class just for now.
         /// </summary>
-        public TaskService()
-        {
-            this.boardFacade = new BoardFacade(new AuthenticationFacade());
-        }
 
         internal TaskService(BoardFacade boardFacade)
         {
             this.boardFacade = boardFacade;
         }
 
-        public string AddTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public Response AddTask(string boardName, int taskId, string title, DateTime dueTime, string description)
         {
             try
             {
                 BoardBL bbl = boardFacade.AddTask(boardName, taskId, title, dueTime, description);
                 Response response = new Response(null, bbl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
 
-        public String EditTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public Response EditTask(string boardName, int taskId, string title, DateTime dueTime, string description)
         {
             try
             {
                 BoardBL bbl = boardFacade.EditTask(boardName, taskId, title, dueTime, description);
                 Response response = new Response(null, bbl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
 
-        public String MoveTask(string boardName, int taskId, int dest)
+        public Response MoveTask(string boardName, int taskId, int dest)
         {
             try
             {
                 BoardBL bbl = boardFacade.MoveTask(boardName, taskId, dest);
                 Response response = new Response(null, bbl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
 
-        public String GetTask(string boardName, int taskId)
+        public Response GetTask(string boardName, int taskId)
         {
             try
             {
                 TaskBL tbl = boardFacade.GetTask(boardName, taskId);
                 Response response = new Response(null, tbl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
 
-        public String GetAllTasks(string boardName)
+        public Response GetAllTasks(string boardName)
         {
             try
             {
                 Dictionary<int, TaskBL> dtbl = boardFacade.GetAllTasks(boardName);
                 Response response = new Response(null, dtbl);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return response;
             }
         }
     }
