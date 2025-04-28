@@ -13,7 +13,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class UserService
     {
         private UserFacade userFacade;
-        private static readonly ILog log = LogManager.GetLogger(typeof(UserService));
 
 
         /// <summary>
@@ -33,15 +32,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                log.Info($"attempting Login for user with email: {email}.");
                 UserBL ubl = userFacade.Login(email, password);
-                log.Info($"User with email {email}, logged in successfully.");
                 Response response = new Response(null, ubl);
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                log.Error($"Login failed for user with email {email}: {ex.Message}", ex);
                 Response response = new Response(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
@@ -51,15 +47,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                log.Info($"Attempting to Register for user with email: {email}.");
                 UserBL ubl = userFacade.Register(email, password);
-                log.Info($"User with email {email}, Registered successfully.");
                 Response response = new Response(null, ubl);
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                log.Error($"Registration failed for user with email {email}: {ex.Message}", ex);
                 Response response = new Response(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
@@ -69,15 +62,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                log.Info($"Attempting Logout for user with email: {email}.");
                 UserBL ubl = userFacade.Logout(email);
                 Response response = new Response(null, ubl);
-                log.Info($"User with email {email}, Logged out successfully.");
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                log.Error($"Log out failed for user with email {email}: {ex.Message}", ex);
                 Response response = new Response(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
