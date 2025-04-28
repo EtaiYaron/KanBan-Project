@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using log4net;
 
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -15,6 +16,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class TaskService
     {
         private BoardFacade boardFacade;
+        private static readonly ILog log = LogManager.GetLogger(typeof(TaskService));
 
         /// <summary>
         /// Empty Constructor for the TaskService class just for now.

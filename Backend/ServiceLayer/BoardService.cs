@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
+using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {

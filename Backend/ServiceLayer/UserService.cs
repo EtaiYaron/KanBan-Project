@@ -6,12 +6,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
+using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class UserService
     {
         private UserFacade userFacade;
+
 
         /// <summary>
         /// Empty Constructor for the UserService class just for now.
