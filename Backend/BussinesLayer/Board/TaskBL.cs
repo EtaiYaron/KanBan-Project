@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
-    internal class TaskBL
+    public class TaskBL
     {
         private int taskId;
         private string title;
@@ -54,6 +54,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             get { return this.dueDate; }
             set { this.dueDate = value; }
+        }
+
+        public DateTime CreationTime
+        {
+            get { return this.creationTime; }
         }
 
         public string Description

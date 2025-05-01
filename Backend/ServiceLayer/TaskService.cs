@@ -16,7 +16,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class TaskService
     {
         private BoardFacade boardFacade;
-        private static readonly ILog log = LogManager.GetLogger(typeof(TaskService));
 
         /// <summary>
         /// Empty Constructor for the TaskService class just for now.
@@ -32,7 +31,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.AddTask(boardName, taskId, title, dueTime, description);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)
@@ -47,7 +46,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.EditTask(boardName, taskId, title, dueTime, description);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)
@@ -62,7 +61,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.MoveTask(boardName, taskId, dest);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)
@@ -77,7 +76,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 TaskBL tbl = boardFacade.GetTask(boardName, taskId);
-                Response response = new Response(null, tbl);
+                Response response = new Response(null, new TaskSL(tbl));
                 return response;
             }
             catch (Exception ex)
@@ -91,8 +90,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                Dictionary<int, TaskBL> dtbl = boardFacade.GetAllTasks(boardName);
-                Response response = new Response(null, dtbl);
+                Dictionary<int, TaskBL> tbl = boardFacade.GetAllTasks(boardName);
+
+                Dictionary<int, TaskSL> serviceTbl = new Dictionary<int, TaskSL>();
+                foreach (int key in tbl.Keys)
+                {
+                    serviceTbl.Add(key, new TaskSL(tbl[key]));
+                }
+
+                Response response = new Response(null, serviceTbl);
                 return response;
             }
             catch (Exception ex)

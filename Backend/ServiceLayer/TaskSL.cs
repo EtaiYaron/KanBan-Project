@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.BussinesLayer.Board;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -15,14 +16,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly string description;
         private readonly int state;
 
-        public TaskSL(int taskId, string title, DateTime creationTime, DateTime dueDate, string description, int state)
+        public TaskSL(TaskBL tbl)
         {
-            this.taskId = taskId;
-            this.title = title;
-            this.creationTime = creationTime;
-            this.dueDate = dueDate;
-            this.description = description;
-            this.state = state;
+            this.taskId = tbl.TaskId;
+            this.title = tbl.Title;
+            this.creationTime = tbl.CreationTime;
+            this.dueDate = tbl.DueDate;
+            this.description = tbl.Description; 
+            this.state = tbl.State;
         }
     }
 }
