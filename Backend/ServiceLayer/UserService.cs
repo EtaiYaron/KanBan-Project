@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
-using log4net;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -29,7 +28,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
-                Response response = new Response(null, ubl);
+                Response response = new Response(null, new UserSL(ubl));
                 return response;
             }
             catch (Exception ex)
@@ -45,7 +44,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Register(email, password);
-                Response response = new Response(null, ubl);
+                Response response = new Response(null, new UserSL(ubl));
                 return response;
             }
             catch (Exception ex)
@@ -60,7 +59,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Logout(email);
-                Response response = new Response(null, ubl);
+                Response response = new Response(null, new UserSL(ubl));
                 return response;
             }
             catch (Exception ex)

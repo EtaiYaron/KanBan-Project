@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.CreateBoard(name);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.DeleteBoard(name);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.GetBoard(name);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)
@@ -75,7 +75,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Dictionary<string, BoardBL> bbl = boardFacade.GetAllUserBoards();
-                Response response = new Response(null, bbl);
+
+                Dictionary<string, BoardSL> serviceBbl = new Dictionary<string, BoardSL>();
+                foreach (string key in bbl.Keys) {
+                    serviceBbl.Add(key, new BoardSL(bbl[key]));
+                }
+
+                Response response = new Response(null, serviceBbl);
                 return response;
             }
             catch (Exception ex)
@@ -90,7 +96,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BoardBL bbl = boardFacade.LimitTasks(name, column, newLimit);
-                Response response = new Response(null, bbl);
+                Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
             catch (Exception ex)

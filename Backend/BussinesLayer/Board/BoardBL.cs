@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
-    internal class BoardBL
+    public class BoardBL
     {
         private string name;
         private Dictionary<int, TaskBL> tasks;

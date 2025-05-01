@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
     {
         private int taskId;
         private string title;
-        private DateTime creationTime;
+        private readonly DateTime creationTime;
         private DateTime dueDate;
         private string description;
         private int state;
