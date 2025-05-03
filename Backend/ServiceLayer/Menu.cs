@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -259,6 +260,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
+                Console.WriteLine(JsonSerializer.Serialize(response.ReturnValue));
                 Console.WriteLine("Board retrieved successfully");
                 BoardActionsMenu();
 
@@ -285,6 +287,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine(response.ErrorMessage);
                     return;
                 }
+                Console.WriteLine(JsonSerializer.Serialize(response.ReturnValue));
                 Console.WriteLine("All boards retrieved successfully");
                 BoardActionsMenu();
 
@@ -313,6 +316,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine(response.ErrorMessage);
                     return;
                 }
+                Console.WriteLine(JsonSerializer.Serialize(response.ReturnValue));
                 Console.WriteLine("All tasks retrieved successfully");
                 BoardActionsMenu();
 
@@ -343,6 +347,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
+                Console.WriteLine(JsonSerializer.Serialize(response.ReturnValue));
                 Console.WriteLine("Task retrieved successfully");
                 BoardActionsMenu();
 

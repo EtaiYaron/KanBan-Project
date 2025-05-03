@@ -13,12 +13,33 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly int maxTasks0;
         private readonly int maxTasks1;
         private readonly int maxTasks2;
+
         public BoardSL(BoardBL bbl)
         {
             this.name = bbl.Name;
             this.maxTasks0 = bbl.MaxTasks0;
             this.maxTasks1 = bbl.MaxTasks1;
             this.maxTasks2 = bbl.MaxTasks2;
+        }
+
+        public string Name
+        {
+            get { return name; }
+        }
+
+        public int MaxTasks0
+        {
+            get { return maxTasks0; }
+        }
+
+        public int MaxTasks1
+        {
+            get { return maxTasks1; }
+        }
+
+        public int MaxTasks2
+        {
+            get { return maxTasks2; }
         }
     }
 }
