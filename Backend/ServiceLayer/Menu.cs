@@ -169,7 +169,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
 
-            } while (entered1 < 1 || entered1 > 10);
+            } while (entered1 < 1 || entered1 > 11);
             Console.Clear();
             if (entered1 == 1)
             {
