@@ -67,17 +67,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Registration successful");
-                Console.WriteLine("Welcome " + email);
+                Console.WriteLine("Welcome " + email + "\n");
                 isLoggedIn = true;
                 serviceFactory.initializeBoardFacade(email);
-                do
-                {
-                    Console.WriteLine("if you wish to go Log In enter 2 if you to Exit enter 3");
-                    entered1 = int.Parse(Console.ReadLine());
-                } while (entered1 != 3 && entered1 != 2);
-                Console.Clear();
-                if (entered1 == 3)
-                    return;
+                BoardActionsMenu();
             }
             if (entered1 == 2)
             {
@@ -159,7 +152,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             do
             {
                 Console.WriteLine("click the number that match to the operation you want to do:");
-                Console.WriteLine("1.create a board");
+                Console.WriteLine("1. create a board");
                 Console.WriteLine("2. delete a board");
                 Console.WriteLine("3. get a board");
                 Console.WriteLine("4. get all boards");

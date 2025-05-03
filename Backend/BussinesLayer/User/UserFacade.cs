@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             if (!users.ContainsKey(email))
             {
                 log.Error($"Login failed, user with email {email} doesn't exist.");
-                throw new Exception("User " + email + "doesn't exist");
+                throw new Exception("User " + email + " doesn't exist");
             }
             if (authFacade.isLoggedIn(email))
             {
@@ -74,13 +74,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             if (!IsValidEmail(email))
             {
                 log.Error($"Registration failed, Invalid email: {email}.");
-                throw new Exception("Invalid email");
+                throw new Exception("Illegal email");
             }
 
             if (!isValidPassword(password))
             {
                 log.Error($"Registration failed, Invalid password: {password}.");
-                throw new Exception("Invalid password");
+                throw new Exception("Illegal password");
             }
             if (users.ContainsKey(email))
             {
