@@ -26,12 +26,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-        public Response AddTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public Response AddTask(string boardName, string title, DateTime dueTime, string description)
         {
             try
             {
-                BoardBL bbl = boardFacade.AddTask(boardName, taskId, title, dueTime, description);
-                Response response = new Response(null, new BoardSL(bbl));
+                TaskBL tbl = boardFacade.AddTask(boardName, title, dueTime, description);
+                Response response = new Response(null, new TaskSL(tbl));
                 return response;
             }
             catch (Exception ex)

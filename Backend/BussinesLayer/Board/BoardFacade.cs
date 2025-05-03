@@ -17,12 +17,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private AuthenticationFacade authenticationFacade;
         private readonly string currentUserEmail;
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
+        private int id;
 
         public BoardFacade(AuthenticationFacade authenticationFacade, string currUserEmail)
         {
             this.boards = new Dictionary<string, Dictionary<string, BoardBL>>();
             this.authenticationFacade = authenticationFacade;
             this.currentUserEmail = currUserEmail;
+            this.id = 0;
         }
 
         public BoardBL CreateBoard(string boardname)
@@ -87,15 +89,15 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board;
         }
 
-        public BoardBL AddTask(string boardname, int taskId, string title, DateTime dueTime, string description = "")
+        public TaskBL AddTask(string boardname, string title, DateTime dueTime, string description = "")
         {
-            log.Info($"Attempting to add task {taskId} in board {boardname} for user with email {currentUserEmail}.");
+            log.Info($"Attempting to add task {id} in board {boardname} for user with email {currentUserEmail}.");
             EnsureUserIsLoggedIn();
             ValidateBoardExists(boardname);
             BoardBL board = boards[currentUserEmail][boardname];
-            if ((board.Tasks).ContainsKey(taskId))
+            if ((board.Tasks).ContainsKey(id))
             {
-                log.Error($"AddTask failed, task {taskId} already exist in board {boardname}.");
+                log.Error($"AddTask failed, task {id} already exist in board {boardname}.");
                 throw new ArgumentException("taskId exist task in this board");
             }
             if (string.IsNullOrEmpty(title) || title.Length > 50)
@@ -113,9 +115,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, dueTime {dueTime} is before current time.");
                 throw new ArgumentException("duedate isn't valid");
             }
-            board.AddTask(taskId, title, dueTime, description);
-            log.Info($"Successfully added task {taskId} to board {boardname} for user with email {currentUserEmail}.");
-            return board;
+            TaskBL task = new TaskBL(id, title, dueTime, description);
+            board.AddTask(id, title, dueTime, description);
+            this.id++;
+            log.Info($"Successfully added task {id} to board {boardname} for user with email {currentUserEmail}.");
+            return task;
         }
 
         public BoardBL EditTask(string boardname, int taskId, string title, DateTime dueTime, string description = "")

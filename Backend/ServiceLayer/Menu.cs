@@ -464,18 +464,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     }
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
-                    Console.WriteLine("please enter the id of the task");
-                    int.TryParse(Console.ReadLine(), out int taskId);
                     Console.WriteLine("please enter the title of the task");
                     string title = Console.ReadLine();
                     Console.WriteLine("please enter the due date of the task (yyyy-MM-dd)");
                     DateTime.TryParse(Console.ReadLine(), out DateTime dueDate);
                     Console.WriteLine("please enter the description of the task");
                     string description = Console.ReadLine();
-                    response = serviceFactory.TaskService.AddTask(boardName, taskId, title, dueDate, description);
+                    response = serviceFactory.TaskService.AddTask(boardName, title, dueDate, description);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
+                Console.WriteLine(JsonSerializer.Serialize(response.ReturnValue));
                 Console.WriteLine("Task added successfully");
                 BoardActionsMenu();
             }
