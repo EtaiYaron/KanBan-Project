@@ -32,12 +32,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             if (string.IsNullOrEmpty(boardname))
             {
                 log.Error($"boardName can't be null.");
-                throw new ArgumentNullException("boardname isn't valid");
+                throw new ArgumentException("boardname isn't valid");
             }
             if (boards.ContainsKey(currentUserEmail) && boards[currentUserEmail].ContainsKey(boardname))
             {
                 log.Error($"boardName {boardname} already exist for user with email {currentUserEmail}.");
-                throw new ArgumentNullException("boardname already exist under this user");
+                throw new ArgumentException("boardname already exist under this user");
             }
             if (!boards.ContainsKey(currentUserEmail))
             {
@@ -225,12 +225,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             if (string.IsNullOrEmpty(boardname))
             {
                 log.Error($"ValidateBoardExists failed, boardname {boardname} can't be null or empty.");
-                throw new ArgumentNullException(nameof(boardname), "Board name is not valid");
+                throw new ArgumentException(nameof(boardname), "Board name is not valid");
             }
             if (!boards.ContainsKey(currentUserEmail) || !boards[currentUserEmail].ContainsKey(boardname))
             {
                 log.Error($"ValidateBoardExists failed,  Board {boardname} does not exist for user with email {currentUserEmail}.");
-                throw new KeyNotFoundException("Board does not exist under this user");
+                throw new ArgumentException("Board does not exist under this user");
             }
         }
 

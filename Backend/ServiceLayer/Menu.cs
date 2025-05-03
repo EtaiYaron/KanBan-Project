@@ -29,7 +29,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Console.WriteLine("Hello! would you like to:");
                 Console.WriteLine("1. Register or 2. log in");
                 Console.WriteLine("write the number of your desired action");
-                entered1 = int.Parse(Console.ReadLine());
+                if (!int.TryParse(Console.ReadLine(), out entered1))
+                {
+                    Console.WriteLine("Invalid input");
+                }
             } while (entered1 != 1 && entered1 != 2);
             Console.Clear();
 
@@ -41,7 +44,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back to the Menu enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
 
@@ -56,6 +62,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter your password");
                     string password = Console.ReadLine();
                     response = serviceFactory.UserService.Register(email, password);
+                    if(response.ErrorMessage!=null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Registration successful");
@@ -66,7 +73,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 {
                     Console.WriteLine("if you wish to go Log In enter 2 if you to Exit enter 3");
                     entered1 = int.Parse(Console.ReadLine());
-                } while (entered1 != 1 && entered1 != 2);
+                } while (entered1 != 3 && entered1 != 2);
                 Console.Clear();
                 if (entered1 == 3)
                     return;
@@ -79,7 +86,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back to the Menu enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -102,7 +112,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 do
                 {
                     Console.WriteLine("if you wish to go proceed enter 1 if you to Log Out enter 2");
-                    entered1 = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out entered1))
+                    {
+                        Console.WriteLine("Invalid input");
+                    }
                 } while (entered1 != 1 && entered1 != 2);
                 Console.Clear();
                 if (entered1 == 2)
@@ -110,7 +123,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go proceed enter 1 if you sure you want to Log Out enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -153,7 +169,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Console.WriteLine("9. limit tasks");
                 Console.WriteLine("10. add task");
                 Console.WriteLine("11. log out");
-                entered1 = int.Parse(Console.ReadLine());
+                if (!int.TryParse(Console.ReadLine(), out entered1))
+                {
+                    Console.WriteLine("Invalid input");
+                }
 
 
             } while (entered1 < 1 || entered1 > 10);
@@ -165,7 +184,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -176,6 +198,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     response = serviceFactory.BoardService.CreateBoard(boardName);
+                    if (response.ErrorMessage != null)
+                    {
+                       Console.WriteLine(response.ErrorMessage);
+                    }
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Board created successfully");
@@ -188,7 +214,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -199,6 +228,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     response = serviceFactory.BoardService.DeleteBoard(boardName);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Board deleted successfully");
@@ -212,7 +242,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -223,6 +256,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     response = serviceFactory.BoardService.GetBoard(boardName);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Board retrieved successfully");
@@ -234,7 +268,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 do
                 {
                     Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                    entered2 = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out entered2))
+                    {
+                        Console.WriteLine("Invalid input");
+                    }
                 } while (entered2 != 1 && entered2 != 2);
                 Console.Clear();
                 if (entered2 == 1)
@@ -257,7 +294,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 do
                 {
                     Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                    entered2 = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out entered2))
+                    {
+                        Console.WriteLine("Invalid input");
+                    }
                 } while (entered2 != 1 && entered2 != 2);
                 Console.Clear();
                 if (entered2 == 1)
@@ -284,7 +324,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -295,8 +338,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     Console.WriteLine("please enter the id of the task");
-                    int taskId = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int taskId);
                     response = serviceFactory.TaskService.GetTask(boardName, taskId);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Task retrieved successfully");
@@ -310,7 +354,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -321,14 +368,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     Console.WriteLine("please enter the id of the task");
-                    int taskId = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int taskId);
                     Console.WriteLine("please enter the new title of the task");
                     string title = Console.ReadLine();
                     Console.WriteLine("please enter the new due date of the task");
-                    DateTime dueDate = DateTime.Parse(Console.ReadLine());
+                    DateTime.TryParse(Console.ReadLine(), out DateTime dueDate);
                     Console.WriteLine("please enter the new description of the task");
                     string description = Console.ReadLine();
                     response = serviceFactory.TaskService.EditTask(boardName, taskId, title, dueDate, description);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Task edited successfully");
@@ -342,7 +390,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -353,10 +404,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     Console.WriteLine("please enter the id of the task");
-                    int taskId = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int taskId);
                     Console.WriteLine("please enter the destination column of the task");
-                    int dest = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int dest);
                     response = serviceFactory.TaskService.MoveTask(boardName, taskId, dest);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Task moved successfully");
@@ -370,7 +422,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -381,10 +436,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     Console.WriteLine("please enter the column of the task");
-                    int col = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int col);
                     Console.WriteLine("please enter the new limit of the task");
-                    int newLimit = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int newLimit);
                     response = serviceFactory.BoardService.LimitTasks(boardName, col, newLimit);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Task limit set successfully");
@@ -397,7 +453,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     do
                     {
                         Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                        entered2 = int.Parse(Console.ReadLine());
+                        if (!int.TryParse(Console.ReadLine(), out entered2))
+                        {
+                            Console.WriteLine("Invalid input");
+                        }
                     } while (entered2 != 1 && entered2 != 2);
                     Console.Clear();
                     if (entered2 == 1)
@@ -408,14 +467,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
                     Console.WriteLine("please enter the id of the task");
-                    int taskId = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out int taskId);
                     Console.WriteLine("please enter the title of the task");
                     string title = Console.ReadLine();
                     Console.WriteLine("please enter the due date of the task (yyyy-MM-dd)");
-                    DateTime dueDate = DateTime.Parse(Console.ReadLine());
+                    DateTime.TryParse(Console.ReadLine(), out DateTime dueDate);
                     Console.WriteLine("please enter the description of the task");
                     string description = Console.ReadLine();
                     response = serviceFactory.TaskService.AddTask(boardName, taskId, title, dueDate, description);
+                    if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
                 Console.WriteLine("Task added successfully");
@@ -426,7 +486,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 do
                 {
                     Console.WriteLine("if you wish to go back enter 1 if you wish to proceed enter 2");
-                    entered2 = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out entered2))
+                    {
+                        Console.WriteLine("Invalid input");
+                    }
                 } while (entered2 != 1 && entered2 != 2);
                 Console.Clear();
                 if (entered2 == 1)
