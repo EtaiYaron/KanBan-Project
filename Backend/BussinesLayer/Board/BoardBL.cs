@@ -13,6 +13,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private int maxTasks0;
         private int maxTasks1;
         private int maxTasks2;
+        private int numTasks0;
+        private int numTasks1;
+        private int numTasks2;
 
         public BoardBL(string name)
         {
@@ -70,6 +73,23 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             { get { return maxTasks1; } }
         public int MaxTasks2
             { get { return maxTasks2; } }
+        public int NumTasks0
+        { 
+            get { return numTasks0; }
+            set { this.numTasks0 = value; }
+        }
+
+        public int NumTasks1
+        {
+            get { return numTasks1; }
+            set { this.numTasks1 = value; }
+        }
+
+        public int NumTasks2
+        {
+            get { return numTasks2; }
+            set { this.numTasks2 = value; }
+        }
         public Dictionary<int, TaskBL> Tasks
             { get { return tasks; } }
         public string Name
