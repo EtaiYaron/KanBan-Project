@@ -100,7 +100,8 @@ namespace Tests
 
         public bool TestUserLoginPositiveCase()
         {
-            Response res = us.Login("EtaiYaron", "Password1");
+            us.Logout("etaiyaron@gmail.com");
+            Response res = us.Login("etaiyaron@gmail.com", "Password1");
             if (res.ErrorMessage != null)
             {
                 return false;
