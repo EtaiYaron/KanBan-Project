@@ -65,7 +65,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             log.Info($"Successfully deleted board {boardname} for user with email {email}.");
             return curr;
         }
-
+        
         public BoardBL MoveTask(string email, string boardname, int taskId, int destcolumn)
         {
             log.Info($"Attempting to move task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
@@ -77,10 +77,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"task {taskId} doesn't exist in board {boardname}.");
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
-            if (destcolumn < 0 || destcolumn > 2)
+            if (destcolumn <= 0|| destcolumn > 2)
             {
-                log.Error($"dest nust be between 0 and 2, and dest is {destcolumn}.");
-                throw new ArgumentOutOfRangeException("dest must be between 0 and 2");
+                log.Error($"dest nust be between 1 and 2, and dest is {destcolumn}.");
+                throw new ArgumentOutOfRangeException("dest must be between 1 and 2");
             }
             int fromcolumn = board.GetTask(taskId).State;
             if (destcolumn - fromcolumn != 1)
@@ -88,7 +88,30 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"can't move task {taskId} from column {fromcolumn} to column {destcolumn}.");
                 throw new ArgumentException("cannot move the task to this destination");
             }
+            if (destcolumn == 1)
+            {
+                if (board.NumTasks1 >= board.MaxTasks1)
+                {
+                    log.Error($"EditTask failed, column 1 is full.");
+                    throw new ArgumentException("column 1 is full");
+                }
+            }
+            if (board.NumTasks2 >= board.MaxTasks2)
+            {
+                log.Error($"EditTask failed, column 2 is full.");
+                throw new ArgumentException("column 2 is full");
+            }
             board.MoveTask(taskId, destcolumn);
+            if (destcolumn == 1)
+            {
+                board.NumTasks1++;
+                board.NumTasks0--;
+            }
+            else if (destcolumn == 2)
+            {
+                board.NumTasks2++;
+                board.NumTasks1--;
+            }
             log.Info($"Successfully moved task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
             return board;
         }
@@ -119,8 +142,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, dueTime {dueTime} is before current time.");
                 throw new ArgumentException("duedate isn't valid");
             }
+            if (board.NumTasks0 >= board.MaxTasks0)
+            {
+                log.Error($"AddTask failed, column 0 is full.");
+                throw new ArgumentException("column 0 is full");
+            }
             TaskBL task = new TaskBL(id, title, dueTime, description);
             board.AddTask(id, title, dueTime, description);
+            board.NumTasks0++;
             this.id++;
             log.Info($"Successfully added task {id} to board {boardname} for user with email {email}.");
             return task;
