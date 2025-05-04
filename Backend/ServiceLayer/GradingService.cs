@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Text.Json.Nodes;
+using System.Text.Json;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -49,10 +50,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class GradingService
     {
+        private ServiceFactory serviceFactory;
 
         public GradingService()
         {
-            throw new NotImplementedException();
+            serviceFactory = new ServiceFactory();
         }
 
 
@@ -64,7 +66,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Register(string email, string password)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.UserService.Register(email, password);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -76,7 +80,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the user's email, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Login(string email, string password)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.UserService.Login(email, password);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -87,7 +93,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string Logout(string email)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.UserService.Logout(email);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
         /// <summary>
@@ -100,7 +108,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.BoardService.LimitTasks()
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
         /// <summary>
