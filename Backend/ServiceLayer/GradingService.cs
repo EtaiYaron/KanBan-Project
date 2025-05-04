@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using System.Collections.Generic;
+using Microsoft.VisualBasic;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -108,7 +110,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            Response s = serviceFactory.BoardService.LimitTasks()
+            Response s = serviceFactory.BoardService.LimitTasks(email, boardName, columnOrdinal, limit);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
             return "{}";
         }
@@ -135,7 +137,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the column's name, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            string ret = null;
+            if (columnOrdinal == 0) ret = "backlog";
+            if (columnOrdinal == 1) ret = "in progress";
+            else if (columnOrdinal == 2) ret = "done";
+
+            if (ret != null)
+            {
+                return JsonSerializer.Serialize(new Response(null, ret));
+            }
+            return JsonSerializer.Serialize(new Response("Illagal column ordinal"));
         }
 
 
@@ -150,7 +161,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.TaskService.AddTask(email, boardName, title, dueDate, description);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -165,7 +178,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            TaskSL t = (TaskSL)serviceFactory.TaskService.GetTask(email, boardName, taskId).ReturnValue;
+            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, t.Title, dueDate, t.Description);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -180,7 +196,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            throw new NotImplementedException();
+            TaskSL t = (TaskSL)serviceFactory.TaskService.GetTask(email, boardName, taskId).ReturnValue;
+            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, title, t.DueDate, t.Description);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -195,7 +214,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            throw new NotImplementedException();
+            TaskSL t = (TaskSL)serviceFactory.TaskService.GetTask(email, boardName, taskId).ReturnValue;
+            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, t.Title, t.DueDate, description);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -209,7 +231,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.TaskService.MoveTask(email, boardName, taskId, columnOrdinal + 1);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -234,7 +258,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string CreateBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.BoardService.CreateBoard(email, name);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
@@ -246,7 +272,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string DeleteBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.BoardService.DeleteBoard(email, name);
+            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
+            return "{}";
         }
 
 
