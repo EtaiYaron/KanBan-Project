@@ -7,11 +7,13 @@ namespace Tests
 {
     class BoardTests
     {
+        private UserService us;
         private BoardService b;
         private TaskService t;
 
-        public BoardTests(BoardService b, TaskService t)
+        public BoardTests(UserService us, BoardService b, TaskService t)
         {
+            this.us = us;
             this.b = b;
             this.t = t;
         }
@@ -19,7 +21,9 @@ namespace Tests
         public void BoardRunTests()
         {
             Console.WriteLine("Running Tests...");
-     
+
+            CreatingUser();
+
             bool tests = TestCreateBoardPositiveCase();
             if (tests)
             {
@@ -102,10 +106,13 @@ namespace Tests
 
         }
 
-
+        public void CreatingUser()
+        {
+            us.Register("yaronet@post.bgu.ac.il", "Admin1");
+        }   
         public bool TestCreateBoardPositiveCase()
         {
-            Response res = b.CreateBoard("name");
+            Response res = b.CreateBoard("yaronet@post.bgu.ac.il", "name");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -115,7 +122,7 @@ namespace Tests
 
         public bool TestCreateBoardNegativeCase()
         {
-            Response res = b.CreateBoard("name");
+            Response res = b.CreateBoard("yaronet@post.bgu.ac.il", "name");
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -126,7 +133,7 @@ namespace Tests
 
         public bool TestDeleteBoardPositiveCase()
         {
-            Response res = b.DeleteBoard("name");
+            Response res = b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -136,7 +143,7 @@ namespace Tests
 
         public bool TestDeleteBoardNegativeCase()
         {
-            Response res = b.DeleteBoard("name");
+            Response res = b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -149,7 +156,7 @@ namespace Tests
 
         public bool TestGetBoardNegativeCase()
         {
-            Response res = b.GetBoard("name");
+            Response res = b.GetBoard("yaronet@post.bgu.ac.il", "name");
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -159,8 +166,8 @@ namespace Tests
 
         public bool TestGetBoardPositiveCase()
         {
-            b.CreateBoard("name");
-            Response res = b.GetBoard("name");
+            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = b.GetBoard("yaronet@post.bgu.ac.il", "name");
 
             if (res.ErrorMessage != null)
             {
@@ -171,9 +178,9 @@ namespace Tests
 
         public bool TestLimitTasksNegativeCase()
         {
-            b.LimitTasks("name", 0);
+            b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 0);
 
-            Response res = t.AddTask("name", 1, "task1", new DateTime(2025, 4, 10), "test limis tasks");
+            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "test limis tasks");
 
             if (res.ErrorMessage == null)
             {
@@ -184,9 +191,9 @@ namespace Tests
 
         public bool TestLimitTasksPositiveCase()
         {
-            b.LimitTasks("name", 0);
+            b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 10);
 
-            Response res = t.AddTask("name", 1, "task1", new DateTime(2025, 4, 10), "test limis tasks");
+            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "test limis tasks");
 
             if (res.ErrorMessage != null)
             {

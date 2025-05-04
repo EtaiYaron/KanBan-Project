@@ -11,11 +11,13 @@ namespace Tests
 {
     class TaskServiceTests
     {
+        private UserService us;
         private BoardService b;
         private TaskService t;
 
-        public TaskServiceTests(BoardService b, TaskService t)
+        public TaskServiceTests(UserService us, BoardService b, TaskService t)
         {
+            this.us = us;
             this.b = b;
             this.t = t;
         }
@@ -23,6 +25,8 @@ namespace Tests
         public void TaskServiceRunTests()
         {
             Console.WriteLine("Running Tests...");
+
+            CreatingUser();
 
             bool tests = TestAddTaskPositiveCase();
             if (tests)
@@ -116,10 +120,15 @@ namespace Tests
             }
         }
 
+        public void CreatingUser()
+        {
+            us.Register("yaronet@post.bgu.ac.il", "Admin1");
+        }
+
         public bool TestAddTaskPositiveCase()
         {
-            b.CreateBoard("name");
-            Response res = t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "checking if task is created");
+            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "checking if task is created");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -128,8 +137,8 @@ namespace Tests
         }
         public bool TestAddTaskNegativeCase()
         {
-            b.CreateBoard("name");
-            Response res = t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "checking if task isn't created");
+            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "checking if task isn't created");
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -138,9 +147,10 @@ namespace Tests
         }
         public bool TestEditTaskPositiveCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.EditTask("name", 100, "task2", new DateTime(2025, 4, 10), "checking if task is edited");
+            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "task is created");
+            TaskSL task = ((TaskSL) res.ReturnValue);
+            res = t.EditTask("yaronet@post.bgu.ac.il", "name", task.TaskId, "task2", new DateTime(2025, 4, 10), "checking if task is edited");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -149,9 +159,10 @@ namespace Tests
         }
         public bool TestEditTaskNegativeCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.EditTask("name", 101, "task2", new DateTime(2025, 4, 10), "checking if task isn't edited");
+            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "task is created");
+            TaskSL task = ((TaskSL)res.ReturnValue);
+            res = t.EditTask("yaronet@post.bgu.ac.il", "name", task.TaskId+1, "task2", new DateTime(2025, 4, 10), "checking if task is edited");
             if (res.ErrorMessage == null)
             {
                 return false;
