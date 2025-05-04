@@ -109,7 +109,7 @@ namespace Tests
         }
         public bool TestUserLoginNegativeCase()
         {
-            Response res = us.Login("EtaiYaron", "password1");
+            Response res = us.Login("etaiyaron@gmail.com", "password1");
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -118,8 +118,7 @@ namespace Tests
         }
         public bool TestUserLogoutPositiveCase()
         {
-            us.Login("EtaiYaron", "Password1");
-            Response res = us.Logout("EtaiYaron");
+            Response res = us.Logout("etaiyaron@gmail.com");
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -128,8 +127,7 @@ namespace Tests
         }
         public bool TestUserLogoutNegativeCase()
         {
-            us.Login("EtaiYaron", "Password1");
-            us.Logout("EtaiYaron");
+            us.Login("etaiyaron@gmail.com", "Password1");
             Response res = us.Logout("EtaiYaron");
             if (res.ErrorMessage != null)
             {

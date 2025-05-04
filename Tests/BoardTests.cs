@@ -152,8 +152,6 @@ namespace Tests
 
         }
 
-
-
         public bool TestGetBoardNegativeCase()
         {
             Response res = b.GetBoard("yaronet@post.bgu.ac.il", "name");
