@@ -84,13 +84,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (destcolumn == 1)
             {
-                if (board.NumTasks1 >= board.MaxTasks1)
+                if (board.MaxTasks1 != -1 && board.NumTasks1 >= board.MaxTasks1)
                 {
                     log.Error($"EditTask failed, column 1 is full.");
                     throw new ArgumentException("column 1 is full");
                 }
             }
-            if (board.NumTasks2 >= board.MaxTasks2)
+            if (board.MaxTasks2 != -1 && board.NumTasks2 >= board.MaxTasks2)
             {
                 log.Error($"EditTask failed, column 2 is full.");
                 throw new ArgumentException("column 2 is full");
@@ -131,12 +131,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, description {description} over 300 character.");
                 throw new ArgumentException("description isn't valid");
             }
-            if (DateTime.Now.CompareTo(dueTime) >= 0 )
+            if (DateTime.Now.Date.CompareTo(dueTime) > 0 )
             {
                 log.Error($"AddTask failed, dueTime {dueTime} is before current time.");
                 throw new ArgumentException("duedate isn't valid");
             }
-            if (board.NumTasks0 >= board.MaxTasks0)
+            if (board.MaxTasks0 != -1 && board.NumTasks0 >= board.MaxTasks0)
             {
                 log.Error($"AddTask failed, column 0 is full.");
                 throw new ArgumentException("column 0 is full");
@@ -236,7 +236,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("limit isn't valid");
 
             }
+            
             BoardBL board = boards[email][boardname];
+            if ((column == 0 && newLimit<board.NumTasks0)|| (column == 1 && newLimit < board.NumTasks1) || (column == 2 && newLimit < board.NumTasks2))
+            {
+                log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
+                throw new Exception("there are already more tasks in the column than the new limit.");
+            }
             board.LimitTasks(column, newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;
