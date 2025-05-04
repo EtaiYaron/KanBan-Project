@@ -240,7 +240,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 log.Error($"LimitTasks failed, newLimit {newLimit} is not vaild. must be non negative for user with email {email}.");
                 throw new Exception("limit isn't valid");
-
             }
             BoardBL board = boards[email][boardname];
             board.LimitTasks(column, newLimit);
