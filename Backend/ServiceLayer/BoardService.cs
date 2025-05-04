@@ -25,11 +25,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-        public Response CreateBoard(string name)
+        public Response CreateBoard(string email, string name)
         {
             try
             {
-                BoardBL bbl = boardFacade.CreateBoard(name);
+                BoardBL bbl = boardFacade.CreateBoard(email, name);
                 Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
@@ -40,11 +40,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response DeleteBoard(string name)
+        public Response DeleteBoard(string email, string name)
         {
             try
             {
-                BoardBL bbl = boardFacade.DeleteBoard(name);
+                BoardBL bbl = boardFacade.DeleteBoard(email, name);
                 Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
@@ -55,11 +55,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response GetBoard(string name)
+        public Response GetBoard(string email, string name)
         {
             try
             {
-                BoardBL bbl = boardFacade.GetBoard(name);
+                BoardBL bbl = boardFacade.GetBoard(email, name);
                 Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
@@ -70,11 +70,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response getAllUserBoards()
+        public Response getAllUserBoards(string email)
         {
             try
             {
-                Dictionary<string, BoardBL> bbl = boardFacade.GetAllUserBoards();
+                Dictionary<string, BoardBL> bbl = boardFacade.GetAllUserBoards(email);
 
                 Dictionary<string, BoardSL> serviceBbl = new Dictionary<string, BoardSL>();
                 foreach (string key in bbl.Keys) {
@@ -91,11 +91,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response LimitTasks(string name, int column, int newLimit)
+        public Response LimitTasks(string email, string name, int column, int newLimit)
         {
             try
             {
-                BoardBL bbl = boardFacade.LimitTasks(name, column, newLimit);
+                BoardBL bbl = boardFacade.LimitTasks(email, name, column, newLimit);
                 Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }

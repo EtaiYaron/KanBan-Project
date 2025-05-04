@@ -26,11 +26,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-        public Response AddTask(string boardName, string title, DateTime dueTime, string description)
+        public Response AddTask(string email, string boardName, string title, DateTime dueTime, string description)
         {
             try
             {
-                TaskBL tbl = boardFacade.AddTask(boardName, title, dueTime, description);
+                TaskBL tbl = boardFacade.AddTask(email, boardName, title, dueTime, description);
                 Response response = new Response(null, new TaskSL(tbl));
                 return response;
             }
@@ -41,11 +41,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response EditTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public Response EditTask(string email, string boardName, int taskId, string title, DateTime dueTime, string description)
         {
             try
             {
-                BoardBL bbl = boardFacade.EditTask(boardName, taskId, title, dueTime, description);
+                BoardBL bbl = boardFacade.EditTask(email, boardName, taskId, title, dueTime, description);
                 Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
@@ -56,11 +56,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response MoveTask(string boardName, int taskId, int dest)
+        public Response MoveTask(string email, string boardName, int taskId, int dest)
         {
             try
             {
-                BoardBL bbl = boardFacade.MoveTask(boardName, taskId, dest);
+                BoardBL bbl = boardFacade.MoveTask(email, boardName, taskId, dest);
                 Response response = new Response(null, new BoardSL(bbl));
                 return response;
             }
@@ -71,11 +71,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response GetTask(string boardName, int taskId)
+        public Response GetTask(string email, string boardName, int taskId)
         {
             try
             {
-                TaskBL tbl = boardFacade.GetTask(boardName, taskId);
+                TaskBL tbl = boardFacade.GetTask(email, boardName, taskId);
                 Response response = new Response(null, new TaskSL(tbl));
                 return response;
             }
@@ -86,11 +86,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response GetAllTasks(string boardName)
+        public Response GetAllTasks(string email, string boardName)
         {
             try
             {
-                Dictionary<int, TaskBL> tbl = boardFacade.GetAllTasks(boardName);
+                Dictionary<int, TaskBL> tbl = boardFacade.GetAllTasks(email, boardName);
 
                 Dictionary<int, TaskSL> serviceTbl = new Dictionary<int, TaskSL>();
                 foreach (int key in tbl.Keys)

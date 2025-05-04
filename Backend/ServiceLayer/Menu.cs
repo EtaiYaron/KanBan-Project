@@ -69,7 +69,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Console.WriteLine("Registration successful");
                 Console.WriteLine("Welcome " + email + "\n");
                 isLoggedIn = true;
-                serviceFactory.initializeBoardFacade(email);
                 BoardActionsMenu();
             }
             if (entered1 == 2)
@@ -102,7 +101,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Console.WriteLine("Login successful");
                 Console.WriteLine("Welcome " + email);
                 isLoggedIn = true;
-                serviceFactory.initializeBoardFacade(email);
                 do
                 {
                     Console.WriteLine("if you wish to go proceed enter 1 if you to Log Out enter 2");
@@ -191,7 +189,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     }
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
-                    response = serviceFactory.BoardService.CreateBoard(boardName);
+                    response = serviceFactory.BoardService.CreateBoard(email, boardName);
                     if (response.ErrorMessage != null)
                     {
                        Console.WriteLine(response.ErrorMessage);
@@ -221,7 +219,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     }
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
-                    response = serviceFactory.BoardService.DeleteBoard(boardName);
+                    response = serviceFactory.BoardService.DeleteBoard(email, boardName);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
@@ -249,7 +247,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     }
                     Console.WriteLine("please enter the name of the board");
                     string boardName = Console.ReadLine();
-                    response = serviceFactory.BoardService.GetBoard(boardName);
+                    response = serviceFactory.BoardService.GetBoard(email, boardName);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
@@ -274,7 +272,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     BoardActionsMenu();
                     return;
                 }
-                response = serviceFactory.BoardService.getAllUserBoards();
+                response = serviceFactory.BoardService.getAllUserBoards(email);
                 if (response.ErrorMessage != null)
                 {
                     Console.WriteLine(response.ErrorMessage);
@@ -303,7 +301,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 Console.WriteLine("please enter the name of the board");
                 string boardName = Console.ReadLine();
-                response = serviceFactory.TaskService.GetAllTasks(boardName);
+                response = serviceFactory.TaskService.GetAllTasks(email, boardName);
                 if (response.ErrorMessage != null)
                 {
                     Console.WriteLine(response.ErrorMessage);
@@ -336,7 +334,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     string boardName = Console.ReadLine();
                     Console.WriteLine("please enter the id of the task");
                     int.TryParse(Console.ReadLine(), out int taskId);
-                    response = serviceFactory.TaskService.GetTask(boardName, taskId);
+                    response = serviceFactory.TaskService.GetTask(email, boardName, taskId);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
@@ -373,7 +371,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     DateTime.TryParse(Console.ReadLine(), out DateTime dueDate);
                     Console.WriteLine("please enter the new description of the task");
                     string description = Console.ReadLine();
-                    response = serviceFactory.TaskService.EditTask(boardName, taskId, title, dueDate, description);
+                    response = serviceFactory.TaskService.EditTask(email, boardName, taskId, title, dueDate, description);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
@@ -405,7 +403,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     int.TryParse(Console.ReadLine(), out int taskId);
                     Console.WriteLine("please enter the destination column of the task");
                     int.TryParse(Console.ReadLine(), out int dest);
-                    response = serviceFactory.TaskService.MoveTask(boardName, taskId, dest);
+                    response = serviceFactory.TaskService.MoveTask(email, boardName, taskId, dest);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
@@ -437,7 +435,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     int.TryParse(Console.ReadLine(), out int col);
                     Console.WriteLine("please enter the new limit of the task");
                     int.TryParse(Console.ReadLine(), out int newLimit);
-                    response = serviceFactory.BoardService.LimitTasks(boardName, col, newLimit);
+                    response = serviceFactory.BoardService.LimitTasks(email, boardName, col, newLimit);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
@@ -470,7 +468,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     DateTime.TryParse(Console.ReadLine(), out DateTime dueDate);
                     Console.WriteLine("please enter the description of the task");
                     string description = Console.ReadLine();
-                    response = serviceFactory.TaskService.AddTask(boardName, title, dueDate, description);
+                    response = serviceFactory.TaskService.AddTask(email, boardName, title, dueDate, description);
                     if (response.ErrorMessage != null) Console.WriteLine(response.ErrorMessage);
                 } while (response.ErrorMessage != null);
                 Console.Clear();
