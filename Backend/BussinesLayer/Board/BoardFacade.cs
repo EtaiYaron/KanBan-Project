@@ -27,15 +27,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public BoardBL CreateBoard(string email, string boardname)
         {
-<<<<<<< HEAD
-            log.Info($"Attempting to create board {boardname} for user with email {currentUserEmail}.");
-            EnsureUserIsLoggedIn();
-            if (string.IsNullOrEmpty(boardname) || string.IsNullOrEmpty(boardname.Trim()))
-=======
             log.Info($"Attempting to create board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
-            if (string.IsNullOrEmpty(boardname))
->>>>>>> 78d32e3dd66874ba9a3a349dd1713cf73c433dd4
+            if (string.IsNullOrEmpty(boardname) || string.IsNullOrEmpty(boardname.Trim()))
             {
                 log.Error($"boardName can't be null.");
                 throw new ArgumentException("boardname isn't valid");

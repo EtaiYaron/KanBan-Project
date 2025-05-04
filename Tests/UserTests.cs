@@ -81,7 +81,7 @@ namespace Tests
 
         public bool TestUserRegisterPositiveCase()
         {
-            Response res = us.Register("etaiyaron@gmail.com", "EtaiYaron", "Password1");
+            Response res = us.Register("etaiyaron@gmail.com", "Password1");
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -90,7 +90,7 @@ namespace Tests
         }
         public bool TestUserRegisterNegativeCase()
         {
-            Response res = us.Register("Amztia@gmail.com", "Amtzia", "amztia1");
+            Response res = us.Register("Amztia@gmail.com",  "amztia1");
             if (res.ErrorMessage != null)
             {
                 return true;
