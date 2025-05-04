@@ -46,6 +46,24 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return tasks[taskId];
         }
 
+        public List<TaskBL> GetTasksOfColumn(int column)
+        {
+            List<TaskBL> l = new List<TaskBL>();
+            foreach (int k in tasks.Keys)
+            {
+                if (tasks[k].State == column)
+                    l.Add(tasks[k]);
+            }
+            return l;
+        }
+
+        public int GetColumnLimit(int columnOrdinal)
+        {
+            if (columnOrdinal == 0) return MaxTasks0;
+            if (columnOrdinal == 1) return MaxTasks1;
+            return MaxTasks2;
+        }
+
         public List<TaskBL> GetAllTasks()
         {
             return tasks.Values.ToList();

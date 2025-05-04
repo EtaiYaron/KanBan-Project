@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Collections.Generic;
 using Microsoft.VisualBasic;
+using System.Xml.Linq;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -83,8 +84,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Login(string email, string password)
         {
             Response s = serviceFactory.UserService.Login(email, password);
-            if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(s);
         }
 
 
@@ -124,7 +124,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the column's limit, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.BoardService.GetColumnLimit(email, boardName, columnOrdinal);
+            return JsonSerializer.Serialize(s);
         }
 
 
@@ -246,7 +247,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with a list of the column's tasks, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumn(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.BoardService.GetTasksOfColumn(email, boardName, columnOrdinal);
+            return JsonSerializer.Serialize(s);
         }
 
 
@@ -285,7 +287,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with a list of the in-progress tasks of the user, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string InProgressTasks(string email)
         {
-            throw new NotImplementedException();
+            Response s = serviceFactory.BoardService.GetInProgressTasks(email);
+            return JsonSerializer.Serialize(s);
         }
     }
 }

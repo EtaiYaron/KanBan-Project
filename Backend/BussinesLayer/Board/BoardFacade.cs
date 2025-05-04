@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
@@ -126,7 +127,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, title {title} is null / empty / over 50 characters.");
                 throw new ArgumentException("title isn't valid");
             }
-            if( description.Length > 300)
+            if (description.Length > 300)
             {
                 log.Error($"AddTask failed, description {description} over 300 character.");
                 throw new ArgumentException("description isn't valid");
@@ -246,6 +247,52 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             board.LimitTasks(column, newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;
+        }
+
+        public List<TaskBL> GetTasksOfColumn(string email, string boardname, int column)
+        {
+            EnsureUserIsLoggedIn(email);
+            ValidateBoardExists(email, boardname);
+            if (column < 0 || column > 2)
+            {
+                throw new Exception("Illegal column identifier");
+            }
+            BoardBL board = boards[email][boardname];
+            return board.GetTasksOfColumn(column);
+        }
+
+        public int GetColumnLimit(string email, string boardname, int column)
+        {
+            EnsureUserIsLoggedIn(email);
+            ValidateBoardExists(email, boardname);
+            if (column < 0 || column > 2)
+            {
+                throw new Exception("Illegal column identifier");
+            }
+            BoardBL board = boards[email][boardname];
+            return board.GetColumnLimit(column);
+        }
+
+        public List<TaskBL> GetInProgressTasks(string email)
+        {
+            EnsureUserIsLoggedIn(email);
+
+            List<TaskBL> tasks = new List<TaskBL>();
+            if (!boards.ContainsKey(email))
+            {
+                return tasks;
+            }
+
+            Dictionary<string, BoardBL> boardsOfUser = boards[email];
+            foreach (string boardName in boardsOfUser.Keys)
+            {
+                foreach (int taskId in boardsOfUser[boardName].Tasks.Keys)
+                {
+                    if (boardsOfUser[boardName].Tasks[taskId].State == 1)
+                        tasks.Add(boardsOfUser[boardName].Tasks[taskId]);
+                }
+            }
+            return tasks;
         }
 
         private void EnsureUserIsLoggedIn(string email)

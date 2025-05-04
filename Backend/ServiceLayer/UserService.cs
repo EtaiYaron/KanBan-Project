@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
-                Response response = new Response(null, new UserSL(ubl));
+                Response response = new Response(null, email);
                 return response;
             }
             catch (Exception ex)

@@ -105,5 +105,63 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return response;
             }
         }
+
+        public Response GetTasksOfColumn(string email, string boardname, int column)
+        {
+            try
+            {
+                List<TaskBL> tbl = boardFacade.GetTasksOfColumn(email, boardname, column);
+                List<TaskSL> tsl = new List<TaskSL>();
+                foreach (TaskBL t in tbl)
+                {
+                    tsl.Add(new TaskSL(t));
+                }
+
+                Response response = new Response(null, tsl);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return response;
+            }
+        }
+
+        public Response GetInProgressTasks(string email)
+        {
+            try
+            {
+                List<TaskBL> tbl = boardFacade.GetInProgressTasks(email);
+                List<TaskSL> tsl = new List<TaskSL>();
+                foreach (TaskBL t in tbl)
+                {
+                    tsl.Add(new TaskSL(t));
+                }
+
+                Response response = new Response(null, tsl);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return response;
+            }
+        }
+
+        public Response GetColumnLimit(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                int limit = boardFacade.GetColumnLimit(email, boardName, columnOrdinal);
+                Response response = new Response(null, limit);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return response;
+            }
+        }
+
     }
 }
