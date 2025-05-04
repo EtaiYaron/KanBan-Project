@@ -121,8 +121,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
 
         private bool IsValidEmail(string email)
         {
-            string emailPattern = @"^[\w._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$";
-            return Regex.IsMatch(email, emailPattern);
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
+
     }
 }
