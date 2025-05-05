@@ -2,6 +2,7 @@
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using System.Text.Json;
 
 namespace Tests
 {
@@ -112,7 +113,7 @@ namespace Tests
         }   
         public bool TestCreateBoardPositiveCase()
         {
-            Response res = b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -122,7 +123,7 @@ namespace Tests
 
         public bool TestCreateBoardNegativeCase()
         {
-            Response res = b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = JsonSerializer.Deserialize < Response > (b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -133,7 +134,7 @@ namespace Tests
 
         public bool TestDeleteBoardPositiveCase()
         {
-            Response res = b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = JsonSerializer.Deserialize < Response > (b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -143,7 +144,7 @@ namespace Tests
 
         public bool TestDeleteBoardNegativeCase()
         {
-            Response res = b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = JsonSerializer.Deserialize < Response > (b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -154,7 +155,7 @@ namespace Tests
 
         public bool TestGetBoardNegativeCase()
         {
-            Response res = b.GetBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = JsonSerializer.Deserialize < Response > (b.GetBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -165,7 +166,7 @@ namespace Tests
         public bool TestGetBoardPositiveCase()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "name");
-            Response res = b.GetBoard("yaronet@post.bgu.ac.il", "name");
+            Response res = JsonSerializer.Deserialize < Response > (b.GetBoard("yaronet@post.bgu.ac.il", "name"));
 
             if (res.ErrorMessage != null)
             {
@@ -178,7 +179,7 @@ namespace Tests
         {
             b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 0);
 
-            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
+            Response res = JsonSerializer.Deserialize < Response > (t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks"));
 
             if (res.ErrorMessage == null)
             {
@@ -191,8 +192,7 @@ namespace Tests
         {
             b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 10);
 
-            Response res = t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
-
+            Response res = JsonSerializer.Deserialize < Response > (t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks"));
             if (res.ErrorMessage != null)
             {
                 return false;

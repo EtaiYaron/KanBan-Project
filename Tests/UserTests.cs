@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
@@ -79,9 +81,10 @@ namespace Tests
             }
         }
 
+        // Replace the problematic line in TestUserRegisterPositiveCase method
         public bool TestUserRegisterPositiveCase()
         {
-            Response res = us.Register("etaiyaron@gmail.com", "Password1");
+            Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -90,7 +93,7 @@ namespace Tests
         }
         public bool TestUserRegisterNegativeCase()
         {
-            Response res = us.Register("Amztia@gmail.com",  "amztia1");
+            Response res = JsonSerializer.Deserialize < Response > (us.Register("Amztia@gmail.com",  "amztia1"));
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -101,7 +104,7 @@ namespace Tests
         public bool TestUserLoginPositiveCase()
         {
             us.Logout("etaiyaron@gmail.com");
-            Response res = us.Login("etaiyaron@gmail.com", "Password1");
+            Response res = JsonSerializer.Deserialize < Response > (us.Login("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -110,7 +113,7 @@ namespace Tests
         }
         public bool TestUserLoginNegativeCase()
         {
-            Response res = us.Login("etaiyaron@gmail.com", "password1");
+            Response res = JsonSerializer.Deserialize < Response > (us.Login("etaiyaron@gmail.com", "password1"));
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -119,7 +122,7 @@ namespace Tests
         }
         public bool TestUserLogoutPositiveCase()
         {
-            Response res = us.Logout("etaiyaron@gmail.com");
+            Response res = JsonSerializer.Deserialize < Response > (us.Logout("etaiyaron@gmail.com"));
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -129,7 +132,7 @@ namespace Tests
         public bool TestUserLogoutNegativeCase()
         {
             us.Login("etaiyaron@gmail.com", "Password1");
-            Response res = us.Logout("EtaiYaron");
+            Response res = JsonSerializer.Deserialize < Response > (us.Logout("EtaiYaron"));
             if (res.ErrorMessage != null)
             {
                 return true;
