@@ -81,7 +81,6 @@ namespace Tests
             }
         }
 
-        // Replace the problematic line in TestUserRegisterPositiveCase method
         public bool TestUserRegisterPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
