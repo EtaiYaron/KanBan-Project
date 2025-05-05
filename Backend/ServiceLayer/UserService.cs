@@ -23,49 +23,48 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.userFacade = userFacade;
         }
 
-        public Response Login(string email, string password)
+        public string Login(string email, string password)
         {
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
                 Response response = new Response(null, email);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response Register(string email, string password)
+        public string Register(string email, string password)
         {
             try
             {
                 UserBL ubl = userFacade.Register(email, password);
-                Response response = new Response(null, new UserSL(ubl));
-                return response;
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response Logout(string email)
+        public string Logout(string email)
         {
             try
             {
                 UserBL ubl = userFacade.Logout(email);
-                Response response = new Response(null, new UserSL(ubl));
-                return response;
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
     }  

@@ -25,52 +25,52 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-        public Response CreateBoard(string email, string name)
+        public string CreateBoard(string email, string name)
         {
             try
             {
                 BoardBL bbl = boardFacade.CreateBoard(email, name);
-                Response response = new Response(null, new BoardSL(bbl));
-                return response;
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response DeleteBoard(string email, string name)
+        public string DeleteBoard(string email, string name)
         {
             try
             {
                 BoardBL bbl = boardFacade.DeleteBoard(email, name);
-                Response response = new Response(null, new BoardSL(bbl));
-                return response;
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetBoard(string email, string name)
+        public string GetBoard(string email, string name)
         {
             try
             {
                 BoardBL bbl = boardFacade.GetBoard(email, name);
                 Response response = new Response(null, new BoardSL(bbl));
-                return response;
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response getAllUserBoards(string email)
+        public string GetAllUserBoards(string email)
         {
             try
             {
@@ -82,31 +82,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
                 Response response = new Response(null, serviceBbl);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response LimitTasks(string email, string name, int column, int newLimit)
+        public string LimitTasks(string email, string name, int column, int newLimit)
         {
             try
             {
                 BoardBL bbl = boardFacade.LimitTasks(email, name, column, newLimit);
-                Response response = new Response(null, new BoardSL(bbl));
-                return response;
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetTasksOfColumn(string email, string boardname, int column)
+        public string GetTasksOfColumn(string email, string boardname, int column)
         {
             try
             {
@@ -118,16 +118,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
                 Response response = new Response(null, tsl.ToArray());
-                return response;
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetInProgressTasks(string email)
+        public string GetInProgressTasks(string email)
         {
             try
             {
@@ -139,27 +139,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
                 Response response = new Response(null, tsl.ToArray());
-                return response;
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetColumnLimit(string email, string boardName, int columnOrdinal)
+        public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
             try
             {
                 int limit = boardFacade.GetColumnLimit(email, boardName, columnOrdinal);
                 Response response = new Response(null, limit);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
