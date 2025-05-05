@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        public Response EditTask(string email, string boardName, int taskId, string title, DateTime dueTime, string description)
+        public Response EditTask(string email, string boardName, int taskId, string title, DateTime? dueTime, string description)
         {
             try
             {

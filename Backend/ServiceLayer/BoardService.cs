@@ -117,7 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     tsl.Add(new TaskSL(t));
                 }
 
-                Response response = new Response(null, tsl);
+                Response response = new Response(null, tsl.ToArray());
                 return response;
             }
             catch (Exception ex)
@@ -138,7 +138,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     tsl.Add(new TaskSL(t));
                 }
 
-                Response response = new Response(null, tsl);
+                Response response = new Response(null, tsl.ToArray());
                 return response;
             }
             catch (Exception ex)

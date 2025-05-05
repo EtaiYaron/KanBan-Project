@@ -10,20 +10,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly DateTime creationTime;
         private readonly DateTime dueDate;
         private readonly string description;
-        private readonly int state;
 
         public TaskSL(TaskBL tbl)
         {
             this.taskId = tbl.TaskId;
             this.title = tbl.Title;
             this.creationTime = tbl.CreationTime;
-            this.dueDate = tbl.DueDate;
+            this.dueDate = (DateTime)tbl.DueDate;
             this.description = tbl.Description;
-            this.state = tbl.State;
         }
 
         // Properties for serialization
-        public int TaskId
+        public int Id
         {
             get { return this.taskId; }
         }
@@ -46,11 +44,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Description
         {
             get { return this.description; }
-        }
-
-        public int State
-        {
-            get { return this.state; }
         }
     }
 }

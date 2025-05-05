@@ -31,9 +31,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             tasks.Add(taskId, new TaskBL(taskId, title, dueDate, description));
         }
 
-        public void EditTask(int taskId, string title, DateTime dueDate, string description)
+        public void EditTask(int taskId, string title, DateTime? dueDate, string description)
         {
-            tasks[taskId] = new TaskBL(taskId,title, dueDate, description);
+            if (title != null)
+                tasks[taskId].Title = title;
+            if (dueDate != null)
+                tasks[taskId].DueDate = dueDate;
+            if (description != null)
+                tasks[taskId].Description = description;
         }
 
         public void MoveTask(int taskId, int dest)

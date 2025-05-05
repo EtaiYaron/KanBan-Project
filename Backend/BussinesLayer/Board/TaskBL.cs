@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private int taskId;
         private string title;
         private readonly DateTime creationTime;
-        private DateTime dueDate;
+        private DateTime? dueDate;
         private string description;
         private int state;
 
@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             set { this.title = value; }
         }
 
-        public DateTime DueDate
+        public DateTime? DueDate
         {
             get { return this.dueDate; }
             set { this.dueDate = value; }

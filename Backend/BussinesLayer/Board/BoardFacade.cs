@@ -132,7 +132,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, description {description} over 300 character.");
                 throw new ArgumentException("description isn't valid");
             }
-            if (DateTime.Now.Date.CompareTo(dueTime) > 0 )
+            if (dueTime <= DateTime.Now)
             {
                 log.Error($"AddTask failed, dueTime {dueTime} is before current time.");
                 throw new ArgumentException("duedate isn't valid");
@@ -150,7 +150,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return task;
         }
 
-        public BoardBL EditTask(string email, string boardname, int taskId, string title, DateTime dueTime, string description = "")
+        public BoardBL EditTask(string email, string boardname, int taskId, string title, DateTime? dueTime, string description = "")
         {
             log.Info($"Attempting to Edit task {taskId} in board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
@@ -161,17 +161,22 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"EditTask failed, task {taskId} isn't exist in board {boardname}.");
                 throw new ArgumentException("taskId isn't exist task in this board");
             }
-            if (string.IsNullOrEmpty(title) || title.Length > 50)
+            if (title == null && dueTime == null && description == null)
+            {
+                log.Error($"EditTask failed, no new arguments to update");
+                throw new ArgumentException("all task arguments are null");
+            }
+            if (title != null && title.Length > 50)
             {
                 log.Error($"AddTask failed, new title {title} is null / empty / over 50 characters.");
                 throw new ArgumentException("title isn't valid");
             }
-            if (description.Length > 300)
+            if (description != null && description.Length > 300)
             {
                 log.Error($"AddTask failed, new description {description} over 300 character.");
                 throw new ArgumentException("title isn't valid");
             }
-            if (DateTime.Now.CompareTo(dueTime) >= 0)
+            if (dueTime != null && dueTime <= DateTime.Now)
             {
                 log.Error($"AddTask failed, new dueTime {dueTime} is before current time.");
                 throw new ArgumentException("duedate isn't valid");

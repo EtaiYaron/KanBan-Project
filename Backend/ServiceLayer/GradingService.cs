@@ -71,7 +71,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.UserService.Register(email, password);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.UserService.Logout(email);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.BoardService.LimitTasks(email, boardName, columnOrdinal, limit);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.TaskService.AddTask(email, boardName, title, dueDate, description);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -179,10 +179,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            TaskSL t = (TaskSL)serviceFactory.TaskService.GetTask(email, boardName, taskId).ReturnValue;
-            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, t.Title, dueDate, t.Description);
+            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, null, dueDate, null);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -197,10 +196,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            TaskSL t = (TaskSL)serviceFactory.TaskService.GetTask(email, boardName, taskId).ReturnValue;
-            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, title, t.DueDate, t.Description);
+            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, title, null, null);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -215,10 +213,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            TaskSL t = (TaskSL)serviceFactory.TaskService.GetTask(email, boardName, taskId).ReturnValue;
-            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, t.Title, t.DueDate, description);
+            Response s = serviceFactory.TaskService.EditTask(email, boardName, taskId, null, null, description);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -234,7 +231,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.TaskService.MoveTask(email, boardName, taskId, columnOrdinal + 1);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -262,7 +259,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.BoardService.CreateBoard(email, name);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
@@ -276,7 +273,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response s = serviceFactory.BoardService.DeleteBoard(email, name);
             if (s.ErrorMessage != null) return JsonSerializer.Serialize(s);
-            return "{}";
+            return JsonSerializer.Serialize(new Response());
         }
 
 
