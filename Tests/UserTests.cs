@@ -99,7 +99,6 @@ namespace Tests
             }
             return false;
         }
-
         public bool TestUserLoginPositiveCase()
         {
             us.Logout("etaiyaron@gmail.com");
