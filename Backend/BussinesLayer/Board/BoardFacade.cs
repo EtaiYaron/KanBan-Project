@@ -32,12 +32,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             EnsureUserIsLoggedIn(email);
             if (string.IsNullOrEmpty(boardname) || string.IsNullOrEmpty(boardname.Trim()))
             {
-                log.Error($"boardName can't be null.");
+                log.Error($"CreateBoard failed, boardName can't be null.");
                 throw new ArgumentException("boardname isn't valid");
             }
             if (boards.ContainsKey(email) && boards[email].ContainsKey(boardname))
             {
-                log.Error($"boardName {boardname} already exist for user with email {email}.");
+                log.Error($"CreateBoard failed, boardName {boardname} already exist for user with email {email}.");
                 throw new ArgumentException("boardname already exist under this user");
             }
             if (!boards.ContainsKey(email))
@@ -60,7 +60,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             log.Info($"Successfully deleted board {boardname} for user with email {email}.");
             return curr;
         }
-        
+
         public BoardBL MoveTask(string email, string boardname, int taskId, int destcolumn)
         {
             log.Info($"Attempting to move task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
@@ -69,31 +69,31 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL board = boards[email][boardname];
             if (!(board.Tasks).ContainsKey(taskId))
             {
-                log.Error($"task {taskId} doesn't exist in board {boardname}.");
+                log.Error($"MoveTask failed, task {taskId} doesn't exist in board {boardname}.");
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
-            if (destcolumn <= 0|| destcolumn > 2)
+            if (destcolumn <= 0 || destcolumn > 2)
             {
-                log.Error($"dest nust be between 1 and 2, and dest is {destcolumn}.");
+                log.Error($"MoveTask failed, dest nust be between 1 and 2, and dest is {destcolumn}.");
                 throw new ArgumentOutOfRangeException("dest must be between 1 and 2");
             }
             int fromcolumn = board.GetTask(taskId).State;
             if (destcolumn - fromcolumn != 1)
             {
-                log.Error($"can't move task {taskId} from column {fromcolumn} to column {destcolumn}.");
+                log.Error($"MoveTask failed, can't move task {taskId} from column {fromcolumn} to column {destcolumn}.");
                 throw new ArgumentException("cannot move the task to this destination");
             }
             if (destcolumn == 1)
             {
                 if (board.MaxTasks1 != -1 && board.NumTasks1 >= board.MaxTasks1)
                 {
-                    log.Error($"EditTask failed, column 1 is full.");
+                    log.Error($"MoveTask failed, column 1 is full.");
                     throw new ArgumentException("column 1 is full");
                 }
             }
             if (board.MaxTasks2 != -1 && board.NumTasks2 >= board.MaxTasks2)
             {
-                log.Error($"EditTask failed, column 2 is full.");
+                log.Error($"MoveTask failed, column 2 is full.");
                 throw new ArgumentException("column 2 is full");
             }
             board.MoveTask(taskId, destcolumn);
@@ -168,17 +168,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             if (title != null && title.Length > 50)
             {
-                log.Error($"AddTask failed, new title {title} is null / empty / over 50 characters.");
+                log.Error($"EditTask failed, new title {title} is null / empty / over 50 characters.");
                 throw new ArgumentException("title isn't valid");
             }
             if (description != null && description.Length > 300)
             {
-                log.Error($"AddTask failed, new description {description} over 300 character.");
+                log.Error($"EditTask failed, new description {description} over 300 character.");
                 throw new ArgumentException("title isn't valid");
             }
             if (dueTime != null && dueTime <= DateTime.Now)
             {
-                log.Error($"AddTask failed, new dueTime {dueTime} is before current time.");
+                log.Error($"EditTask failed, new dueTime {dueTime} is before current time.");
                 throw new ArgumentException("duedate isn't valid");
             }
             board.EditTask(taskId, title, dueTime, description);
@@ -242,9 +242,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("limit isn't valid");
 
             }
-            
+
             BoardBL board = boards[email][boardname];
-            if ((column == 0 && newLimit<board.NumTasks0)|| (column == 1 && newLimit < board.NumTasks1) || (column == 2 && newLimit < board.NumTasks2))
+            if ((column == 0 && newLimit < board.NumTasks0) || (column == 1 && newLimit < board.NumTasks1) || (column == 2 && newLimit < board.NumTasks2))
             {
                 log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
                 throw new Exception("there are already more tasks in the column than the new limit.");
@@ -256,35 +256,43 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         public List<TaskBL> GetTasksOfColumn(string email, string boardname, int column)
         {
+            log.Info($"Attempting to get tasks of column {column} on board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             if (column < 0 || column > 2)
             {
+                log.Error($"GetTasksOfColumn failed, column {column} inValid.");
                 throw new Exception("Illegal column identifier");
             }
             BoardBL board = boards[email][boardname];
+            log.Info($"successfully got tasks of column {column} on board {boardname} for user with email {email}.");
             return board.GetTasksOfColumn(column);
         }
 
         public int GetColumnLimit(string email, string boardname, int column)
         {
+            log.Info($"Attempting to get column limit of column {column} on board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             if (column < 0 || column > 2)
             {
+                log.Error($"GetColumnLimit failed, column {column} inValid.");
                 throw new Exception("Illegal column identifier");
             }
             BoardBL board = boards[email][boardname];
+            log.Info($"successfully got column limit of column {column} on board {boardname} for user with email {email}.");
             return board.GetColumnLimit(column);
         }
 
         public List<TaskBL> GetInProgressTasks(string email)
         {
+            log.Info($"Attempting to get in progress tasks for user with email {email}.");
             EnsureUserIsLoggedIn(email);
 
             List<TaskBL> tasks = new List<TaskBL>();
             if (!boards.ContainsKey(email))
             {
+                log.Error($"GetInProgressTasks failed, user with email {email} has no boards.");
                 return tasks;
             }
 
@@ -297,6 +305,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                         tasks.Add(boardsOfUser[boardName].Tasks[taskId]);
                 }
             }
+            log.Info($"Successfully got in progress tasks for user with email {email}.");
             return tasks;
         }
 
