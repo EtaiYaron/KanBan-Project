@@ -122,7 +122,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, task {id} already exist in board {boardname}.");
                 throw new ArgumentException("taskId exist task in this board");
             }
-            if (string.IsNullOrEmpty(title) || title.Length > 50)
+            if (string.IsNullOrEmpty(title.Trim()) || title.Length > 50)
             {
                 log.Error($"AddTask failed, title {title} is null / empty / over 50 characters.");
                 throw new ArgumentException("title isn't valid");
