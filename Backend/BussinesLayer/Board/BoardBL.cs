@@ -13,6 +13,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private int maxTasks0;
         private int maxTasks1;
         private int maxTasks2;
+        private int numTasks0;
+        private int numTasks1;
+        private int numTasks2;
 
         public BoardBL(string name)
         {
@@ -28,9 +31,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             tasks.Add(taskId, new TaskBL(taskId, title, dueDate, description));
         }
 
-        public void EditTask(int taskId, string title, DateTime dueDate, string description)
+        public void EditTask(int taskId, string title, DateTime? dueDate, string description)
         {
-            tasks[taskId] = new TaskBL(taskId,title, dueDate, description);
+            if (title != null)
+                tasks[taskId].Title = title;
+            if (dueDate != null)
+                tasks[taskId].DueDate = dueDate;
+            if (description != null)
+                tasks[taskId].Description = description;
         }
 
         public void MoveTask(int taskId, int dest)
@@ -41,6 +49,24 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public TaskBL GetTask(int taskId)
         {
             return tasks[taskId];
+        }
+
+        public List<TaskBL> GetTasksOfColumn(int column)
+        {
+            List<TaskBL> l = new List<TaskBL>();
+            foreach (int k in tasks.Keys)
+            {
+                if (tasks[k].State == column)
+                    l.Add(tasks[k]);
+            }
+            return l;
+        }
+
+        public int GetColumnLimit(int columnOrdinal)
+        {
+            if (columnOrdinal == 0) return MaxTasks0;
+            if (columnOrdinal == 1) return MaxTasks1;
+            return MaxTasks2;
         }
 
         public List<TaskBL> GetAllTasks()
@@ -70,6 +96,23 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             { get { return maxTasks1; } }
         public int MaxTasks2
             { get { return maxTasks2; } }
+        public int NumTasks0
+        { 
+            get { return numTasks0; }
+            set { this.numTasks0 = value; }
+        }
+
+        public int NumTasks1
+        {
+            get { return numTasks1; }
+            set { this.numTasks1 = value; }
+        }
+
+        public int NumTasks2
+        {
+            get { return numTasks2; }
+            set { this.numTasks2 = value; }
+        }
         public Dictionary<int, TaskBL> Tasks
             { get { return tasks; } }
         public string Name

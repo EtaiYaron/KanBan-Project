@@ -25,79 +25,143 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-        public Response CreateBoard(string name)
+        public string CreateBoard(string email, string name)
         {
             try
             {
-                BoardBL bbl = boardFacade.CreateBoard(name);
-                Response response = new Response(null, bbl);
-                return response;
+                BoardBL bbl = boardFacade.CreateBoard(email, name);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response DeleteBoard(string name)
+        public string DeleteBoard(string email, string name)
         {
             try
             {
-                BoardBL bbl = boardFacade.DeleteBoard(name);
-                Response response = new Response(null, bbl);
-                return response;
+                BoardBL bbl = boardFacade.DeleteBoard(email, name);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetBoard(string name)
+        public string GetBoard(string email, string name)
         {
             try
             {
-                BoardBL bbl = boardFacade.GetBoard(name);
-                Response response = new Response(null, bbl);
-                return response;
+                BoardBL bbl = boardFacade.GetBoard(email, name);
+                Response response = new Response(null, new BoardSL(bbl));
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response getAllUserBoards()
+        public string GetAllUserBoards(string email)
         {
             try
             {
-                Dictionary<string, BoardBL> bbl = boardFacade.GetAllUserBoards();
-                Response response = new Response(null, bbl);
-                return response;
+                Dictionary<string, BoardBL> bbl = boardFacade.GetAllUserBoards(email);
+
+                Dictionary<string, BoardSL> serviceBbl = new Dictionary<string, BoardSL>();
+                foreach (string key in bbl.Keys) {
+                    serviceBbl.Add(key, new BoardSL(bbl[key]));
+                }
+
+                Response response = new Response(null, serviceBbl);
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response LimitTasks(string name, int column, int newLimit)
+        public string LimitTasks(string email, string name, int column, int newLimit)
         {
             try
             {
-                BoardBL bbl = boardFacade.LimitTasks(name, column, newLimit);
-                Response response = new Response(null, bbl);
-                return response;
+                BoardBL bbl = boardFacade.LimitTasks(email, name, column, newLimit);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
+
+        public string GetTasksOfColumn(string email, string boardname, int column)
+        {
+            try
+            {
+                List<TaskBL> tbl = boardFacade.GetTasksOfColumn(email, boardname, column);
+                List<TaskSL> tsl = new List<TaskSL>();
+                foreach (TaskBL t in tbl)
+                {
+                    tsl.Add(new TaskSL(t));
+                }
+
+                Response response = new Response(null, tsl.ToArray());
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string GetInProgressTasks(string email)
+        {
+            try
+            {
+                List<TaskBL> tbl = boardFacade.GetInProgressTasks(email);
+                List<TaskSL> tsl = new List<TaskSL>();
+                foreach (TaskBL t in tbl)
+                {
+                    tsl.Add(new TaskSL(t));
+                }
+
+                Response response = new Response(null, tsl.ToArray());
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string GetColumnLimit(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                int limit = boardFacade.GetColumnLimit(email, boardName, columnOrdinal);
+                Response response = new Response(null, limit);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
     }
 }
