@@ -162,6 +162,7 @@ namespace Tests
             }
             return false;
         }
+<<<<<<< HEAD
         public bool TestUserRegisterNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
@@ -173,6 +174,8 @@ namespace Tests
         }
 
 
+=======
+>>>>>>> e3635d6f9478c1a478bbeafa63c2921c70f4dad2
         public bool TestUserLoginPositiveCase()
         {
             us.Logout("etaiyaron@gmail.com");
