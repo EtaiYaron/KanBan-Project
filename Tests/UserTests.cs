@@ -162,7 +162,6 @@ namespace Tests
             }
             return false;
         }
-<<<<<<< HEAD
         public bool TestUserRegisterNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
@@ -173,9 +172,6 @@ namespace Tests
             return false;
         }
 
-
-=======
->>>>>>> e3635d6f9478c1a478bbeafa63c2921c70f4dad2
         public bool TestUserLoginPositiveCase()
         {
             us.Logout("etaiyaron@gmail.com");
@@ -226,13 +222,15 @@ namespace Tests
         }
         public bool TestUserLogoutPositiveCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@post.co.il"));
+            us.Register("Psagot@post.co.il", "Psagot2025");
+            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Psagot@post.co.il"));
             if (res.ErrorMessage != null)
             {
                 return false;
             }
             return true;
         }
+
         public bool TestUserLogoutNegativeCase()
         {
             Response res = JsonSerializer.Deserialize < Response > (us.Logout("EtaiYaron"));
@@ -244,7 +242,7 @@ namespace Tests
         }
         public bool TestUserLogoutNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@post.co.il"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@pol"));
             if (res.ErrorMessage != null)
             {
                 return true;
