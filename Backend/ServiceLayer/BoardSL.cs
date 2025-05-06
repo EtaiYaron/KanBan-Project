@@ -14,7 +14,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly int maxTasks1;
         private readonly int maxTasks2;
 
-        public BoardSL(BoardBL bbl)
+
+        internal BoardSL(BoardBL bbl)
         {
             this.name = bbl.Name;
             this.maxTasks0 = bbl.MaxTasks0;

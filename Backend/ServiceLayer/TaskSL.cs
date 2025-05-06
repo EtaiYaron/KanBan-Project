@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly DateTime dueDate;
         private readonly string description;
 
-        public TaskSL(TaskBL tbl)
+        internal TaskSL(TaskBL tbl)
         {
             this.taskId = tbl.TaskId;
             this.title = tbl.Title;

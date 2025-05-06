@@ -4,7 +4,7 @@ public class UserSL
 {
     private readonly string email;
 
-    public UserSL(UserBL ubl)
+    internal UserSL(UserBL ubl)
     {
         this.email = ubl.Email;
     }
