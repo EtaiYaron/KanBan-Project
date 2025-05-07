@@ -166,7 +166,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"EditTask failed, no new arguments to update");
                 throw new ArgumentException("all task arguments are null");
             }
-            if (string.IsNullOrEmpty(title.Trim()) || title.Length > 50)
+            if (!string.IsNullOrEmpty(title) && (title.Length > 50 || title.Trim() == ""))
             {
                 log.Error($"EditTask failed, new title {title} is null / empty / over 50 characters.");
                 throw new ArgumentException("title isn't valid");
