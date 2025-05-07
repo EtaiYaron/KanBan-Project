@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"CreateBoard failed, boardName can't be null.");
                 throw new ArgumentException("boardname isn't valid");
             }
-            if (boards.ContainsKey(email) && boards[email].ContainsKey(boardname))
+            if (boards.ContainsKey(email) && CustomContainsKey(boards[email], boardname))
             {
                 log.Error($"CreateBoard failed, boardName {boardname} already exist for user with email {email}.");
                 throw new ArgumentException("boardname already exist under this user");
@@ -48,6 +48,18 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             boards[email].Add(boardname, curr);
             log.Info($"Successfully created new board {boardname} for user with email {email}.");
             return curr;
+        }
+
+        private bool CustomContainsKey(Dictionary<string, BoardBL> boards, string boardName)
+        {
+            foreach (string key in boards.Keys)
+            {
+                if (key.ToLower() == boardName.ToLower())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public BoardBL DeleteBoard(string email, string boardname)
