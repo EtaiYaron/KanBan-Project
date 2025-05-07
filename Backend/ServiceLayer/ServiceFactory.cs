@@ -23,19 +23,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.authenticationFacade = new AuthenticationFacade();
             this.userFacade = new UserFacade(authenticationFacade);
             this.userService = new UserService(userFacade);
-        }
 
-        public void initializeBoardFacade(string currEmail)
-        {
-            this.boardFacade = new BoardFacade(authenticationFacade, currEmail);
+            this.boardFacade = new BoardFacade(authenticationFacade);
             this.boardService = new BoardService(boardFacade);
             this.taskService = new TaskService(boardFacade);
         }
 
-        public UserService UserService { get; }
+        public UserService UserService {
+            get { return this.userService; }}
 
-        public BoardService BoardService { get; }
+        public BoardService BoardService { 
+            get { return this.boardService; }}
 
-        public TaskService TaskService { get; }
+        public TaskService TaskService { 
+            get { return this.taskService; }}
     }
 }

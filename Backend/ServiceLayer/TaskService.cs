@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using log4net;
 
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -25,78 +26,85 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-        public Response AddTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public string AddTask(string email, string boardName, string title, DateTime dueTime, string description)
         {
             try
             {
-                BoardBL bbl = boardFacade.AddTask(boardName, taskId, title, dueTime, description);
-                Response response = new Response(null, bbl);
-                return response;
+                TaskBL tbl = boardFacade.AddTask(email, boardName, title, dueTime, description);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response EditTask(string boardName, int taskId, string title, DateTime dueTime, string description)
+        public string EditTask(string email, string boardName, int taskId, string title, DateTime? dueTime, string description)
         {
             try
             {
-                BoardBL bbl = boardFacade.EditTask(boardName, taskId, title, dueTime, description);
-                Response response = new Response(null, bbl);
-                return response;
+                BoardBL bbl = boardFacade.EditTask(email, boardName, taskId, title, dueTime, description);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response MoveTask(string boardName, int taskId, int dest)
+        public string MoveTask(string email, string boardName, int taskId, int dest)
         {
             try
             {
-                BoardBL bbl = boardFacade.MoveTask(boardName, taskId, dest);
-                Response response = new Response(null, bbl);
-                return response;
+                BoardBL bbl = boardFacade.MoveTask(email, boardName, taskId, dest);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetTask(string boardName, int taskId)
+        public string GetTask(string email, string boardName, int taskId)
         {
             try
             {
-                TaskBL tbl = boardFacade.GetTask(boardName, taskId);
-                Response response = new Response(null, tbl);
-                return response;
+                TaskBL tbl = boardFacade.GetTask(email, boardName, taskId);
+                Response response = new Response(null, new TaskSL(tbl));
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
 
-        public Response GetAllTasks(string boardName)
+        public string GetAllTasks(string email, string boardName)
         {
             try
             {
-                Dictionary<int, TaskBL> dtbl = boardFacade.GetAllTasks(boardName);
-                Response response = new Response(null, dtbl);
-                return response;
+                Dictionary<int, TaskBL> tbl = boardFacade.GetAllTasks(email, boardName);
+
+                Dictionary<int, TaskSL> serviceTbl = new Dictionary<int, TaskSL>();
+                foreach (int key in tbl.Keys)
+                {
+                    serviceTbl.Add(key, new TaskSL(tbl[key]));
+                }
+
+                Response response = new Response(null, serviceTbl);
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
                 Response response = new Response(ex.Message);
-                return response;
+                return JsonSerializer.Serialize(response);
             }
         }
     }

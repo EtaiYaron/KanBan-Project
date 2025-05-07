@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
@@ -11,11 +12,15 @@ namespace Tests
 {
     class TaskServiceTests
     {
+        private UserService us;
         private BoardService b;
         private TaskService t;
+        Response res;
+        int id;
 
-        public TaskServiceTests(BoardService b, TaskService t)
+        public TaskServiceTests(UserService us, BoardService b, TaskService t)
         {
+            this.us = us;
             this.b = b;
             this.t = t;
         }
@@ -23,6 +28,8 @@ namespace Tests
         public void TaskServiceRunTests()
         {
             Console.WriteLine("Running Tests...");
+
+            Before();
 
             bool tests = TestAddTaskPositiveCase();
             if (tests)
@@ -116,10 +123,16 @@ namespace Tests
             }
         }
 
+        public void Before()
+        {
+            us.Register("yaronet@post.bgu.ac.il", "Admin1");
+            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+            res = JsonSerializer.Deserialize < Response > (t.AddTask("yaronet@post.bgu.ac.il", "name", "task0", new DateTime(2026, 4, 10), "checking if task is created"));
+            id = 0;
+        }
+
         public bool TestAddTaskPositiveCase()
         {
-            b.CreateBoard("name");
-            Response res = t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "checking if task is created");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -128,8 +141,8 @@ namespace Tests
         }
         public bool TestAddTaskNegativeCase()
         {
-            b.CreateBoard("name");
-            Response res = t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "checking if task isn't created");
+            res = JsonSerializer.Deserialize < Response > (t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2025, 4, 10), "checking if task isn't created"));
+            id++;
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -138,9 +151,9 @@ namespace Tests
         }
         public bool TestEditTaskPositiveCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.EditTask("name", 100, "task2", new DateTime(2025, 4, 10), "checking if task is edited");
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            res = JsonSerializer.Deserialize<Response>(t.EditTask("yaronet@post.bgu.ac.il", "name", id, "task2", new DateTime(2027, 4, 10), "checking if task is edited"));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -149,9 +162,9 @@ namespace Tests
         }
         public bool TestEditTaskNegativeCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.EditTask("name", 101, "task2", new DateTime(2025, 4, 10), "checking if task isn't edited");
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task3", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            res = JsonSerializer.Deserialize<Response>(t.EditTask("yaronet@post.bgu.ac.il", "name", id + 1, "task3", new DateTime(2026, 4, 10), "checking if task is edited"));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -160,9 +173,10 @@ namespace Tests
         }
         public bool TestMoveTaskPositiveCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.MoveTask("name", 100, 1);
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task4", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            t.EditTask("yaronet@post.bgu.ac.il", "name", id, "task4", new DateTime(2026, 4, 10), "checking if task is edited");
+            res = JsonSerializer.Deserialize<Response>(t.MoveTask("yaronet@post.bgu.ac.il", "name", id, 1));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -171,9 +185,9 @@ namespace Tests
         }
         public bool TestMoveTaskNegativeCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.MoveTask("name", 100, 2);
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task5", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            res = JsonSerializer.Deserialize<Response>(t.MoveTask("yaronet@post.bgu.ac.il", "name", id, 2));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -182,9 +196,9 @@ namespace Tests
         }
         public bool TestGetTaskPositiveCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.GetTask("name",  100);
+            t.AddTask("yaronet@post.bgu.ac.il" ,"name", "task6", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            res = JsonSerializer.Deserialize < Response > (t.GetTask("yaronet@post.bgu.ac.il" ,"name", id));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -193,9 +207,9 @@ namespace Tests
         }
         public bool TestGetTaskNegativeCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.GetTask("name", 101);
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task7", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            res = JsonSerializer.Deserialize < Response > (t.GetTask("yaronet@post.bgu.ac.il", "name", id + 1));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -204,9 +218,7 @@ namespace Tests
         }
         public bool TestGetAllTasksPositiveCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.GetAllTasks("name");
+            res = JsonSerializer.Deserialize < Response > (t.GetAllTasks("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -215,9 +227,7 @@ namespace Tests
         }
         public bool TestGetAllTasksNegativeCase()
         {
-            b.CreateBoard("name");
-            t.AddTask("name", 100, "task1", new DateTime(2025, 4, 10), "task is created");
-            Response res = t.GetAllTasks("name2");
+            res = JsonSerializer.Deserialize < Response > (t.GetAllTasks("yaronet@post.bgu.ac.il", "name2"));
             if (res.ErrorMessage == null)
             {
                 return false;

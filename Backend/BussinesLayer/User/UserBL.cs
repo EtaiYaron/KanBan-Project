@@ -21,5 +21,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             return this.password == password;
         }
+
+        public string Email {  get { return this.email; } }
     }
 }

@@ -23,8 +23,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.returnValue = returnValue;
         }
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get { return this.errorMessage; }
+            set { this.errorMessage = value; }
+        }
 
-        public object ReturnValue { get; set; }
+        public object ReturnValue
+        {
+            get { return this.returnValue; }
+            set { this.returnValue = value; }
+        }
     }
 }
