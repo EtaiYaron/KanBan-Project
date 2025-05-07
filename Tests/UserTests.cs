@@ -22,7 +22,7 @@ namespace Tests
             this.us = us; 
         }
         
-        void UserRunTests()
+        public void UserRunTests()
         {
             Console.WriteLine("Running Tests...");
 
