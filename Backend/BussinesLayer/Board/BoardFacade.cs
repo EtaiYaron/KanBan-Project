@@ -178,6 +178,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"EditTask failed, no new arguments to update");
                 throw new ArgumentException("all task arguments are null");
             }
+            if (board.Tasks[taskId].State == 2)
+            {
+                log.Error($"EditTask failed, can't edit a task that is done");
+                throw new Exception("Editing a done task is not allowed");
+            }
             if (!string.IsNullOrEmpty(title) && (title.Length > 50 || title.Trim() == ""))
             {
                 log.Error($"EditTask failed, new title {title} is null / empty / over 50 characters.");
