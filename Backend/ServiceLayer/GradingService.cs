@@ -130,16 +130,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the column's name, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            string ret = null;
-            if (columnOrdinal == 0) ret = "backlog";
-            if (columnOrdinal == 1) ret = "in progress";
-            else if (columnOrdinal == 2) ret = "done";
-
-            if (ret != null)
-            {
-                return JsonSerializer.Serialize(new Response(null, ret));
-            }
-            return JsonSerializer.Serialize(new Response("Illagal column ordinal"));
+            return serviceFactory.BoardService.GetNameOfColumn(email, boardName, columnOrdinal);
         }
 
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
+using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
@@ -201,6 +202,24 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             board.EditTask(taskId, title, dueTime, description);
             log.Info($"successfully edited task {taskId} in board {boardname} for user with email {email}.");
             return board;
+        }
+
+        public string GetNameOfColumn(string email, string boardName, int columnOrdinal)
+        {
+            log.Info($"Attempting to get the column name of column with ordinal {columnOrdinal}.");
+            EnsureUserIsLoggedIn(email);
+            ValidateBoardExists(email, boardName);
+            if (columnOrdinal < 0 || columnOrdinal > 2)
+            {
+                log.Error($"Got invalid column ordinal, such ordinal doesn't exist");
+                throw new ArgumentException("Invalid column ordinal");
+            }          
+
+            if (columnOrdinal == 0) 
+                return "backlog";
+            if (columnOrdinal == 1) 
+                return "in progress";
+            return "done";
         }
 
         public BoardBL GetBoard(string email, string boardname)

@@ -55,6 +55,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        public string GetNameOfColumn(string email, string boardName, int columnOrdinal)
+        {
+            try
+            {
+                string name = boardFacade.GetNameOfColumn(email, boardName, columnOrdinal);
+                Response response = new Response(null, name);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
         public string GetBoard(string email, string name)
         {
             try
