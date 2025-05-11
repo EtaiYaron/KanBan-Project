@@ -15,8 +15,9 @@ namespace Tests
         private UserService us;
         private BoardService b;
         private TaskService t;
-        Response res;
-        int id;
+        private Response res;
+        private int id;
+        private int cnt;
 
         public TaskServiceTests(UserService us, BoardService b, TaskService t)
         {
@@ -140,6 +141,26 @@ namespace Tests
             {
                 Console.WriteLine("TestGetAllTasksNegativeCase: Failed");
             }
+
+            tests = TestAssignTaskToUserPositiveCase();
+            if (tests)
+            {
+                Console.WriteLine("TestAssignTaskToUserPositiveCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestAssignTaskToUserPositiveCase: Failed");
+            }
+
+            tests = TestAssignTaskToUserNegativeCase();
+            if (tests)
+            {
+                Console.WriteLine("TestAssignTaskToUserNegativeCase: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestAssignTaskToUserNegativeCase: Failed");
+            }
         }
 
         public void Before()
@@ -148,6 +169,7 @@ namespace Tests
             b.CreateBoard("yaronet@post.bgu.ac.il", "name");
             res = JsonSerializer.Deserialize<Response>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task0", new DateTime(2026, 4, 10), "checking if task is created"));
             id = 0;
+            cnt = 0;
         }
 
         public bool TestAddTaskPositiveCase()
@@ -271,6 +293,32 @@ namespace Tests
                 return false;
             }
             return true;
+        }
+
+        public bool TestAssignTaskToUserPositiveCase()
+        {
+            us.Login("Shauli@gmail.com", "Haparlament1");
+            b.CreateBoard("Shauli@gmail.com", "ABCD");
+            t.AddTask("Shauli@gmail.com", "ABCD", "tasktome", new DateTime(2026, 4, 10), "task is created");
+            id++;
+            cnt++;
+            b.JoinBoard("yaronet@post.bgu.ac.il", cnt);
+            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "ABCD", id, "yaronet@post.bgu.ac.il"));
+            if (res.ErrorMessage == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool TestAssignTaskToUserNegativeCase()
+        {
+            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "ABCD", id+1, "yaronet@post.bgu.ac.il"));
+            if (res.ErrorMessage != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
