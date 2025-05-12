@@ -152,6 +152,16 @@ namespace Tests
                 Console.WriteLine("TestAssignTaskToUserPositiveCase: Failed");
             }
 
+            tests = TestAssignTaskToUserPositiveCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestAssignTaskToUserPositiveCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestAssignTaskToUserPositiveCase1: Failed");
+            }
+
             tests = TestAssignTaskToUserNegativeCase();
             if (tests)
             {
@@ -160,6 +170,16 @@ namespace Tests
             else
             {
                 Console.WriteLine("TestAssignTaskToUserNegativeCase: Failed");
+            }
+
+            tests = TestAssignTaskToUserNegativeCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestAssignTaskToUserNegativeCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestAssignTaskToUserNegativeCase1: Failed");
             }
         }
 
@@ -311,9 +331,32 @@ namespace Tests
             return false;
         }
 
+        public bool TestAssignTaskToUserPositiveCase1()
+        {
+            t.AddTask("Shauli@gmail.com", "USA", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
+            id++;
+            b.JoinBoard("DonaldTrump@gmail.com", cnt);
+            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "USA", id, "DonaldTrump@gmail.com"));
+            if (res.ErrorMessage == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool TestAssignTaskToUserNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "ABCD", id+1, "yaronet@post.bgu.ac.il"));
+            if (res.ErrorMessage != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool TestAssignTaskToUserNegativeCase1()
+        {
+                       Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.co", "USA", id, "DonaldTrump@gmail.com"));
             if (res.ErrorMessage != null)
             {
                 return true;

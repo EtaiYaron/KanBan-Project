@@ -214,6 +214,16 @@ namespace Tests
                 Console.WriteLine("TestGetUserBoardsPositiveCase: Failed");
             }
 
+            tests = TestGetUserBoardsPositiveCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestGetUserBoardsPositiveCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestGetUserBoardsPositiveCase1: Failed");
+            }
+
             tests = TestGetUserBoardsNegativeCase();
             if (tests)
             {
@@ -244,6 +254,16 @@ namespace Tests
                 Console.WriteLine("TestJoinBoardPositiveCase: Failed");
             }
 
+            tests = TestJoinBoardPositiveCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestJoinBoardPositiveCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestJoinBoardPositiveCase1: Failed");
+            }
+
             tests = TestJoinBoardNegativeCase();
             if (tests)
             {
@@ -252,6 +272,16 @@ namespace Tests
             else
             {
                 Console.WriteLine("TestJoinBoardNegativeCase: Failed");
+            }
+
+            tests = TestJoinBoardNegativeCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestJoinBoardNegativeCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestJoinBoardNegativeCase1: Failed");
             }
 
             tests = TestLeaveBoardPositiveCase();
@@ -264,6 +294,16 @@ namespace Tests
                 Console.WriteLine("TestLeaveBoardPositiveCase: Failed");
             }
 
+            tests = TestLeaveBoardPositiveCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestLeaveBoardPositiveCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestLeaveBoardPositiveCase1: Failed");
+            }
+
             tests = TestLeaveBoardNegativeCase();
             if (tests)
             {
@@ -272,6 +312,16 @@ namespace Tests
             else
             {
                 Console.WriteLine("TestLeaveBoardNegativeCase: Failed");
+            }
+
+            tests = TestLeaveBoardNegativeCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestLeaveBoardNegativeCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestLeaveBoardNegativeCase1: Failed");
             }
 
             tests = TestChangeOwnerPositiveCase();
@@ -284,6 +334,16 @@ namespace Tests
                 Console.WriteLine("TestChangeOwnerPositiveCase: Failed");
             }
 
+            tests = TestChangeOwnerPositiveCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestChangeOwnerPositiveCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestChangeOwnerPositiveCase1: Failed");
+            }
+
             tests = TestChangeOwnerNegativeCase();
             if (tests)
             {
@@ -292,6 +352,16 @@ namespace Tests
             else
             {
                 Console.WriteLine("TestChangeOwnerNegativeCase: Failed");
+            }
+
+            tests = TestChangeOwnerNegativeCase1();
+            if (tests)
+            {
+                Console.WriteLine("TestChangeOwnerNegativeCase1: Passed");
+            }
+            else
+            {
+                Console.WriteLine("TestChangeOwnerNegativeCase1: Failed");
             }
 
 
@@ -500,6 +570,20 @@ namespace Tests
             }
             return false;
         }
+
+        public bool TestGetUserBoardsPositiveCase1()
+        {
+            us.Register("Kobe2424@gmail.com" , "Kobe1" );
+            b.JoinBoard("Kobe2424@gmail.com", cnt);
+            cnt++;
+            Response res = JsonSerializer.Deserialize<Response>(b.GetUserBoards("Kobe2424@gmail.com"));
+            if (res.ErrorMessage == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool TestGetUserBoardsNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.GetUserBoards("LebronJames@gmail.com"));
@@ -532,9 +616,30 @@ namespace Tests
             return false;
         }
 
+        public bool TestJoinBoardPositiveCase1()
+        {
+            us.Register("DonaldTrump@gmail.com", "UsaPresident2025");
+            Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("DonaldTrump@gmail.com", cnt));
+            if (res.ErrorMessage == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool TestJoinBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt+1));
+            if (res.ErrorMessage != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool TestJoinBoardNegativeCase1()
+        {
+            Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("DonaldTrump@gmail.co", cnt ));
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -552,9 +657,33 @@ namespace Tests
             return false;
         }
 
+        public bool TestLeaveBoardPositiveCase1()
+        {
+            b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard");
+            cnt++;
+            b.JoinBoard("DonaldTrump@gmail.com", cnt);
+            b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard");
+            Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
+            if (res.ErrorMessage == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool TestLeaveBoardNegativeCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("Shauli@gmail.com", cnt));
+            Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("DonaldTrump@gmail.com", cnt));
+            if (res.ErrorMessage != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool TestLeaveBoardNegativeCase1()
+        {
+            Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -573,6 +702,20 @@ namespace Tests
             return false;
         }
 
+        public bool TestChangeOwnerPositiveCase1()
+        {
+            b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard2");
+            cnt++;
+            b.JoinBoard("DonaldTrump@gmail.com", cnt);
+            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard2"));
+
+            if (res.ErrorMessage == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool TestChangeOwnerNegativeCase()
         { 
             Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("Shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
@@ -583,5 +726,14 @@ namespace Tests
             return false;
         }
 
+        public bool TestChangeOwnerNegativeCase1()
+        {
+            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("DonaldTrump@gmail.com", "DonaldTrump@gmail.com", "newBoard2"));
+            if (res.ErrorMessage != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
