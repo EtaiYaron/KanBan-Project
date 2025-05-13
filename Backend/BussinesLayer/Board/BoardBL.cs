@@ -24,6 +24,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.maxTasks0 = -1;
             this.maxTasks1 = -1;
             this.maxTasks2 = -1;
+            this.numTasks0 = 0;
+            this.numTasks1 = 0;
+            this.numTasks2 = 0;
         }
 
         public void AddTask(int taskId, string title, DateTime dueDate, string description)
