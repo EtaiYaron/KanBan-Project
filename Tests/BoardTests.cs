@@ -204,6 +204,7 @@ namespace Tests
             }
             // MileStone 2 Tests:
 
+            // Test: Retrieving a user's own boards (Requirement 8, 9)
             tests = TestGetUserBoardsPositiveCase();
             if (tests)
             {
@@ -214,6 +215,7 @@ namespace Tests
                 Console.WriteLine("TestGetUserBoardsPositiveCase: Failed");
             }
 
+            // Test: Retrieving boards a user has joined (Requirement 8, 12)
             tests = TestGetUserBoardsPositiveCase1();
             if (tests)
             {
@@ -224,6 +226,7 @@ namespace Tests
                 Console.WriteLine("TestGetUserBoardsPositiveCase1: Failed");
             }
 
+            // Test: Retrieving boards for a non-existent user (Requirement 8, 9)
             tests = TestGetUserBoardsNegativeCase();
             if (tests)
             {
@@ -234,6 +237,7 @@ namespace Tests
                 Console.WriteLine("TestGetUserBoardsNegativeCase: Failed");
             }
 
+            // Test: Non-owner cannot delete a board (Requirement 11, 13)
             tests = TestDeleteBoardNegativeCase2();
             if (tests)
             {
@@ -244,6 +248,7 @@ namespace Tests
                 Console.WriteLine("TestDeleteBoardNegativeCase2: Failed");
             }
 
+            // Test: User can join an existing board (Requirement 12)
             tests = TestJoinBoardPositiveCase();
             if (tests)
             {
@@ -254,6 +259,7 @@ namespace Tests
                 Console.WriteLine("TestJoinBoardPositiveCase: Failed");
             }
 
+            // Test: Another user can join an existing board (Requirement 12)
             tests = TestJoinBoardPositiveCase1();
             if (tests)
             {
@@ -264,6 +270,7 @@ namespace Tests
                 Console.WriteLine("TestJoinBoardPositiveCase1: Failed");
             }
 
+            // Test: Joining a non-existent board fails (Requirement 12)
             tests = TestJoinBoardNegativeCase();
             if (tests)
             {
@@ -274,6 +281,7 @@ namespace Tests
                 Console.WriteLine("TestJoinBoardNegativeCase: Failed");
             }
 
+            // Test: Joining a board with an invalid user fails (Requirement 12)
             tests = TestJoinBoardNegativeCase1();
             if (tests)
             {
@@ -284,6 +292,7 @@ namespace Tests
                 Console.WriteLine("TestJoinBoardNegativeCase1: Failed");
             }
 
+            // Test: User can leave a board they joined (Requirement 12, 15)
             tests = TestLeaveBoardPositiveCase();
             if (tests)
             {
@@ -294,6 +303,7 @@ namespace Tests
                 Console.WriteLine("TestLeaveBoardPositiveCase: Failed");
             }
 
+            // Test: Board owner can transfer ownership and then leave (Requirement 13, 14)
             tests = TestLeaveBoardPositiveCase1();
             if (tests)
             {
@@ -304,6 +314,7 @@ namespace Tests
                 Console.WriteLine("TestLeaveBoardPositiveCase1: Failed");
             }
 
+            // Test: User who is not a member cannot leave a board (Requirement 12)
             tests = TestLeaveBoardNegativeCase();
             if (tests)
             {
@@ -314,6 +325,7 @@ namespace Tests
                 Console.WriteLine("TestLeaveBoardNegativeCase: Failed");
             }
 
+            // Test: Board owner cannot leave the board (Requirement 14)
             tests = TestLeaveBoardNegativeCase1();
             if (tests)
             {
@@ -324,6 +336,7 @@ namespace Tests
                 Console.WriteLine("TestLeaveBoardNegativeCase1: Failed");
             }
 
+            // Test: Board owner can transfer ownership to another member (Requirement 13)
             tests = TestChangeOwnerPositiveCase();
             if (tests)
             {
@@ -334,6 +347,7 @@ namespace Tests
                 Console.WriteLine("TestChangeOwnerPositiveCase: Failed");
             }
 
+            // Test: Board owner can transfer ownership to a newly joined member (Requirement 13)
             tests = TestChangeOwnerPositiveCase1();
             if (tests)
             {
@@ -344,6 +358,7 @@ namespace Tests
                 Console.WriteLine("TestChangeOwnerPositiveCase1: Failed");
             }
 
+            // Test: Non-owner cannot transfer board ownership (Requirement 13)
             tests = TestChangeOwnerNegativeCase();
             if (tests)
             {
@@ -354,6 +369,7 @@ namespace Tests
                 Console.WriteLine("TestChangeOwnerNegativeCase: Failed");
             }
 
+            // Test: User cannot transfer ownership to themselves if not the owner (Requirement 13)
             tests = TestChangeOwnerNegativeCase1();
             if (tests)
             {
@@ -367,16 +383,21 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// Registers two users for testing purposes.
+        /// </summary>
         public void CreatingUser()
         {
-            // This method registers two users for testing purposes
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
             us.Register("Shauli@gmail.com", "Haparlament1");
         }
 
+        /// <summary>
+        /// Checks if a board can be created successfully.
+        /// Requirement: 8 (board creation)
+        /// </summary>
         public bool TestCreateBoardPositiveCase()
         {
-            // This test checks if a board can be created successfully (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
@@ -385,9 +406,12 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a board can be created successfully by a different user.
+        /// Requirement: 8 (board creation)
+        /// </summary>
         public bool TestCreateBoardPositiveCase1()
         {
-            // This test checks if a board can be created successfully by a different user (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("Shauli@gmail.com", "name1"));
             cnt++;
             if (res.ErrorMessage == null)
@@ -397,9 +421,12 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if creating a board with the same name for the same user fails.
+        /// Requirement: 10 (unique board names per user)
+        /// </summary>
         public bool TestCreateBoardNegativeCase()
         {
-            // This test checks if creating a board with the same name for the same user fails (Requirement 10)
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
@@ -408,9 +435,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if creating a board with an invalid user fails.
+        /// Requirement: 8 (board creation)
+        /// </summary>
         public bool TestCreateBoardNegativeCase1()
         {
-            // This test checks if creating a board with an invalid user fails (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("hauli@gmail.com", "name2"));
             if (res.ErrorMessage == null)
             {
@@ -419,9 +449,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if a board can be deleted successfully.
+        /// Requirement: 8 (board deletion)
+        /// </summary>
         public bool TestDeleteBoardPositiveCase()
         {
-            // This test checks if a board can be deleted successfully (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage != null)
             {
@@ -430,9 +463,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if a board can be deleted successfully by a different user.
+        /// Requirement: 8 (board deletion)
+        /// </summary>
         public bool TestDeleteBoardPositiveCase1()
         {
-            // This test checks if a board can be deleted successfully by a different user (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("Shauli@gmail.com", "name1"));
             if (res.ErrorMessage != null)
             {
@@ -441,9 +477,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if deleting a non-existent board fails.
+        /// Requirement: 8 (board deletion)
+        /// </summary>
         public bool TestDeleteBoardNegativeCase()
         {
-            // This test checks if deleting a non-existent board fails (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage == null)
             {
@@ -452,9 +491,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if deleting a board with mismatched names fails.
+        /// Requirement: 8 (board deletion)
+        /// </summary>
         public bool TestDeleteBoardNegativeCase1()
         {
-            // This test checks if deleting a board with mismatched names fails (Requirement 8)
             b.CreateBoard("Shauli@gmail.com", "name1");
             cnt++;
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("Shauli@gmail.com", "name"));
@@ -465,9 +507,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if retrieving a non-existent board fails.
+        /// Requirement: 8 (board retrieval)
+        /// </summary>
         public bool TestGetBoardNegativeCase()
         {
-            // This test checks if retrieving a non-existent board fails (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.GetBoard("yaronet@post.bgu.ac.il", "name"));
             if (res.ErrorMessage != null)
             {
@@ -476,9 +521,12 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if retrieving a board with an invalid user fails.
+        /// Requirement: 8 (board retrieval)
+        /// </summary>
         public bool TestGetBoardNegativeCase1()
         {
-            // This test checks if retrieving a board with an invalid user fails (Requirement 8)
             Response res = JsonSerializer.Deserialize<Response>(b.GetBoard("ya", "name"));
             if (res.ErrorMessage != null)
             {
@@ -487,9 +535,12 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if an existing board can be retrieved successfully.
+        /// Requirement: 8 (board retrieval)
+        /// </summary>
         public bool TestGetBoardPositiveCase()
         {
-            // This test checks if an existing board can be retrieved successfully (Requirement 8)
             b.CreateBoard("yaronet@post.bgu.ac.il", "name");
             cnt++;
             Response res = JsonSerializer.Deserialize<Response>(b.GetBoard("yaronet@post.bgu.ac.il", "name"));
@@ -500,9 +551,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if another existing board can be retrieved successfully.
+        /// Requirement: 8 (board retrieval)
+        /// </summary>
         public bool TestGetBoardPositiveCase1()
         {
-            // This test checks if another existing board can be retrieved successfully (Requirement 8)
             b.CreateBoard("yaronet@post.bgu.ac.il", "name50");
             cnt++;
             Response res = JsonSerializer.Deserialize<Response>(b.GetBoard("yaronet@post.bgu.ac.il", "name50"));
@@ -513,9 +567,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if limiting tasks in a column to zero and adding a task fails.
+        /// Requirement: 11 (task limit)
+        /// </summary>
         public bool TestLimitTasksNegativeCase()
         {
-            // This test checks if limiting tasks in a column to zero and adding a task fails (Requirement 11)
             b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 0);
             Response res = JsonSerializer.Deserialize<Response>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks"));
             if (res.ErrorMessage == null)
@@ -525,9 +582,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if setting an invalid task limit fails.
+        /// Requirement: 11 (task limit)
+        /// </summary>
         public bool TestLimitTasksNegativeCase1()
         {
-            // This test checks if setting an invalid task limit fails (Requirement 11)
             Response res = JsonSerializer.Deserialize<Response>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 3, 0));
             if (res.ErrorMessage == null)
             {
@@ -536,9 +596,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if setting a valid task limit and adding a task succeeds.
+        /// Requirement: 11 (task limit)
+        /// </summary>
         public bool TestLimitTasksPositiveCase()
         {
-            // This test checks if setting a valid task limit and adding a task succeeds (Requirement 11)
             b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 10);
             Response res = JsonSerializer.Deserialize<Response>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks"));
             if (res.ErrorMessage != null)
@@ -548,9 +611,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if setting a high task limit succeeds.
+        /// Requirement: 11 (task limit)
+        /// </summary>
         public bool TestLimitTasksPositiveCase1()
         {
-            // This test checks if setting a high task limit succeeds (Requirement 11)
             Response res = JsonSerializer.Deserialize<Response>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 2, 100));
             if (res.ErrorMessage != null)
             {
@@ -559,6 +625,10 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if a user can retrieve their boards.
+        /// Requirements: 8, 9 (board retrieval)
+        /// </summary>
         public bool TestGetUserBoardsPositiveCase()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "Milestone2");
@@ -571,6 +641,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a user can retrieve boards they joined.
+        /// Requirements: 8, 12 (board retrieval, join)
+        /// </summary>
         public bool TestGetUserBoardsPositiveCase1()
         {
             us.Register("Kobe2424@gmail.com", "Kobe1");
@@ -584,6 +658,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if retrieving boards for a non-existent user fails.
+        /// Requirements: 8, 9 (board retrieval)
+        /// </summary>
         public bool TestGetUserBoardsNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.GetUserBoards("LebronJames@gmail.com"));
@@ -594,6 +672,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a non-owner cannot delete a board.
+        /// Requirements: 11, 13 (ownership, permissions)
+        /// </summary>
         public bool TestDeleteBoardNegativeCase2()
         {
             b.CreateBoard("Shauli@gmail.com", "Mile2");
@@ -606,6 +688,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a user can join an existing board.
+        /// Requirement: 12 (join board)
+        /// </summary>
         public bool TestJoinBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt));
@@ -616,6 +702,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if another user can join an existing board.
+        /// Requirement: 12 (join board)
+        /// </summary>
         public bool TestJoinBoardPositiveCase1()
         {
             us.Register("DonaldTrump@gmail.com", "UsaPresident2025");
@@ -627,6 +717,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if joining a non-existent board fails.
+        /// Requirement: 12 (join board)
+        /// </summary>
         public bool TestJoinBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt + 1));
@@ -637,6 +731,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if joining a board with an invalid user fails.
+        /// Requirement: 12 (join board)
+        /// </summary>
         public bool TestJoinBoardNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("DonaldTrump@gmail.co", cnt));
@@ -647,6 +745,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a user can leave a board they joined.
+        /// Requirements: 12, 15 (leave board)
+        /// </summary>
         public bool TestLeaveBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
@@ -657,6 +759,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a board owner can transfer ownership and then leave.
+        /// Requirements: 13, 14 (ownership transfer, leave)
+        /// </summary>
         public bool TestLeaveBoardPositiveCase1()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard");
@@ -671,6 +777,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a user who is not a member cannot leave a board.
+        /// Requirement: 12 (leave board)
+        /// </summary>
         public bool TestLeaveBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("DonaldTrump@gmail.com", cnt));
@@ -681,6 +791,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a board owner cannot leave the board.
+        /// Requirement: 14 (owner leave restriction)
+        /// </summary>
         public bool TestLeaveBoardNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
@@ -691,6 +805,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a board owner can transfer ownership to another member.
+        /// Requirement: 13 (ownership transfer)
+        /// </summary>
         public bool TestChangeOwnerPositiveCase()
         {
             b.JoinBoard("yaronet@post.bgu.ac.il", cnt);
@@ -702,6 +820,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a board owner can transfer ownership to a newly joined member.
+        /// Requirement: 13 (ownership transfer)
+        /// </summary>
         public bool TestChangeOwnerPositiveCase1()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard2");
@@ -716,6 +838,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a non-owner cannot transfer board ownership.
+        /// Requirement: 13 (ownership transfer)
+        /// </summary>
         public bool TestChangeOwnerNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("Shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
@@ -726,6 +852,10 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a user cannot transfer ownership to themselves if not the owner.
+        /// Requirement: 13 (ownership transfer)
+        /// </summary>
         public bool TestChangeOwnerNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("DonaldTrump@gmail.com", "DonaldTrump@gmail.com", "newBoard2"));
