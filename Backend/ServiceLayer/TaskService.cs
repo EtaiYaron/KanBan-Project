@@ -26,6 +26,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
+        /// <summary>
+        /// This method is used to add a task to a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="title"></param>
+        /// <param name="dueTime"></param>
+        /// <param name="description"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string AddTask(string email, string boardName, string title, DateTime dueTime, string description)
         {
             try
@@ -41,6 +50,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to edit a task in a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="taskId"></param>
+        /// <param name="title"></param>
+        /// <param name="dueTime"></param>
+        /// <param name="description"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string EditTask(string email, string boardName, int taskId, string title, DateTime? dueTime, string description)
         {
             try
@@ -56,6 +75,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to move a task in a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="taskId"></param>
+        /// <param name="dest"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string MoveTask(string email, string boardName, int taskId, int dest)
         {
             try
