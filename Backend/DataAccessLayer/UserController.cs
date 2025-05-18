@@ -19,13 +19,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private readonly string _tableName;
         private const string TableName = "Users";
 
+        /// <summary>
+        /// This is the constructor for the UserController class.
+        /// </summary>
         public UserController()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "database.db"));
-            this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "database.db")}";
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
+            this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
             this._tableName = TableName;
         }
 
+        /// <summary>
+        /// This method is used to insert a user into the database.
+        /// </summary>
+        /// <param name="userDal"></param>
+        /// <returns>true if the user inserted successfully into the database</returns>
         public bool Insert(UserDAL userDal)
         {
             //log.Info($"Attempting to insert user with email: {userDal.Email} and password: {userDal.Password}.");
@@ -57,6 +65,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
+        /// <summary>
+        /// This method is used to delete a user from the database.
+        /// </summary>
+        /// <param name="userDal"></param>
+        /// <<returns>true if the user deleted successfully from the database</returns>
         public bool Delete(UserDAL userDal)
         {
             int res = -1;
@@ -83,6 +96,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
+
+        /// <summary>
+        /// This method is used to select all users from the database.
+        /// </summary>
+        /// <<returns>List of all users in the database</returns>
         public List<UserDAL> SelectAllUsers()
         {
             List<UserDAL> result = new List<UserDAL>();
@@ -115,6 +133,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return result;
         }
 
+        /// <summary>
+        /// This method is used to convert a SqliteDataReader to a UserDAL object.
+        /// </summary>
+        /// <param name="dataReader"></param>
+        /// <returns>UserDAL object</returns>
         private UserDAL ConvertReaderToObject(SqliteDataReader dataReader)
         {
             return new UserDAL(dataReader.GetString(0), dataReader.GetString(1));
