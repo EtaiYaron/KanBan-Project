@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
@@ -14,6 +15,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private DateTime? dueDate;
         private string description;
         private int state;
+        private TaskDAL taskDAL;
+        private bool isPersistent;
+        private string assigneeEmail;
+        private long boardId;
+        
 
         public TaskBL(int taskId, string title, DateTime dueDate, string description)
         {

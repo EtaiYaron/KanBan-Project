@@ -78,8 +78,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             set {
                 if (isPersistent)
                 {
-                    title = value; 
                     TaskController.Update(this, "title", value);
+                    title = value; 
                 }
             }
         }
@@ -91,8 +91,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    dueDate = value; 
                     TaskController.Update(this, "dueDate", "#" + dueDate.ToString() + "#");
+                    dueDate = value; 
                 }
             }
         }
@@ -104,8 +104,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    title = value; 
                     TaskController.Update(this, "description", value);
+                    title = value; 
                 }
             }
         }
@@ -117,8 +117,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    this.state = value;
                     TaskController.Update(this, "state", value.ToString());
+                    this.state = value;
                 }
             }
         }
@@ -147,8 +147,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    this.assigneeEmail = value;
                     TaskController.Update(this, "assigneeEmail", value);
+                    this.assigneeEmail = value;
                 }
             }
         }
