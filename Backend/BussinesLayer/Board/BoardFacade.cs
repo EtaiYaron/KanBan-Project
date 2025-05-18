@@ -272,7 +272,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"LimitTasks failed, column {column} is not vaild. must be between 0 and 2.");
                 throw new Exception("column isn't valid");
             }
-            if (newLimit < 0)
+            if (newLimit <= 0 && newLimit != -1)
             {
                 log.Error($"LimitTasks failed, newLimit {newLimit} is not vaild. must be non negative for user with email {email}.");
                 throw new Exception("limit isn't valid");
@@ -280,7 +280,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
 
             BoardBL board = boards[email][boardname];
-            if ((column == 0 && newLimit < board.NumTasks0) || (column == 1 && newLimit < board.NumTasks1) || (column == 2 && newLimit < board.NumTasks2))
+            if (newLimit != -1 && ((column == 0 && newLimit < board.NumTasks0) || (column == 1 && newLimit < board.NumTasks1) || (column == 2 && newLimit < board.NumTasks2)))
             {
                 log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
                 throw new Exception("there are already more tasks in the column than the new limit.");
