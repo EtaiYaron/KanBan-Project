@@ -213,7 +213,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// This method is used to convert a data reader to a task.
         /// </summary>
         /// <param name="dataReader"></param>
-        /// <returns>returns a taskDAL</returns>
+        /// <returns>taskDAL object</returns>
         public TaskDAL ConvertReaderToTask(SqliteDataReader dataReader)
         {
             int taskId = dataReader.GetInt32(0);
