@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     SqliteCommand command = new SqliteCommand(null, connection);
-                    string insert = $"INSERT INTO {TableName} ({userDal.UserEmailColumnName},{userDal.UserPasswordColumnName}) Values {@"emailVal"},{@"passwordVal"}";
+                    string insert = $"INSERT INTO {TableName} ({"email"},{"password"}) Values {@"emailVal"},{@"passwordVal"}";
 
                     SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
                     SqliteParameter passwordParameter = new SqliteParameter(@"passwordVal", userDal.Password);
@@ -78,7 +78,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     SqliteCommand command = new SqliteCommand(null, connection);
-                    string delete = $"DELETE FROM {TableName} WHERE {userDal.UserEmailColumnName} = @emailVal";
+                    string delete = $"DELETE FROM {TableName} WHERE {userDal.Email} = @emailVal";
                     SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
                     command.CommandText = delete;
                     command.Parameters.Add(emailParameter);
