@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 string update = $"UPDATE {TableName} SET {attributeName} = @attributeValue WHERE TaskId = @taskId";
 
                 try
-                {   
+                {
                     command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
                     connection.Open();
                     res = command.ExecuteNonQuery();
@@ -223,9 +223,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DateTime dueDate = dataReader.GetDateTime(4);
             string description = dataReader.GetString(5);
             string assigneeEmail = dataReader.GetString(6);
-            return new TaskDAL(taskId, boardId, title, dueDate,creationTime, description)
+            return new TaskDAL(taskId, boardId, title, dueDate, creationTime, description)
             {
                 AssigneeEmail = assigneeEmail
             };
         }
     }
+}
