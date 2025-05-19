@@ -98,6 +98,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get a task from a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="taskId"></param>
+        /// <returns>A string with the task's details, unless an error occurs</returns>
         public string GetTask(string email, string boardName, int taskId)
         {
             try
@@ -113,6 +120,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get all tasks from a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <returns>A string with all the tasks in the board, unless an error occurs</returns>
         public string GetAllTasks(string email, string boardName)
         {
             try
