@@ -578,12 +578,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"Assigning task to user failed, one of the users is not in board.");
                 throw new Exception("One of the users is not in board");
             }
-            if (!(board.Tasks).ContainsKey(taskId))
+            TaskBL task = board.GetTask(taskId);
+            if (task == null)
             {
                 log.Error($"Assigning task to user failed, task {taskId} isn't exist in board {boardname}.");
                 throw new ArgumentException("taskId isn't exist task in this board");
             }
-            TaskBL task = board.GetTask(taskId);
             if (!string.IsNullOrEmpty(task.Assignee) && email != task.Assignee)
             {
                 log.Error($"Assigning task to user failed, user {email} is not assigned to task {taskId}.");
