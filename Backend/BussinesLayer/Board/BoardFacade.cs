@@ -18,13 +18,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private readonly Dictionary<string, Dictionary<string, BoardBL>> boards;
         private AuthenticationFacade authenticationFacade;
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
-        private int id;
+        private int nextBoardId;
 
         public BoardFacade(AuthenticationFacade authenticationFacade)
         {
             this.boards = new Dictionary<string, Dictionary<string, BoardBL>>();
             this.authenticationFacade = authenticationFacade;
-            this.id = 0;
+            this.nextBoardId = 0;
         }
 
         /// <summary>
@@ -52,8 +52,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 boards.Add(email, new Dictionary<string, BoardBL>());
             }
-            BoardBL curr = new BoardBL(boardname);
+            BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
+            nextBoardId++;
             log.Info($"Successfully created new board {boardname} for user with email {email}.");
             return curr;
         }
@@ -166,15 +167,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <exception cref="ArgumentException"></exception>
         public TaskBL AddTask(string email, string boardname, string title, DateTime dueTime, string description = "")
         {
-            log.Info($"Attempting to add task {id} in board {boardname} for user with email {email}.");
+            log.Info($"Attempting to add task in board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
-            if ((board.Tasks).ContainsKey(id))
-            {
-                log.Error($"AddTask failed, task {id} already exist in board {boardname}.");
-                throw new ArgumentException("taskId exist task in this board");
-            }
             if (string.IsNullOrEmpty(title.Trim()) || title.Length > 50)
             {
                 log.Error($"AddTask failed, title {title} is null / empty / over 50 characters.");
@@ -195,11 +191,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, column 0 is full.");
                 throw new ArgumentException("column 0 is full");
             }
-            TaskBL task = new TaskBL(id, title, dueTime, description);
-            board.AddTask(id, title, dueTime, description);
+            TaskBL task = new TaskBL(board.NextTaskId, title, dueTime, description);
+            board.AddTask(title, dueTime, description);
             board.NumTasks0++;
-            this.id++;
-            log.Info($"Successfully added task {id} to board {boardname} for user with email {email}.");
+            log.Info($"Successfully added task {board.NextTaskId} to board {boardname} for user with email {email}.");
             return task;
         }
 
@@ -466,6 +461,47 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// </summary>
         /// <param name="email"></param>
         /// <exception cref="InvalidOperationException"></exception>
+        public void JoinBoard(string email, int boardId)
+        {
+            EnsureUserIsLoggedIn(email);
+            BoardBL board = GetBoardIfExists(boardId);
+            if (board.IsUserInBoard(email))
+                throw new Exception("User is already joined this board");
+            board.JoinUser(email);
+            if (!boards.ContainsKey(email))
+            {
+                boards.Add(email, new Dictionary<string, BoardBL>());
+            }
+            boards[email].Add(board.Name, board);
+        }
+
+        public void LeaveBoard(string email, int boardId)
+        {
+            EnsureUserIsLoggedIn(email);
+            BoardBL board = GetBoardIfExists(boardId);
+            if (!board.IsUserInBoard(email))
+                throw new Exception("User is not in board");
+            if (board.Owner == email)
+                throw new Exception("Owner of board can't leave it");
+            board.UnjoinUser(email);
+            boards[email].Remove(board.Name);
+        }
+
+        private BoardBL GetBoardIfExists(int boardId)
+        {
+            foreach (string email in boards.Keys)
+            {
+                Dictionary<string, BoardBL> keyValuePairs = boards[email];
+                foreach (string boardName in keyValuePairs.Keys)
+                {
+                    if (keyValuePairs[boardName].BoardId == boardId)
+                        return keyValuePairs[boardName];
+                }
+            }
+
+            throw new Exception("Board with such id doesn't exist");
+        }
+
         private void EnsureUserIsLoggedIn(string email)
         {
             if (!authenticationFacade.isLoggedIn(email))

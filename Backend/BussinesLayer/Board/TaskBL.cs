@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private DateTime? dueDate;
         private string description;
         private int state;
+        private string assignee;
 
         public TaskBL(int taskId, string title, DateTime dueDate, string description)
         {
@@ -23,6 +24,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.dueDate = dueDate;
             this.description = description;
             this.state = 0;
+            this.assignee = null;
         }
 
         /// <summary>
@@ -45,6 +47,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public void moveTask(int dest)
         { 
             this.taskId = dest; 
+        
+        public string Assignee
+        {
+            get { return this.assignee; }
+            set { this.assignee = value; }
         }
 
 
