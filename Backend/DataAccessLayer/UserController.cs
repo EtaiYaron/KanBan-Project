@@ -103,7 +103,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// This method is used to select all users from the database.
         /// </summary>
         /// <<returns>List of all users in the database</returns>
-        public List<UserDAL> SelectAllUsers()
+        public List<UserDAL> SelectAll()
         {
             List<UserDAL> result = new List<UserDAL>();
             using (var connection = new SqliteConnection(_connectionString))
@@ -118,7 +118,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     while (dataReader.Read())
                     {
-                        result.Add(ConvertReaderToObject(dataReader));
+                        result.Add(ConvertReaderToUserDAL(dataReader));
                     }
                 }
                 catch (Exception ex)
@@ -141,7 +141,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="dataReader"></param>
         /// <returns>UserDAL object</returns>
-        private UserDAL ConvertReaderToObject(SqliteDataReader dataReader)
+        private UserDAL ConvertReaderToUserDAL(SqliteDataReader dataReader)
         {
             return new UserDAL(dataReader.GetString(0), dataReader.GetString(1));
         }

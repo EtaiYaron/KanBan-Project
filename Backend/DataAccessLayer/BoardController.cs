@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="boardDal"></param>
         /// <returns>true if the board was inserted successfully, otherwise false.</returns>
-        public bool insert(BoardDAL boardDal)
+        public bool Insert(BoardDAL boardDal)
         {
             using (var connection = new SqliteConnection(_connectionString))
             {

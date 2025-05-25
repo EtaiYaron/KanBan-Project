@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 int res = -1;
                 try
                 {
-                    string insert = $"INSERT INTO {TableName} (boardId,userEmail,ownerEmail) Values (@boardId,@userEmail,@ownerEmail)";
+                    string insert = $"INSERT INTO {TableName} (boardId,userEmail,ownerEmail) VALUES (@boardId,@userEmail,@ownerEmail)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", boardUserDal.BoardId);
                     SqliteParameter emailParameter = new SqliteParameter(@"email", boardUserDal.UserEmail);
                     SqliteParameter ownerEmailParameter = new SqliteParameter(@"ownerEmail", boardUserDal.IsOwner);
@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 var command = new SqliteCommand
                 {
                     Connection = connection,
-                    CommandText = $"delete from {TableName} where boardId=@boardId and userEmail=@userEmail"
+                    CommandText = $"DELETE FROM {TableName} WHERE boardId=@boardId AND userEmail=@userEmail"
                 };
 
                 try
@@ -111,7 +111,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 var command = new SqliteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {TableName} set isOwner=@newIsOwner where boardId=@boardId and userEmail=@userEmail"
+                    CommandText = $"UPDATE {TableName} SET isOwner=@newIsOwner WHERE boardId=@boardId AND userEmail=@userEmail"
                 };
                 try
                 {
@@ -143,7 +143,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SqliteConnection(_connectionString))
             {
                 SqliteCommand command = new SqliteCommand(null, connection);
-                command.CommandText = $"select * from {TableName};";
+                command.CommandText = $"SELECT * FROM {TableName};";
                 SqliteDataReader dataReader = null;
                 try
                 {

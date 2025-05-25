@@ -141,6 +141,29 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 task.persist(this.boardId);
             }
         }
+        
+        public void ChangeOwner(string newOwnerEmail)
+        {
+            if (joinedUsers.Contains(newOwnerEmail))
+            {
+                this.OwnerEmail = newOwnerEmail;
+                foreach (var boardUser in boardUserDALs)
+                {
+                    if (boardUser.UserEmail == newOwnerEmail)
+                    {
+                        boardUser.IsOwner = true;
+                    }
+                    else
+                    {
+                        boardUser.IsOwner = false;
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("New owner must be a member of the board.");
+            }
+        }
 
         /// <summary>
         /// This method is used to persist the board to the database.
@@ -149,7 +172,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             if (!isPersistent)
             {
-                boardController.insert(this);
+                boardController.Insert(this);
                 isPersistent = true;
             }
         }
