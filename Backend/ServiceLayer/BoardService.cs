@@ -178,5 +178,35 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        public string JoinBoard(string email, int boardId)
+        {
+            try
+            {
+                boardFacade.JoinBoard(email, boardId);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string LeaveBoard(string email, int boardId)
+        {
+            try
+            {
+                boardFacade.LeaveBoard(email, boardId);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
     }
 }

@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private bool isPersistent;
         private string assigneeEmail;
         private long boardId;
-        
+        private string assignee;
 
         public TaskBL(int taskId, string title, DateTime dueDate, string description)
         {
@@ -29,18 +29,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.dueDate = dueDate;
             this.description = description;
             this.state = 0;
+            this.assignee = null;
         }
 
-        public void EditTask(string title, DateTime dueDate, string description)
+        public string Assignee
         {
-            this.title = title;
-            this.dueDate = dueDate;
-            this.description = description;
-        }
-
-        public void moveTask(int dest)
-        { 
-            this.taskId = dest; 
+            get { return this.assignee; }
+            set { this.assignee = value; }
         }
 
 

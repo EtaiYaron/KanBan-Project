@@ -8,7 +8,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
     internal class BoardBL
     {
+        private readonly int boardId;
         private string name;
+        private string owner;
+        private HashSet<string> joinedUsers;
+
+        private int nextTaskId;
         private Dictionary<int, TaskBL> tasks;
         private int maxTasks0;
         private int maxTasks1;
@@ -17,9 +22,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private int numTasks1;
         private int numTasks2;
 
-        public BoardBL(string name)
+        public BoardBL(int boardId, string name, string owner)
         {
+            this.boardId = boardId;
             this.name = name;
+            this.owner = owner;
+            this.joinedUsers = new HashSet<string>();
+
+            this.nextTaskId = 0;
             this.tasks = new Dictionary<int, TaskBL>();
             this.maxTasks0 = -1;
             this.maxTasks1 = -1;
@@ -29,9 +39,25 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.numTasks2 = 0;
         }
 
-        public void AddTask(int taskId, string title, DateTime dueDate, string description)
+        public void AddTask(string title, DateTime dueDate, string description)
         {
-            tasks.Add(taskId, new TaskBL(taskId, title, dueDate, description));
+            tasks.Add(nextTaskId, new TaskBL(nextTaskId, title, dueDate, description));
+            nextTaskId++;
+        }
+
+        public void JoinUser(string email)
+        {
+            joinedUsers.Add(email);
+        }
+
+        public void UnjoinUser(string email)
+        {
+            joinedUsers.Remove(email);
+        }
+
+        public bool IsUserInBoard(string email)
+        {
+            return joinedUsers.Contains(email);
         }
 
         public void EditTask(int taskId, string title, DateTime? dueDate, string description)
@@ -91,6 +117,22 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 this.maxTasks2 = newLimit;
             }
+        }
+
+        public string Owner
+        {
+            get { return owner; }
+            set { this.owner = value; }
+        }
+
+        public int NextTaskId
+        {
+            get { return nextTaskId; }
+        }
+
+        public int BoardId
+        {
+            get { return boardId; }
         }
 
         public int MaxTasks0
