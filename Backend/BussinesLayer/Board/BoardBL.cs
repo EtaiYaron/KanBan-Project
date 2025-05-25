@@ -39,7 +39,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.numTasks2 = 0;
         }
 
-        public void AddTask(string title, DateTime dueDate, string description)
+        /// <summary>
+        /// This method is used to add a task to the board.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="title"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="description"></param>
+        public void AddTask(int taskId, string title, DateTime dueDate, string description)
         {
             tasks.Add(nextTaskId, new TaskBL(nextTaskId, title, dueDate, description));
             nextTaskId++;
@@ -60,6 +67,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return joinedUsers.Contains(email);
         }
 
+
+        /// <summary>
+        /// This method is used to edit an existing task in the board.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="title"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="description"></param>
         public void EditTask(int taskId, string title, DateTime? dueDate, string description)
         {
             if (title != null)
@@ -70,16 +85,32 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 tasks[taskId].Description = description;
         }
 
+        /// <summary>
+        /// This method is used to move a task to a different column.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="dest"></param>
         public void MoveTask(int taskId, int dest)
         {
             tasks[taskId].State = dest;
         }
 
+
+        /// <summary>
+        /// This method is used to retrieve a task by its ID.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
         public TaskBL GetTask(int taskId)
         {
             return tasks[taskId];
         }
 
+        /// <summary>
+        /// This method is used to retrieve all tasks in the specified column.
+        /// </summary>
+        /// <param name="column">The column index (0, 1, or 2)</param>
+        /// <returns>A list of TaskBL objects in the given column.</returns>
         public List<TaskBL> GetTasksOfColumn(int column)
         {
             List<TaskBL> l = new List<TaskBL>();
@@ -91,6 +122,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return l;
         }
 
+        /// <summary>
+        /// This method is used to get the task limit of a specific column.
+        /// </summary>
+        /// <param name="columnOrdinal">The column index (0, 1, or 2)</param>
+        /// <returns>The maximum number of tasks allowed in the column.</returns>
         public int GetColumnLimit(int columnOrdinal)
         {
             if (columnOrdinal == 0) return MaxTasks0;
@@ -98,11 +134,21 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return MaxTasks2;
         }
 
+
+        /// <summary>
+        /// This method is used to retrieve all tasks on the board.
+        /// </summary>
+        /// <returns>A list of all TaskBL objects in the board.</returns>
         public List<TaskBL> GetAllTasks()
         {
             return tasks.Values.ToList();
         }
 
+        /// <summary>
+        /// This method is used to limit the number of tasks in a specific column.
+        /// </summary>
+        /// <param name="col">The column index (0, 1, or 2)</param>
+        /// <param name="newLimit">The new task limit for the column.</param>
         public void LimitTasks(int col, int newLimit)
         {
             if (col == 0)

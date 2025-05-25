@@ -24,7 +24,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardFacade = boardFacade;
         }
 
-
+        /// <summary>
+        /// This method is used to create a new board for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="name"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string CreateBoard(string email, string name)
         {
             try
@@ -40,6 +45,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to delete a board for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="name"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string DeleteBoard(string email, string name)
         {
             try
@@ -55,6 +66,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get the name of a column in a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="columnOrdinal"></param>
+        /// <returns>A strinrg with the column's name, unless an error occurs</returns>
         public string GetNameOfColumn(string email, string boardName, int columnOrdinal)
         {
             try
@@ -70,6 +88,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get a board for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="name"></param>
+        /// <returns>A string with the board's name, unless an error occurs</returns>
         public string GetBoard(string email, string name)
         {
             try
@@ -85,6 +109,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get all boards for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>A string with all the user's boards, unless an error occurs</returns>
         public string GetAllUserBoards(string email)
         {
             try
@@ -106,6 +135,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to limit the number of tasks in a column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="name"></param>
+        /// <param name="column"></param>
+        /// <param name="newLimit"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string LimitTasks(string email, string name, int column, int newLimit)
         {
             try
@@ -121,6 +158,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get all tasks in a column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="column"></param>
+        /// <returns>A string with all the tasks in the column, unless an error occurs</returns>
         public string GetTasksOfColumn(string email, string boardname, int column)
         {
             try
@@ -142,6 +186,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get all tasks in progress for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>A string with a list of the in-progress tasks of the user, unless an error occurs</returns>
         public string GetInProgressTasks(string email)
         {
             try
@@ -163,6 +212,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to get the limit of tasks in a column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="columnOrdinal"></param>
+        /// <returns>A string with the limit of tasks in the column, unless an error occurs</returns>
         public string GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
             try
