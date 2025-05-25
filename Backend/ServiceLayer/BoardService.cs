@@ -114,18 +114,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="email"></param>
         /// <returns>A string with all the user's boards, unless an error occurs</returns>
-        public string GetAllUserBoards(string email)
+        public string GetUserBoards(string email)
         {
             try
             {
-                Dictionary<string, BoardBL> bbl = boardFacade.GetAllUserBoards(email);
-
-                Dictionary<string, BoardSL> serviceBbl = new Dictionary<string, BoardSL>();
-                foreach (string key in bbl.Keys) {
-                    serviceBbl.Add(key, new BoardSL(bbl[key]));
-                }
-
-                Response response = new Response(null, serviceBbl);
+                List<int> list = boardFacade.GetUserBoards(email);
+                Response response = new Response(null, list.ToArray());
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
@@ -264,5 +258,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        public string GetBoardNameById(string email, int boardId)
+        {
+            try
+            {
+                string name = boardFacade.GetBoardNameById(boardId);
+                Response response = new Response(null, name);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
     }
 }
