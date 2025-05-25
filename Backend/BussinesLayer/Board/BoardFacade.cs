@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Common;
 using System.Linq;
 using System.Net.Security;
@@ -334,14 +335,26 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         }
 
         /// <summary>
-        /// This method is used to get all boards of a user.
+        /// Retrieves the IDs of all boards that the specified user is a member of.
+        /// The user must be logged in. If the user has no boards, an empty list is returned.
         /// </summary>
-        /// <param name="email"></param>
-        /// <returns>returns a dictionary of all boards of the user</returns>
-        public Dictionary<string, BoardBL> GetAllUserBoards(string email)
+        /// <param name="email">The email of the user whose boards are to be retrieved.</param>
+        /// <returns>A list of board IDs that the user is a member of.</returns>
+        public List<int> GetUserBoards(string email)
         {
+            log.Info($"Attempting to get all boards for user with email {email}.");
             EnsureUserIsLoggedIn(email);
-            return boards[email];
+            List<int> boardIds = new List<int>();
+            if (!boards.ContainsKey(email))
+            {
+                return boardIds;
+            }
+            foreach (var board in boards[email].Values)
+            {
+                boardIds.Add(board.BoardId);
+            }
+            log.Info($"Successfully got all boards for user with email {email}.");
+            return boardIds;
         }
 
         /// <summary>
