@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     SqliteCommand command = new SqliteCommand(null, connection);
-                    string insert = $"INSERT INTO {TableName} ({userDal.UserEmailColumnName},{userDal.UserPasswordColumnName}) Values {@"emailVal"},{@"passwordVal"}";
+                    string insert = $"INSERT INTO {TableName} (email,password) Values {@"emailVal"},{@"passwordVal"}";
 
                     SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
                     SqliteParameter passwordParameter = new SqliteParameter(@"passwordVal", userDal.Password);
@@ -55,6 +55,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     res = command.ExecuteNonQuery();
                 }
                 catch (Exception ex) {
+                    log.Error($"Failed to insert user with email: {userDal.Email}. Error: {ex.Message}");
                 }
                 finally
                 {
@@ -78,7 +79,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     SqliteCommand command = new SqliteCommand(null, connection);
-                    string delete = $"DELETE FROM {TableName} WHERE {userDal.UserEmailColumnName} = @emailVal";
+                    string delete = $"DELETE FROM {TableName} WHERE email = @emailVal";
                     SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
                     command.CommandText = delete;
                     command.Parameters.Add(emailParameter);
@@ -87,6 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
+                    log.Error($"Failed to delete user with email: {userDal.Email}. Error: {ex.Message}");
                 }
                 finally
                 {
@@ -121,6 +123,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
+                    log.Error($"Error selecting all users: {ex.Message}");
                 }
                 finally
                 {
