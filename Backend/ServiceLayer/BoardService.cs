@@ -292,5 +292,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return JsonSerializer.Serialize(response);
             }
         }
+
+        public string ChangeOwner(string email, string newOwnerEmail, string boardname)
+        {
+            try
+            {
+                boardFacade.ChangeOwner(email, newOwnerEmail, boardname);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
     }
 }

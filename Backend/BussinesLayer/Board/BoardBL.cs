@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             joinedUsers.Add(email);
         }
 
-        public void UnjoinUser(string email)
+        public void LeaveUser(string email)
         {
             joinedUsers.Remove(email);
         }

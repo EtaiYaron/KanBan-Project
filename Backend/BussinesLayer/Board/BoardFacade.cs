@@ -512,7 +512,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("User is not in board");
             if (board.Owner == email)
                 throw new Exception("Owner of board can't leave it");
-            board.UnjoinUser(email);
+            board.LeaveUser(email);
             boards[email].Remove(board.Name);
             log.Info($"Successfully left board with ID {boardId} for user with email {email}.");
         }
@@ -527,13 +527,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="boardname">The name of the board whose ownership is to be changed.</param>
         /// <returns>The email of the new owner.</returns>
         /// <exception cref="Exception">Thrown if the current owner is not logged in, not the owner, or if either user is not a member of the board.</exception>
-        public string ChangeOwner(string owneremail, string newOwnerEmail, string boardname)
+        public void ChangeOwner(string owneremail, string newOwnerEmail, string boardname)
         {
             log.Info($"Attempting to change owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
             EnsureUserIsLoggedIn(owneremail);
             ValidateBoardExists(owneremail, boardname);
             BoardBL board = boards[owneremail][boardname];
-            if (!board.IsUserInBoard(owneremail) || !board.IsUserInBoard(owneremail))
+            if (!board.IsUserInBoard(owneremail) || !board.IsUserInBoard(newOwnerEmail))
             {
                 log.Error($"ChangeOwner failed, user {owneremail} or {newOwnerEmail} is not in board {boardname}.");
                 throw new Exception("User is not in board");
@@ -550,7 +550,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             board.Owner = newOwnerEmail;
             log.Info($"Successfully changed owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
-            return newOwnerEmail;
         }
 
         /// <summary>
