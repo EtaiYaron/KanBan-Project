@@ -228,6 +228,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Allows a user to join a board by its ID.
+        /// The user must be logged in and the board must exist.
+        /// </summary>
+        /// <param name="email">The email of the user joining the board.</param>
+        /// <param name="boardId">The ID of the board to join.</param>
+        /// <returns>An empty response if successful, or an error message if an exception occurs.</returns>
         public string JoinBoard(string email, int boardId)
         {
             try
@@ -243,6 +250,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Allows a user to leave a board by its ID.
+        /// The user must be logged in, must be a member of the board, and cannot be the owner.
+        /// </summary>
+        /// <param name="email">The email of the user leaving the board.</param>
+        /// <param name="boardId">The ID of the board to leave.</param>
+        /// <returns>An empty response if successful, or an error message if an exception occurs.</returns>
         public string LeaveBoard(string email, int boardId)
         {
             try
@@ -258,6 +272,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Retrieves the name of a board by its unique board ID.
+        /// </summary>
+        /// <param name="email">The email of the user requesting the board name.</param>
+        /// <param name="boardId">The unique identifier of the board.</param>
+        /// <returns>A response containing the board's name if successful, or an error message if an exception occurs.</returns>
         public string GetBoardNameById(string email, int boardId)
         {
             try
