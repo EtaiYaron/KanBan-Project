@@ -50,8 +50,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// </summary>
         /// <param name="dest"></param>
         public void moveTask(int dest)
-        { 
-            this.taskId = dest; 
+        {
+            this.taskId = dest;
+        }
         
         public string Assignee
         {
