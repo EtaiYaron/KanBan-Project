@@ -572,7 +572,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new ArgumentException("taskId isn't exist task in this board");
             }
             TaskBL task = board.GetTask(taskId);
-            if (email != task.Assignee)
+            if (!string.IsNullOrEmpty(task.Assignee) && email != task.Assignee)
             {
                 log.Error($"Assigning task to user failed, user {email} is not assigned to task {taskId}.");
                 throw new ArgumentException("Only an assignee can assign the task to another user");
