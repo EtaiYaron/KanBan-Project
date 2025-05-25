@@ -7,6 +7,8 @@ using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Data.SQLite;
 using System.Security.AccessControl;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
+using log4net;
 
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -14,14 +16,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     internal class TaskController
     {
         private readonly string _connectionString;
-        private readonly string _tableName;
-        private const string TableName = "Users";
+        private const string TableName = "Tasks";
+        private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
 
         public TaskController()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
             this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
-            this._tableName = TableName;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    string insert = $"INSERT INTO {TableName} ({"taskId"},{"boardId"},{"title"},{"creationTime"},{"dueDate"},{"description"},{"state"},{"assigneeEmail"}) Values (@taskId,@boardId,@title,@creationTime,@dueDate,@description,@state,@assigneeEmail)";
+                    string insert = $"INSERT INTO {TableName} (taskId,boardId,title,creationTime,dueDate,description,state,assigneeEmail) VALUES (@taskId,@boardId,@title,@creationTime,@dueDate,@description,@state,@assigneeEmail)";
                     SqliteParameter taskIdParameter = new SqliteParameter(@"taskId", taskDAL.TaskId);
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", taskDAL.BoardId);
                     SqliteParameter titleParameter = new SqliteParameter(@"title", taskDAL.Title);
@@ -63,6 +64,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
+                    log.Error($"Error inserting task: {ex.Message}");
                 }
                 finally
                 {
@@ -95,6 +97,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
+                    log.Error($"Error deleting task with ID {taskDAL.TaskId}: {ex.Message}");
                 }
                 finally
                 {
@@ -128,6 +131,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
+                    log.Error($"Error updating task with ID {taskDAL.TaskId}: {ex.Message} - Attribute: {attributeName}, Value: {attributeValue}");
                 }
                 finally
                 {
@@ -159,6 +163,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToTask(dataReader));
                     }
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error selecting all tasks: {ex.Message}");
                 }
                 finally
                 {
@@ -194,6 +202,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToTask(dataReader));
                     }
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error selecting tasks by board ID {boardId}: {ex.Message}");
                 }
                 finally
                 {
