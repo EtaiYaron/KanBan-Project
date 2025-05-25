@@ -27,6 +27,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.nextBoardId = 0;
         }
 
+        /// <summary>
+        /// This method is used to create a new board for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <returns>returns the boardBL object we created</returns>
+        /// <exception cref="ArgumentException"></exception>
         public BoardBL CreateBoard(string email, string boardname)
         {
             log.Info($"Attempting to create board {boardname} for user with email {email}.");
@@ -48,10 +55,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
             nextBoardId++;
+            curr.JoinUser(email);
             log.Info($"Successfully created new board {boardname} for user with email {email}.");
             return curr;
         }
 
+        /// <summary>
+        /// This method is used to check if a board with the given name exists in the dictionary.
+        /// </summary>
+        /// <param name="boards"></param>
+        /// <param name="boardName"></param>
+        /// <returns>>returns true if a board with the given name already exists.</returns></returns>
         private bool CustomContainsKey(Dictionary<string, BoardBL> boards, string boardName)
         {
             foreach (string key in boards.Keys)
@@ -64,6 +78,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return false;
         }
 
+        /// <summary>
+        /// This method is used to delete a board for a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <returns>returns the boardBL object we deleted</returns>
         public BoardBL DeleteBoard(string email, string boardname)
         {
             log.Info($"Attempting to delete board {boardname} for user with email {email}.");
@@ -75,6 +95,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return curr;
         }
 
+
+        /// <summary>
+        /// This method is used to move a task from its current column to the next column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="taskId"></param>
+        /// <param name="destcolumn"></param>
+        /// <returns>returns the boardBL object we moved the task in</returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public BoardBL MoveTask(string email, string boardname, int taskId, int destcolumn)
         {
             log.Info($"Attempting to move task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
@@ -125,6 +156,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board;
         }
 
+        /// <summary>
+        /// This method is used to add a task to a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="title"></param>
+        /// <param name="dueTime"></param>
+        /// <param name="description"></param>
+        /// <returns>returns the taskBL object we added</returns>
+        /// <exception cref="ArgumentException"></exception>
         public TaskBL AddTask(string email, string boardname, string title, DateTime dueTime, string description = "")
         {
             log.Info($"Attempting to add task in board {boardname} for user with email {email}.");
@@ -158,6 +199,18 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return task;
         }
 
+        /// <summary>
+        /// This method is used to edit a task in a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="taskId"></param>
+        /// <param name="title"></param>
+        /// <param name="dueTime"></param>
+        /// <param name="description"></param>
+        /// <returns>returns the boardBL object we edited the task in</returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Exception"></exception>
         public BoardBL EditTask(string email, string boardname, int taskId, string title, DateTime? dueTime, string description = "")
         {
             log.Info($"Attempting to Edit task {taskId} in board {boardname} for user with email {email}.");
@@ -199,6 +252,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board;
         }
 
+        /// <summary>
+        /// This method is used to get the name of a column by its ordinal number.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardName"></param>
+        /// <param name="columnOrdinal"></param>
+        /// <returns>returns the name of the column</returns>
+        /// <exception cref="ArgumentException"></exception>
         public string GetNameOfColumn(string email, string boardName, int columnOrdinal)
         {
             log.Info($"Attempting to get the column name of column with ordinal {columnOrdinal}.");
@@ -217,6 +278,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return "done";
         }
 
+        /// <summary>
+        /// This method is used to get a board by its name.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <returns>returns the boardBL object we got</returns>
         public BoardBL GetBoard(string email, string boardname)
         {
             log.Info($"Attempting to get board {boardname} for user with email {email}.");
@@ -226,6 +293,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return boards[email][boardname];
         }
 
+        /// <summary>
+        /// This method is used to get a task by its ID.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="taskId"></param>
+        /// <returns>returns the taskBL object we got</returns>
+        /// <exception cref="ArgumentException"></exception>
         public TaskBL GetTask(string email, string boardname, int taskId)
         {
             log.Info($"Attempting to get task {taskId} from board {boardname} for user with email {email}.");
@@ -241,6 +316,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.GetTask(taskId);
         }
 
+
+        /// <summary>
+        /// This method is used to get all tasks in a board.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <returns>returns a dictionary of all tasks in the board</returns>
         public Dictionary<int, TaskBL> GetAllTasks(string email, string boardname)
         {
             log.Info($"Attemting to get all tasks from board {boardname} for user with email {email}.");
@@ -251,12 +333,26 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.Tasks;
         }
 
+        /// <summary>
+        /// This method is used to get all boards of a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>returns a dictionary of all boards of the user</returns>
         public Dictionary<string, BoardBL> GetAllUserBoards(string email)
         {
             EnsureUserIsLoggedIn(email);
             return boards[email];
         }
 
+        /// <summary>
+        /// This method is used to limit the number of tasks in a column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="column"></param>
+        /// <param name="newLimit"></param>
+        /// <returns>returns the boardBL object we limited the tasks in</returns>
+        /// <exception cref="Exception"></exception>
         public BoardBL LimitTasks(string email, string boardname, int column, int newLimit)
         {
             log.Info($"Attempting to limit tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
@@ -285,6 +381,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board;
         }
 
+        /// <summary>
+        /// This method is used to get all tasks in a column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="column"></param>
+        /// <returns>returns a list of all tasks in the column</returns>
+        /// <exception cref="Exception"></exception>
         public List<TaskBL> GetTasksOfColumn(string email, string boardname, int column)
         {
             log.Info($"Attempting to get tasks of column {column} on board {boardname} for user with email {email}.");
@@ -300,6 +404,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.GetTasksOfColumn(column);
         }
 
+        /// <summary>
+        /// This method is used to get the limit of a column.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <param name="column"></param>
+        /// <returns>returns the limit of the column</returns>
+        /// <exception cref="Exception"></exception>
         public int GetColumnLimit(string email, string boardname, int column)
         {
             log.Info($"Attempting to get column limit of column {column} on board {boardname} for user with email {email}.");
@@ -315,6 +427,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.GetColumnLimit(column);
         }
 
+        /// <summary>
+        /// This method is used to get all tasks that are in progress.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>returns a list of all tasks that are in progress</returns>
         public List<TaskBL> GetInProgressTasks(string email)
         {
             log.Info($"Attempting to get in progress tasks for user with email {email}.");
@@ -340,22 +457,42 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return tasks;
         }
 
+        /// <summary>
+        /// This method is used to ensure that the user is logged in.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <exception cref="InvalidOperationException"></exception>
         public void JoinBoard(string email, int boardId)
         {
+            log.Info($"Attempting to join board with ID {boardId} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
             BoardBL board = GetBoardIfExists(boardId);
             if (board.IsUserInBoard(email))
+            {
+                log.Error($"JoinBoard failed, user with email {email} is already joined to board with ID {boardId}.");
                 throw new Exception("User is already joined this board");
+            }
             board.JoinUser(email);
             if (!boards.ContainsKey(email))
             {
                 boards.Add(email, new Dictionary<string, BoardBL>());
             }
             boards[email].Add(board.Name, board);
+            log.Info($"Successfully joined board with ID {boardId} for user with email {email}.");
         }
 
+        /// <summary>
+        /// Allows a user to leave a board by its ID.
+        /// The user must be logged in, must be a member of the board, and cannot be the owner.
+        /// Removes the user from the board and from the user's board list.
+        /// </summary>
+        /// <param name="email">The email of the user leaving the board.</param>
+        /// <param name="boardId">The ID of the board to leave.</param>
+        /// <exception cref="InvalidOperationException">Thrown if the user is not logged in.</exception>
+        /// <exception cref="Exception">Thrown if the user is not in the board or is the owner.</exception>
         public void LeaveBoard(string email, int boardId)
         {
+            log.Info($"Attempting to leave board with ID {boardId} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
             BoardBL board = GetBoardIfExists(boardId);
             if (!board.IsUserInBoard(email))
@@ -364,8 +501,67 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("Owner of board can't leave it");
             board.UnjoinUser(email);
             boards[email].Remove(board.Name);
+            log.Info($"Successfully left board with ID {boardId} for user with email {email}.");
         }
 
+        /// <summary>
+        /// Changes the owner of a board to a new user.
+        /// The current owner must be logged in, must be the actual owner of the board, and both the current and new owner must be members of the board.
+        /// If the requirements are not met, an exception is thrown.
+        /// </summary>
+        /// <param name="owneremail">The email of the current owner of the board.</param>
+        /// <param name="newOwnerEmail">The email of the new owner to assign.</param>
+        /// <param name="boardname">The name of the board whose ownership is to be changed.</param>
+        /// <returns>The email of the new owner.</returns>
+        /// <exception cref="Exception">Thrown if the current owner is not logged in, not the owner, or if either user is not a member of the board.</exception>
+        public string ChangeOwner(string owneremail, string newOwnerEmail, string boardname)
+        {
+            log.Info($"Attempting to change owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
+            EnsureUserIsLoggedIn(owneremail);
+            ValidateBoardExists(owneremail, boardname);
+            BoardBL board = boards[owneremail][boardname];
+            if (!board.IsUserInBoard(owneremail) || !board.IsUserInBoard(owneremail))
+            {
+                log.Error($"ChangeOwner failed, user {owneremail} or {newOwnerEmail} is not in board {boardname}.");
+                throw new Exception("User is not in board");
+            }
+            if (board.Owner != owneremail)
+            {
+                log.Error($"ChangeOwner failed, user {owneremail} is not the owner of board {boardname}.");
+                throw new Exception("User is not the owner of the board");
+            }
+            if (!board.IsUserInBoard(newOwnerEmail))
+            {
+                log.Error($"ChangeOwner failed, new owner {newOwnerEmail} is not in board {boardname}.");
+                throw new Exception("New owner is not in board");
+            }
+            board.Owner = newOwnerEmail;
+            log.Info($"Successfully changed owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
+            return newOwnerEmail;
+        }
+
+        /// <summary>
+        /// Retrieves the name of a board by its unique board ID.
+        /// Searches all users' boards for a matching board ID and returns the board's name.
+        /// </summary>
+        /// <param name="boardId">The unique identifier of the board.</param>
+        /// <returns>The name of the board with the specified ID.</returns>
+        /// <exception cref="Exception">Thrown if no board with the given ID exists.</exception>
+        public string GetBoardNameById(int boardId)
+        {
+            log.Info($"Attempting to get board name by ID {boardId}.");
+            BoardBL board = GetBoardIfExists(boardId);
+            log.Info($"Successfully got board name {board.Name} for board ID {boardId}.");
+            return board.Name;
+        }
+
+        /// <summary>
+        /// Retrieves a board by its unique board ID if it exists.
+        /// Searches all users' boards for a matching board ID.
+        /// </summary>
+        /// <param name="boardId">The ID of the board to find.</param>
+        /// <returns>The BoardBL object with the specified ID.</returns>
+        /// <exception cref="Exception">Thrown if no board with the given ID exists.</exception>
         private BoardBL GetBoardIfExists(int boardId)
         {
             foreach (string email in boards.Keys)
@@ -377,10 +573,15 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                         return keyValuePairs[boardName];
                 }
             }
-
+            log.Error($"GetBoardIfExists failed, no board with id {boardId} exists.");
             throw new Exception("Board with such id doesn't exist");
         }
 
+        /// <summary>
+        /// Ensures that the user with the given email is currently logged in.
+        /// </summary>
+        /// <param name="email">The email of the user to check.</param>
+        /// <exception cref="InvalidOperationException">Thrown if the user is not logged in.</exception>
         private void EnsureUserIsLoggedIn(string email)
         {
             if (!authenticationFacade.isLoggedIn(email))
@@ -390,6 +591,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
         }
 
+        /// <summary>
+        /// This method is used to validate that a board exists for the user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="boardname"></param>
+        /// <exception cref="ArgumentException"></exception>
         private void ValidateBoardExists(string email, string boardname)
         {
             if (string.IsNullOrEmpty(boardname))

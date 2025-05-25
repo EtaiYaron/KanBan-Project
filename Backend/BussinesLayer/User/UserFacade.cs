@@ -22,6 +22,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             this.authFacade = authFacade;
         }
 
+        /// <summary>
+        /// This method is used to login a user to the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>UserBL object if the login was successful, otherwise null.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public UserBL Login(string email, string password)
         {
             log.Info($"Attempting login for user with email: {email}.");

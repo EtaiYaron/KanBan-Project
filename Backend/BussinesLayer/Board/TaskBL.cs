@@ -32,6 +32,27 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.assignee = null;
         }
 
+        /// <summary>
+        /// This method is used to edit an existing task in the board.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="description"></param>
+        public void EditTask(string title, DateTime dueDate, string description)
+        {
+            this.title = title;
+            this.dueDate = dueDate;
+            this.description = description;
+        }
+
+        /// <summary>
+        /// This method is used to move a task to the next column.
+        /// </summary>
+        /// <param name="dest"></param>
+        public void moveTask(int dest)
+        { 
+            this.taskId = dest; 
+        
         public string Assignee
         {
             get { return this.assignee; }
