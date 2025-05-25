@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                TaskBL tbl = boardFacade.AddTask(email, boardName, title, dueTime, description);
+                boardFacade.AddTask(email, boardName, title, dueTime, description);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
             }

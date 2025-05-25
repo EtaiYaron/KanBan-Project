@@ -9,8 +9,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
     internal class ColumnBL
     {
         private Dictionary<int, TaskBL> tasks;
-        private int columnId;
-        private string name;
+        private readonly int columnId;
+        private readonly string name;
         private int maxTasks;
         public ColumnBL(int columnId, string name)
         {

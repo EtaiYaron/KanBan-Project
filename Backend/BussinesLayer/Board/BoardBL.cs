@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         private int nextTaskId;
         private ColumnBL[] columns;
-        private const int numofcolumns = 3;
+        private const int NumOfColumns = 3;
         private readonly string[] columnNames = { "Backlog", "In Progress", "Done" };
 
         public BoardBL(int boardId, string name, string owner)
@@ -26,8 +26,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.joinedUsers = new HashSet<string>();
 
             this.nextTaskId = 0;
-            columns = new ColumnBL[numofcolumns];
-            for (int i = 0; i < numofcolumns; i++)
+            columns = new ColumnBL[NumOfColumns];
+            for (int i = 0; i < NumOfColumns; i++)
                 columns[i] = new ColumnBL(i, columnNames[i]);
             
         }
@@ -84,10 +84,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// </summary>
         /// <param name="taskId"></param>
         /// <param name="dest"></param>
-        public void MoveTask(int taskId, int dest)
+        public void MoveTask(TaskBL task, int dest)
         {
-            TaskBL task = GetTask(taskId);
-            columns[task.State].RemoveTask(taskId);
+            columns[task.State].RemoveTask(task.TaskId);
             columns[dest].AddTask(task);
         }
         
