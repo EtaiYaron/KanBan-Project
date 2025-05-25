@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class BoardDAL
     {
-        private List<BoardUserDAL> boardUserDALs;
+        private List<BoardsUsersDAL> boardUserDALs;
         private List<TaskDAL> allTasks;
         private string boardName;
         private int boardId;
@@ -16,9 +17,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private int maxTasks0;
         private int maxTasks1;
         private int maxTasks2;
-        private int numTasks0;
-        private int numTasks1;
-        private int numTasks2;
         private BoardController boardController;
         private bool isPersistent;
         private int nextTaskId;
@@ -33,7 +31,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.maxTasks1 = maxTasks1;
             this.maxTasks2 = maxTasks2;
             this.nextTaskId = nextTaskId;
-            this.boardUserDALs = new List<BoardUserDAL>();
+            this.boardUserDALs = new List<BoardsUsersDAL>();
             this.allTasks = new List<TaskDAL>();
             this.boardController = new BoardController();
             this.isPersistent = false;
@@ -118,6 +116,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void JoinBoard(string userEmail)
         {
             joinedUsers.Add(userEmail);
+            this.boardUserDALs.Add(new BoardsUsersDAL(this.boardId, userEmail, this.ownerEmail==userEmail));
         }
 
         /// <summary>
@@ -127,6 +126,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void LeaveBoard(string userEmail)
         {
             joinedUsers.Remove(userEmail);
+            this.boardUserDALs.RemoveAll(bu => bu.UserEmail == userEmail && bu.BoardId == this.boardId);
         }
 
         /// <summary>

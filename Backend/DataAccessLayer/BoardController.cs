@@ -30,12 +30,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the board was inserted successfully, otherwise false.</returns>
         public bool insert(BoardDAL boardDal)
         {
-            int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                int res = -1;
+
                 try
                 {
-                    SqliteCommand command = new SqliteCommand(null, connection);
                     string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,maxTasks0,maxTasks1,maxTasks2,nextTaskId) Values (@boardIdVal,@boardName,@ownerEmailVal,@maxTasks0,@maxTasks1,@maxTasks2,@nextTaskId)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardIdVal", boardDal.BoardId);
                     SqliteParameter boardNameParameter = new SqliteParameter(@"boardName", boardDal.BoardName);
@@ -61,8 +62,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Close();
                 }
+                return res > 0;
             }
-            return res != -1;
 
         }
 
@@ -78,13 +79,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
+                SqliteCommand command = new SqliteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"UPDATE {TableName} SET {attributeName}=@attributeValue WHERE boardId={boardDAL.BoardId}"
+                };
+
                 try
                 {
-                    SqliteCommand command = new SqliteCommand(null, connection);
-                    string update = $"UPDATE {TableName} SET {attributeName}=@attributeValue WHERE boardId={boardDAL.BoardId}";
-                    SqliteParameter attributeValueParameter = new SqliteParameter(@"attributeValue", attributeValue);
-                    command.CommandText = update;
-                    command.Parameters.Add(attributeValueParameter);
+                    command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -94,6 +97,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 finally
                 {
+                    command.Dispose();
                     connection.Close();
                 }
             }
@@ -111,11 +115,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
+                var command = new SqliteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"DELETE FROM {TableName} WHERE boardId={boardDAL.BoardId}"
+                };
+
+
                 try
                 {
-                    SqliteCommand command = new SqliteCommand(null, connection);
-                    string delete = $"DELETE FROM {TableName} WHERE boardId={boardDAL.BoardId}";
-                    command.CommandText = delete;
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -125,6 +133,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 finally
                 {
+                    command.Dispose();
                     connection.Close();
                 }
             }
@@ -142,21 +151,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             List<BoardDAL> results = new List<BoardDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"SELECT * FROM {TableName};";
+                SqliteDataReader dataReader = null;
                 try
                 {
-                    SqliteCommand command = new SqliteCommand($"SELECT * FROM {TableName}", connection);
                     connection.Open();
-                    using (var reader = command.ExecuteReader())
+                    dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            results.Add(ConvertReaderToTask(reader));
-                        }
+                        results.Add(ConvertReaderToTask(dataReader));
                     }
                 }
                 catch (Exception ex)
                 {
                     log.Error($"Failed to select all boards. Error: {ex.Message}");
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+                    command.Dispose();
+                    connection.Close();
                 }
             }
             return results;
