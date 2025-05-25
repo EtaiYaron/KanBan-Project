@@ -97,6 +97,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL curr = boards[email][boardname];
+            if (curr.Owner != email)
+            {
+                log.Error($"DeleteBoard failed, user with email {email} is not the owner of board {boardname}.");
+                throw new ArgumentException("only owner can delete board");
+            }
             boards[email].Remove(boardname);
             log.Info($"Successfully deleted board {boardname} for user with email {email}.");
             return curr;
@@ -125,10 +130,15 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"MoveTask failed, task {taskId} doesn't exist in board {boardname}.");
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
+            if (task.Assignee != email)
+            {
+                log.Error($"MoveTask failed, only assignee can move task.");
+                throw new ArgumentException("only assignee can move task");
+            }
             if (destcolumn <= backlogOrdinal || destcolumn > doneOrdinal)
             {
-                log.Error($"MoveTask failed, dest nust be between 1 and 2, and dest is {destcolumn}.");
-                throw new ArgumentOutOfRangeException("dest must be between 1 and 2");
+                log.Error($"MoveTask failed, dest nust be between {inProgressOrdinal} and {doneOrdinal}, and dest is {destcolumn}.");
+                throw new ArgumentOutOfRangeException($"dest must be between {inProgressOrdinal} and {doneOrdinal}");
             }
             int fromcolumn = task.State;
             if (destcolumn - fromcolumn != 1)
@@ -211,6 +221,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 log.Error($"EditTask failed, task {taskId} isn't exist in board {boardname}.");
                 throw new ArgumentException("taskId isn't exist task in this board");
+            }
+            if (task.Assignee != email)
+            {
+                log.Error($"EditTask failed, only assignee can edit task.");
+                throw new ArgumentException("only assignee can edit task");
             }
             if (title == null && dueTime == null && description == null)
             {
@@ -341,7 +356,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             ValidateBoardExists(email, boardname);
             if (column > doneOrdinal || column < backlogOrdinal)
             {
-                log.Error($"LimitTasks failed, column {column} is not vaild. must be between 0 and 2.");
+                log.Error($"LimitTasks failed, column {column} is not vaild. must be between {backlogOrdinal} and {doneOrdinal}.");
                 throw new Exception("column isn't valid");
             }
             if (newLimit <= 0 && newLimit != noLimit)

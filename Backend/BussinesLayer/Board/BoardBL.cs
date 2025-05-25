@@ -45,16 +45,39 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             nextTaskId++;
         }
 
+        /// <summary>
+        /// Adds a user to the board's joined users set.
+        /// </summary>
+        /// <param name="email">The email of the user to join the board.</param>
         public void JoinUser(string email)
         {
             joinedUsers.Add(email);
         }
 
+        /// <summary>
+        /// Removes a user from the board's joined users set and unassigns them from any tasks they were assigned to.
+        /// </summary>
+        /// <param name="email">The email of the user to leave the board.</param>
         public void LeaveUser(string email)
         {
             joinedUsers.Remove(email);
+            for (int i = 0; i < NumOfColumns; i++)
+            {
+                foreach (var task in columns[i].Tasks.Values)
+                {
+                    if (task.Assignee == email)
+                    {
+                        task.Assignee = null;
+                    }
+                }
+            }
         }
 
+        /// <summary>
+        /// Checks if a user is currently joined to the board.
+        /// </summary>
+        /// <param name="email">The email of the user to check.</param>
+        /// <returns>True if the user is in the board; otherwise, false.</returns>
         public bool IsUserInBoard(string email)
         {
             return joinedUsers.Contains(email);
@@ -90,12 +113,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             columns[dest].AddTask(task);
         }
         
-
-        /// <summary>
-        /// This method is used to retrieve all tasks in the specified column.
-        /// </summary>
-        /// <param name="column">The column index (0, 1, or 2)</param>
-        /// <returns>A list of TaskBL objects in the given column.</returns>
         public Dictionary<int, TaskBL> GetTasksOfColumn(int column)
         {
             return columns[column].Tasks;
@@ -122,11 +139,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             get { return boardId; }
         }
 
-        /// <summary>
-        /// This method is used to retrieve a task by its ID.
-        /// </summary>
-        /// <param name="taskId"></param>
-        /// <returns></returns>
+
         public TaskBL GetTask(int taskId)
         {
 
