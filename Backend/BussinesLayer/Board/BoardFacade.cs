@@ -567,6 +567,33 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.Name;
         }
 
+        public void AssignTaskToUser(string email, string boardname, int taskId, string emailTo)
+        {
+            log.Info($"Attempting to assign task with ID {taskId} from {email} to {emailTo}.");
+            EnsureUserIsLoggedIn(email);
+            ValidateBoardExists(email, boardname);
+            BoardBL board = boards[email][boardname];
+            if (!board.IsUserInBoard(email) || !board.IsUserInBoard(emailTo))
+            {
+                log.Error($"Assigning task to user failed, one of the users is not in board.");
+                throw new Exception("One of the users is not in board");
+            }
+            if (!(board.Tasks).ContainsKey(taskId))
+            {
+                log.Error($"Assigning task to user failed, task {taskId} isn't exist in board {boardname}.");
+                throw new ArgumentException("taskId isn't exist task in this board");
+            }
+            TaskBL task = board.GetTask(taskId);
+            if (!string.IsNullOrEmpty(task.Assignee) && email != task.Assignee)
+            {
+                log.Error($"Assigning task to user failed, user {email} is not assigned to task {taskId}.");
+                throw new ArgumentException("Only an assignee can assign the task to another user");
+            }
+            task.Assignee = emailTo;
+            log.Info($"Successfully assigned task.");
+        }
+
+
         /// <summary>
         /// Retrieves a board by its unique board ID if it exists.
         /// Searches all users' boards for a matching board ID.
