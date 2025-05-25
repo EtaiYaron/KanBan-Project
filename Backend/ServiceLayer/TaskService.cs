@@ -120,32 +120,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-        /// <summary>
-        /// This method is used to get all tasks from a board.
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="boardName"></param>
-        /// <returns>A string with all the tasks in the board, unless an error occurs</returns>
-        public string GetAllTasks(string email, string boardName)
-        {
-            try
-            {
-                Dictionary<int, TaskBL> tbl = boardFacade.GetAllTasks(email, boardName);
-
-                Dictionary<int, TaskSL> serviceTbl = new Dictionary<int, TaskSL>();
-                foreach (int key in tbl.Keys)
-                {
-                    serviceTbl.Add(key, new TaskSL(tbl[key]));
-                }
-
-                Response response = new Response(null, serviceTbl);
-                return JsonSerializer.Serialize(response);
-            }
-            catch (Exception ex)
-            {
-                Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
-            }
-        }
+        
     }
 }

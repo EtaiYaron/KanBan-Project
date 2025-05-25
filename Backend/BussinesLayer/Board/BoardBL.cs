@@ -14,13 +14,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private HashSet<string> joinedUsers;
 
         private int nextTaskId;
-        private Dictionary<int, TaskBL> tasks;
-        private int maxTasks0;
-        private int maxTasks1;
-        private int maxTasks2;
-        private int numTasks0;
-        private int numTasks1;
-        private int numTasks2;
+        private ColumnBL[] columns;
+        private const int numofcolumns = 3;
+        private readonly string[] columnNames = { "Backlog", "In Progress", "Done" };
 
         public BoardBL(int boardId, string name, string owner)
         {
@@ -30,13 +26,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.joinedUsers = new HashSet<string>();
 
             this.nextTaskId = 0;
-            this.tasks = new Dictionary<int, TaskBL>();
-            this.maxTasks0 = -1;
-            this.maxTasks1 = -1;
-            this.maxTasks2 = -1;
-            this.numTasks0 = 0;
-            this.numTasks1 = 0;
-            this.numTasks2 = 0;
+            columns = new ColumnBL[numofcolumns];
+            for (int i = 0; i < numofcolumns; i++)
+                columns[i] = new ColumnBL(i, columnNames[i]);
+            
         }
 
         /// <summary>
@@ -48,7 +41,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="description"></param>
         public void AddTask(string title, DateTime dueDate, string description)
         {
-            tasks.Add(nextTaskId, new TaskBL(nextTaskId, title, dueDate, description));
+            columns[0].AddTask(new TaskBL(nextTaskId, title, dueDate, description));
             nextTaskId++;
         }
 
@@ -77,12 +70,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="description"></param>
         public void EditTask(int taskId, string title, DateTime? dueDate, string description)
         {
+            TaskBL task = GetTask(taskId);
             if (title != null)
-                tasks[taskId].Title = title;
+                task.Title = title;
             if (dueDate != null)
-                tasks[taskId].DueDate = dueDate;
+                task.DueDate = dueDate;
             if (description != null)
-                tasks[taskId].Description = description;
+                task.Description = description;
         }
 
         /// <summary>
@@ -92,77 +86,25 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="dest"></param>
         public void MoveTask(int taskId, int dest)
         {
-            tasks[taskId].State = dest;
+            TaskBL task = GetTask(taskId);
+            columns[task.State].RemoveTask(taskId);
+            columns[dest].AddTask(task);
         }
-
-
-        /// <summary>
-        /// This method is used to retrieve a task by its ID.
-        /// </summary>
-        /// <param name="taskId"></param>
-        /// <returns></returns>
-        public TaskBL GetTask(int taskId)
-        {
-            return tasks[taskId];
-        }
+        
 
         /// <summary>
         /// This method is used to retrieve all tasks in the specified column.
         /// </summary>
         /// <param name="column">The column index (0, 1, or 2)</param>
         /// <returns>A list of TaskBL objects in the given column.</returns>
-        public List<TaskBL> GetTasksOfColumn(int column)
+        public Dictionary<int, TaskBL> GetTasksOfColumn(int column)
         {
-            List<TaskBL> l = new List<TaskBL>();
-            foreach (int k in tasks.Keys)
-            {
-                if (tasks[k].State == column)
-                    l.Add(tasks[k]);
-            }
-            return l;
+            return columns[column].Tasks;
         }
 
-        /// <summary>
-        /// This method is used to get the task limit of a specific column.
-        /// </summary>
-        /// <param name="columnOrdinal">The column index (0, 1, or 2)</param>
-        /// <returns>The maximum number of tasks allowed in the column.</returns>
-        public int GetColumnLimit(int columnOrdinal)
+        public ColumnBL GetColumn(int columnOrdinal)
         {
-            if (columnOrdinal == 0) return MaxTasks0;
-            if (columnOrdinal == 1) return MaxTasks1;
-            return MaxTasks2;
-        }
-
-
-        /// <summary>
-        /// This method is used to retrieve all tasks on the board.
-        /// </summary>
-        /// <returns>A list of all TaskBL objects in the board.</returns>
-        public List<TaskBL> GetAllTasks()
-        {
-            return tasks.Values.ToList();
-        }
-
-        /// <summary>
-        /// This method is used to limit the number of tasks in a specific column.
-        /// </summary>
-        /// <param name="col">The column index (0, 1, or 2)</param>
-        /// <param name="newLimit">The new task limit for the column.</param>
-        public void LimitTasks(int col, int newLimit)
-        {
-            if (col == 0)
-            {
-                this.maxTasks0 = newLimit;
-            }
-            else if (col == 1)
-            {
-                this.maxTasks1 = newLimit;
-            }
-            else if (col == 2)
-            {
-                this.maxTasks2 = newLimit;
-            }
+            return columns[columnOrdinal];
         }
 
         public string Owner
@@ -181,32 +123,24 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             get { return boardId; }
         }
 
-        public int MaxTasks0
-            { get { return maxTasks0; } }
-        public int MaxTasks1
-            { get { return maxTasks1; } }
-        public int MaxTasks2
-            { get { return maxTasks2; } }
-        public int NumTasks0
-        { 
-            get { return numTasks0; }
-            set { this.numTasks0 = value; }
+        /// <summary>
+        /// This method is used to retrieve a task by its ID.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        public TaskBL GetTask(int taskId)
+        {
+
+            foreach (var column in columns)
+            {
+                if (column.Tasks.ContainsKey(taskId))
+                {
+                    return column.Tasks[taskId];
+                }
+            }
+            return null;
         }
 
-        public int NumTasks1
-        {
-            get { return numTasks1; }
-            set { this.numTasks1 = value; }
-        }
-
-        public int NumTasks2
-        {
-            get { return numTasks2; }
-            set { this.numTasks2 = value; }
-        }
-        public Dictionary<int, TaskBL> Tasks
-            { get { return tasks; } }
-        public string Name
-            { get { return name; }}
+        public string Name{ get { return name; }}
     }
 }
