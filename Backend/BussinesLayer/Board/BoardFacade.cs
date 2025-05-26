@@ -471,6 +471,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"JoinBoard failed, user with email {email} is already joined to board with ID {boardId}.");
                 throw new Exception("User is already joined this board");
             }
+            if (boards.ContainsKey(email) && CustomContainsKey(boards[email], board.Name))
+            {
+                log.Error($"JoinBoard failed, user with email {email} already has a board with name {board.Name}.");
+                throw new Exception("User already has a board with this name");
+            }
             board.JoinUser(email);
             if (!boards.ContainsKey(email))
             {
