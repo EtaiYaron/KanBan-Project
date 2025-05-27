@@ -177,6 +177,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public BoardController BoardController
+        {
+            get { return boardController; }
+        }
 
     }
 }

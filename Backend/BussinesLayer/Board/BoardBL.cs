@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private const int NumOfColumns = 3;
         private readonly string[] columnNames = { "Backlog", "In Progress", "Done" };
 
+        BoardDAL boardDAL;
         public BoardBL(int boardId, string name, string owner)
         {
             this.boardId = boardId;
@@ -29,7 +31,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             columns = new ColumnBL[NumOfColumns];
             for (int i = 0; i < NumOfColumns; i++)
                 columns[i] = new ColumnBL(i, columnNames[i]);
-            
+            boardDAL = new BoardDAL(boardId, name, owner, columns[0].MaxTasks, columns[1].MaxTasks, columns[2].MaxTasks);
+
         }
 
         /// <summary>
@@ -154,5 +157,15 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         }
 
         public string Name{ get { return name; }}
+
+        public BoardDAL BoardDAL
+        {
+            get { return boardDAL; }
+        }
+
+        public HashSet<string> JoinedUsers
+        {
+            get { return joinedUsers; }
+        }
     }
 }
