@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         private string email;
         private string password;
-        public UserController userController { get; set; }
+        public UserController userController { get; }
         public string UserEmailColumnName = "Email";
         public string UserPasswordColumnName = "Password";
         private bool isPersistent;
