@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="taskDAL"></param>
         /// <returns>returns true if the task was deleted successfully</returns>
-        public bool delete(TaskDAL taskDAL)
+        public bool Delete(TaskDAL taskDAL)
         {
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
@@ -147,7 +147,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// This method is used to select all tasks from the database.
         /// </summary>
         /// <returns>returns a list of tasks</returns>
-        public List<TaskDAL> SelectAllTasks()
+        public List<TaskDAL> SelectAll()
         {
             List<TaskDAL> results = new List<TaskDAL>();
             using (var connection = new SqliteConnection(_connectionString))
@@ -161,7 +161,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        results.Add(ConvertReaderToTask(dataReader));
+                        results.Add(ConvertReaderToTaskDAL(dataReader));
                     }
                 }
                 catch (Exception ex)
@@ -200,7 +200,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        results.Add(ConvertReaderToTask(dataReader));
+                        results.Add(ConvertReaderToTaskDAL(dataReader));
                     }
                 }
                 catch (Exception ex)
@@ -226,7 +226,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="dataReader"></param>
         /// <returns>taskDAL object</returns>
-        public TaskDAL ConvertReaderToTask(SqliteDataReader dataReader)
+        public TaskDAL ConvertReaderToTaskDAL(SqliteDataReader dataReader)
         {
             int taskId = dataReader.GetInt32(0);
             long boardId = dataReader.GetInt64(1);
