@@ -23,6 +23,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.isPersistent = false;
         }
 
+
+        public BoardsUsersController BoardsUsersController
+        {
+            get { return boardsUsersController; }
+        }
         public int BoardId
         {
             get { return boardId; }
@@ -54,5 +59,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 isPersistent = true;
             }
         }
+
+
     }
 }

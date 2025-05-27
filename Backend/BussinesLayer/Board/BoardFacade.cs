@@ -4,11 +4,13 @@ using System.Configuration;
 using System.Data.Common;
 using System.Linq;
 using System.Net.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
@@ -62,7 +64,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
             nextBoardId++;
+            curr.BoardDAL.BoardController.Insert(curr.BoardDAL);
             curr.JoinUser(email);
+            curr.BoardDAL.JoinBoard(email);
             log.Info($"Successfully created new board {boardname} for user with email {email}.");
             return curr;
         }
@@ -102,7 +106,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"DeleteBoard failed, user with email {email} is not the owner of board {boardname}.");
                 throw new ArgumentException("only owner can delete board");
             }
+            foreach (string val in curr.JoinedUsers)
+            {
+                if (val != email)
+                {
+                    LeaveBoard(val, curr.BoardId);
+                }
+            }
             boards[email].Remove(boardname);
+            curr.BoardDAL.LeaveBoard(email);
+            curr.BoardDAL.BoardController.Delete(curr.BoardDAL);
             log.Info($"Successfully deleted board {boardname} for user with email {email}.");
             return curr;
         }
@@ -374,6 +387,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("there are already more tasks in the column than the new limit.");
             }
             columnBL.MaxTasks = newLimit;
+            board.BoardDAL.BoardController.Update(board.BoardDAL, columnBL.Name, newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;
         }
@@ -477,6 +491,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("User already has a board with this name");
             }
             board.JoinUser(email);
+            board.BoardDAL.JoinBoard(email);
             if (!boards.ContainsKey(email))
             {
                 boards.Add(email, new Dictionary<string, BoardBL>());
@@ -504,6 +519,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             if (board.Owner == email)
                 throw new Exception("Owner of board can't leave it");
             board.LeaveUser(email);
+            board.BoardDAL.LeaveBoard(email);
             boards[email].Remove(board.Name);
             log.Info($"Successfully left board with ID {boardId} for user with email {email}.");
         }
@@ -535,6 +551,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new Exception("User is not the owner of the board");
             }
             board.Owner = newOwnerEmail;
+            board.BoardDAL.ChangeOwner(newOwnerEmail);
             log.Info($"Successfully changed owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
         }
 

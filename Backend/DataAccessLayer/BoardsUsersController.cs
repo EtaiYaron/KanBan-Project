@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to delete board user with boardId: {boardUserDal.BoardId}, email: {boardUserDal.UserEmail}, ownerEmail: {boardUserDal.OwnerEmail}. Error: {ex.Message}");
+                    log.Error($"Failed to delete board user with boardId: {boardUserDal.BoardId}, email: {boardUserDal.UserEmail}, ownerEmail: {boardUserDal.IsOwner}. Error: {ex.Message}");
                 }
                 finally
                 {

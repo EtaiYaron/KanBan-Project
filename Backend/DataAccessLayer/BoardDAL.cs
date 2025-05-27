@@ -116,7 +116,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void JoinBoard(string userEmail)
         {
             joinedUsers.Add(userEmail);
-            this.boardUserDALs.Add(new BoardsUsersDAL(this.boardId, userEmail, this.ownerEmail==userEmail));
+            BoardsUsersDAL boardUserDAL = new BoardsUsersDAL(this.boardId, userEmail, userEmail == this.ownerEmail);
+            this.boardUserDALs.Add(boardUserDAL);
+            boardUserDAL.BoardsUsersController.Insert(boardUserDAL);
         }
 
         /// <summary>
@@ -126,7 +128,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void LeaveBoard(string userEmail)
         {
             joinedUsers.Remove(userEmail);
-            this.boardUserDALs.RemoveAll(bu => bu.UserEmail == userEmail && bu.BoardId == this.boardId);
+            BoardsUsersDAL boardUserDAL = new BoardsUsersDAL(this.boardId, userEmail, userEmail == this.ownerEmail);
+            this.boardUserDALs.Remove(boardUserDAL);
+            boardUserDAL.BoardsUsersController.Delete(boardUserDAL);
         }
 
         /// <summary>
@@ -177,6 +181,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public BoardController BoardController
+        {
+            get { return boardController; }
+        }
 
     }
 }
