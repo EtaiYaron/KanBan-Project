@@ -17,12 +17,12 @@ internal class Program
         UserTests userTests = new UserTests(sf.UserService);
         userTests.UserRunTests();
 
-        /*
-        BoardTests boardTests = new BoardTests(sf.UserService, sf.BoardService, sf.TaskService);
-        boardTests.BoardRunTests();
+        /*  
+        BoardTests boardTests = new BoardTests(sf.UserService, sf.BoardService, sf.TaskService);  
+        boardTests.BoardRunTests();  
 
-        TaskServiceTests taskTests = new TaskServiceTests(sf.UserService, sf.BoardService, sf.TaskService);
-        taskTests.TaskServiceRunTests();
+        TaskServiceTests taskTests = new TaskServiceTests(sf.UserService, sf.BoardService, sf.TaskService);  
+        taskTests.TaskServiceRunTests();  
         */
     }
 }

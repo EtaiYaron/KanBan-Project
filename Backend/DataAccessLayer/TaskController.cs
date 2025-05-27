@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using System.IO;
-using System.Data.SQLite;
 using System.Security.AccessControl;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
 using log4net;

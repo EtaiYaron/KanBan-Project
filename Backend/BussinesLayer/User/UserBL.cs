@@ -16,7 +16,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
 
         public UserBL(string email, string password)
         {
-            this.userDAL = new UserDAL(email,password);
             this.email = email;
             this.password = password;
             this.userDAL = new UserDAL(email, password);

@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="3.0.4" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.5" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.119" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.10" />
   </ItemGroup>
 
   <ItemGroup>

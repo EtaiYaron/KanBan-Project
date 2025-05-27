@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
-using System.Data.SQLite;
 using System.Security.AccessControl;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
 using log4net;
@@ -42,6 +41,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 try
                 {
+                    connection.Open();
+
                     SqliteCommand command = new SqliteCommand(null, connection);
                     string insert = $"INSERT INTO {TableName} (email,password) Values {@"emailVal"},{@"passwordVal"}";
 
@@ -51,7 +52,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(emailParameter);
                     command.Parameters.Add(passwordParameter);
 
-                    connection.Open();
                     res = command.ExecuteNonQuery();
                 }
                 catch (Exception ex) {
