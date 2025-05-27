@@ -99,11 +99,21 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             TaskBL task = GetTask(taskId);
             if (title != null)
+            {
                 task.Title = title;
+                task.TaskDAL.Title = title;
+            }
             if (dueDate != null)
+            {
                 task.DueDate = dueDate;
+                task.TaskDAL.DueDate = dueDate;
+            }
             if (description != null)
+            {
                 task.Description = description;
+                task.TaskDAL.Description = description;
+            }
+
         }
 
         /// <summary>
@@ -113,7 +123,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="dest"></param>
         public void MoveTask(TaskBL task, int dest)
         {
-            columns[dest-1].RemoveTask(task.TaskId);
+            columns[dest - 1].RemoveTask(task.TaskId);
             columns[dest].AddTask(task);
         }
         

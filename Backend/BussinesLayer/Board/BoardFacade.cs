@@ -279,7 +279,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new ArgumentException("duedate isn't valid");
             }
             board.EditTask(taskId, title, dueTime, description);
-            task.TaskDAL.EditTask(title, dueTime, description);
             log.Info($"successfully edited task {taskId} in board {boardname} for user with email {email}.");
             return board;
         }

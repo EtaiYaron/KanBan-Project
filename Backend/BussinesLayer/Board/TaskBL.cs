@@ -15,12 +15,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private DateTime? dueDate;
         private string description;
         private TaskDAL taskDAL;
-        private bool isPersistent;
-        private string assigneeEmail;
-        private long boardId;
         private string assignee;
 
-        public TaskBL(int taskId, long boardid ,string title, DateTime dueDate, string description)
+        public TaskBL(int taskId, long boardId ,string title, DateTime dueDate, string description)
         {
             this.taskId = taskId;
             this.title = title;
@@ -31,27 +28,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.taskDAL = new TaskDAL(taskId, boardId, title, dueDate, description);
         }
 
-        /// <summary>
-        /// This method is used to edit an existing task in the board.
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="dueDate"></param>
-        /// <param name="description"></param>
-        public void EditTask(string title, DateTime dueDate, string description)
-        {
-            this.title = title;
-            this.dueDate = dueDate;
-            this.description = description;
-        }
-
-        /// <summary>
-        /// This method is used to move a task to the next column.
-        /// </summary>
-        /// <param name="dest"></param>
-        public void moveTask(int dest)
-        {
-            this.taskId = dest;
-        }
         
         public string Assignee
         {
