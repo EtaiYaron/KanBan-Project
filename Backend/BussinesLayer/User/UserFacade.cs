@@ -15,6 +15,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         private Dictionary<string, UserBL> users;
         private AuthenticationFacade authFacade;
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
+        private const int minlength = 6;
+        private const int maxlength = 20;
+
 
 
         public UserFacade(AuthenticationFacade authFacade)
@@ -23,6 +26,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             this.authFacade = authFacade;
         }
 
+        /// <summary>
+        /// This method is used to login a user to the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>UserBL object if the login was successful, otherwise null.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public UserBL Login(string email, string password)
         {
             log.Info($"Attempting login for user with email: {email}.");
@@ -31,6 +42,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error("Login failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (password == null)
             {
                 log.Error("Login failed, password can't be null.");
@@ -55,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Info($"User with email {email}, logged in successfully.");
                 return user;
             }
-            log.Warn($"Login failed for user {email}, incorrect password.");
+            log.Error($"Login failed for user {email}, incorrect password.");
             return null;
         }
 
@@ -67,6 +79,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error("Registration failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (password == null)
             {
                 log.Error("Registration failed, password can't be null.");
@@ -117,21 +130,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
 
         private bool isValidPassword(string password)
         {
-            if (password.Length < 6 || password.Length > 20) return false;
-            return password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(char.IsDigit);
+            if (password.Length < minlength || password.Length > maxlength) return false;
+            return Regex.IsMatch(password, "[A-Z]") && Regex.IsMatch(password, "[a-z]") && Regex.IsMatch(password, "[0-9]");
         }
 
         private bool IsValidEmail(string email)
         {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
+            string EmailRegex = "^[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'+/=?^_`{|}~-]+)@(?:(?!\\d+\\.\\d+\\.\\d+\\.\\d+$)(?:[a-z0-9](?:[a-z0-9-][a-z0-9])?\\.)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3}|\\[(\\d{1,3}\\.){3}\\d{1,3}\\])$";
+            return Regex.IsMatch(email, EmailRegex, RegexOptions.IgnoreCase);
         }
     }
 }

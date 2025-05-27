@@ -23,12 +23,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.userFacade = userFacade;
         }
 
+        /// <summary>
+        /// This method is used to login a user to the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string Login(string email, string password)
         {
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
-                Response response = new Response(null, email);
+                Response response = new Response(null, email.ToLower());
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
@@ -38,6 +44,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to register a user to the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string Register(string email, string password)
         {
             try
@@ -53,6 +65,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to logout a user from the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>An empty response, unless an error occurs</returns>
         public string Logout(string email)
         {
             try
