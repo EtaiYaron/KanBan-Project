@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="description"></param>
         public void AddTask(string title, DateTime dueDate, string description)
         {
-            columns[0].AddTask(new TaskBL(nextTaskId, title, dueDate, description));
+            columns[0].AddTask(new TaskBL(nextTaskId, boardId, title, dueDate, description));
             nextTaskId++;
         }
 
