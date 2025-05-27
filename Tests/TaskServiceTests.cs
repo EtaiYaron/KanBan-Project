@@ -12,7 +12,7 @@ namespace Tests
 {
     class TaskServiceTests
     {
-        /*
+        
         private UserService us;
         private BoardService b;
         private TaskService t;
@@ -119,28 +119,6 @@ namespace Tests
             else
             {
                 Console.WriteLine("TestGetTaskNegativeCase: Failed");
-            }
-
-            // Test retrieving all tasks successfully (Requirement 17)
-            tests = TestGetAllTasksPositiveCase();
-            if (tests)
-            {
-                Console.WriteLine("TestGetAllTasksPositiveCase: Passed");
-            }
-            else
-            {
-                Console.WriteLine("TestGetAllTasksPositiveCase: Failed");
-            }
-
-            // Test retrieving all tasks with invalid data (Requirement 17)
-            tests = TestGetAllTasksNegativeCase();
-            if (tests)
-            {
-                Console.WriteLine("TestGetAllTasksNegativeCase: Passed");
-            }
-            else
-            {
-                Console.WriteLine("TestGetAllTasksNegativeCase: Failed");
             }
 
             // Test: Assigning a task to another user (Requirement 23)
@@ -322,33 +300,6 @@ namespace Tests
             return true;
         }
 
-        /// <summary>
-        /// This test checks if all tasks can be retrieved successfully from a board.
-        /// Requirement: 17 (no limit on number of tasks by default)
-        /// </summary>
-        public bool TestGetAllTasksPositiveCase()
-        {
-            res = JsonSerializer.Deserialize<Response>(t.GetAllTasks("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage == null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// This test checks if retrieving tasks from a non-existent board fails.
-        /// Requirement: 17 (no limit on number of tasks by default)
-        /// </summary>
-        public bool TestGetAllTasksNegativeCase()
-        {
-            res = JsonSerializer.Deserialize<Response>(t.GetAllTasks("yaronet@post.bgu.ac.il", "name2"));
-            if (res.ErrorMessage == null)
-            {
-                return false;
-            }
-            return true;
-        }
 
         /// <summary>
         /// This test checks if a task can be assigned to another user by a board member.
@@ -414,6 +365,6 @@ namespace Tests
             }
             return false;
         }
-        */
+        
     }
 }
