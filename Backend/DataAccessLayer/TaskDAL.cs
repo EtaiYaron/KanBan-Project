@@ -159,7 +159,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="title"></param>
         /// <param name="dueDate"></param>
         /// <param name="description"></param>
-        public void EditTask(string title, DateTime dueDate, string description)
+        public void EditTask(string title, DateTime? dueDate, string description)
         {
             this.Title = title;
             this.DueDate = dueDate;

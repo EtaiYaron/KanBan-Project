@@ -14,7 +14,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private readonly DateTime creationTime;
         private DateTime? dueDate;
         private string description;
-        private int state;
         private TaskDAL taskDAL;
         private bool isPersistent;
         private string assigneeEmail;
@@ -28,7 +27,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.creationTime = DateTime.Now;
             this.dueDate = dueDate;
             this.description = description;
-            this.state = 0;
             this.assignee = null;
         }
 
@@ -89,10 +87,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             get { return this.description; }
             set { this.description = value; }
         }
-        public int State
+
+        public TaskDAL TaskDAL
         {
-            get { return this.state; }
-            set { this.state = value; }
+            get { return this.taskDAL; }
         }
 
 
