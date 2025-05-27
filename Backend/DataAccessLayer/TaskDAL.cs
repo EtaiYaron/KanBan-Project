@@ -175,6 +175,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.State = this.state + 1;
         }
 
+        public void DeleteTask()
+        {
+            if (isPersistent)
+            {
+                TaskController.Delete(this);
+                isPersistent = false;
+            }
+        }
+
         /// <summary>
         /// This method is used to assign the task to a user.
         /// </summary>

@@ -113,6 +113,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                     LeaveBoard(val, curr.BoardId);
                 }
             }
+            for (int i = 0; i < 3; i++)
+            {
+                ColumnBL column = curr.GetColumn(i);
+                foreach (TaskBL val in column.Tasks.Values)
+                {
+                    val.TaskDAL.DeleteTask();
+                }
+            }
             boards[email].Remove(boardname);
             curr.BoardDAL.LeaveBoard(email);
             curr.BoardDAL.BoardController.Delete(curr.BoardDAL);
