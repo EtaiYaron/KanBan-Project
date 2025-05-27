@@ -1,4 +1,5 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+using IntroSE.Kanban.Backend.ServiceLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="description"></param>
         public void AddTask(string title, DateTime dueDate, string description)
         {
-            columns[0].AddTask(new TaskBL(nextTaskId, title, dueDate, description));
+            columns[0].AddTask(new TaskBL(nextTaskId, boardId, title, dueDate, description));
             nextTaskId++;
         }
 
@@ -112,7 +113,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="dest"></param>
         public void MoveTask(TaskBL task, int dest)
         {
-            columns[task.State].RemoveTask(task.TaskId);
+            columns[dest-1].RemoveTask(task.TaskId);
             columns[dest].AddTask(task);
         }
         
@@ -124,6 +125,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public ColumnBL GetColumn(int columnOrdinal)
         {
             return columns[columnOrdinal];
+        }
+        public ColumnBL GetTaskOrdinal(TaskBL task)
+        {
+            foreach (var column in columns)
+            {
+                if (column.Tasks.ContainsKey(task.TaskId))
+                {
+                    return column;
+                }
+            }
+            return null;
         }
 
         public string Owner

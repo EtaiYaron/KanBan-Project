@@ -159,7 +159,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="title"></param>
         /// <param name="dueDate"></param>
         /// <param name="description"></param>
-        public void EditTask(string title, DateTime dueDate, string description)
+        public void EditTask(string title, DateTime? dueDate, string description)
         {
             this.Title = title;
             this.DueDate = dueDate;
@@ -173,6 +173,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void MoveTask()
         {
             this.State = this.state + 1;
+        }
+
+        public void DeleteTask()
+        {
+            if (isPersistent)
+            {
+                TaskController.Delete(this);
+                isPersistent = false;
+            }
         }
 
         /// <summary>

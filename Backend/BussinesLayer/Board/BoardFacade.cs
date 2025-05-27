@@ -113,6 +113,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                     LeaveBoard(val, curr.BoardId);
                 }
             }
+            for (int i = 0; i < 3; i++)
+            {
+                ColumnBL column = curr.GetColumn(i);
+                foreach (TaskBL val in column.Tasks.Values)
+                {
+                    val.TaskDAL.DeleteTask();
+                }
+            }
             boards[email].Remove(boardname);
             curr.BoardDAL.LeaveBoard(email);
             curr.BoardDAL.BoardController.Delete(curr.BoardDAL);
@@ -153,19 +161,20 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"MoveTask failed, dest nust be between {inProgressOrdinal} and {doneOrdinal}, and dest is {destcolumn}.");
                 throw new ArgumentOutOfRangeException($"dest must be between {inProgressOrdinal} and {doneOrdinal}");
             }
-            int fromcolumn = task.State;
-            if (destcolumn - fromcolumn != 1)
+            ColumnBL fromcolumn = board.GetTaskOrdinal(task);
+            ColumnBL column = board.GetColumn(destcolumn);
+            if (destcolumn - fromcolumn.ColumnId != 1)
             {
                 log.Error($"MoveTask failed, can't move task {taskId} from column {fromcolumn} to column {destcolumn}.");
                 throw new ArgumentException("cannot move the task to this destination");
             }
-            ColumnBL column = board.GetColumn(destcolumn);
             if (column.MaxTasks != noLimit && column.GetNumTasks() >= column.MaxTasks)
             {
                 log.Error($"MoveTask failed, column {column.Name} is full.");
                 throw new ArgumentException($"column {column.Name} is full");
             }
             board.MoveTask(task, destcolumn);
+            board.BoardDAL.MoveTask(task.TaskId);
             log.Info($"Successfully moved task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
             return board;
         }
@@ -207,7 +216,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"AddTask failed, column backlog is full.");
                 throw new ArgumentException("column backlog is full");
             }
+            int nextTaskId = board.NextTaskId;
             board.AddTask(title, dueTime, description);
+            TaskBL task = board.GetTask(nextTaskId);
+            board.BoardDAL.AddTask(task.TaskDAL);
             log.Info($"Successfully added task {board.NextTaskId} to board {boardname} for user with email {email}.");
         }
 
@@ -245,7 +257,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"EditTask failed, no new arguments to update");
                 throw new ArgumentException("all task arguments are null");
             }
-            if (task.State == doneOrdinal)
+            ColumnBL column = board.GetTaskOrdinal(task);
+            if (column.ColumnId == doneOrdinal)
             {
                 log.Error($"EditTask failed, can't edit a task that is done");
                 throw new Exception("Editing a done task is not allowed");
@@ -266,6 +279,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new ArgumentException("duedate isn't valid");
             }
             board.EditTask(taskId, title, dueTime, description);
+            task.TaskDAL.EditTask(title, dueTime, description);
             log.Info($"successfully edited task {taskId} in board {boardname} for user with email {email}.");
             return board;
         }
@@ -593,6 +607,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 throw new ArgumentException("Only an assignee can assign the task to another user");
             }
             task.Assignee = emailTo;
+            task.TaskDAL.AssignTaskToUser(emailTo);
             log.Info($"Successfully assigned task.");
         }
 

@@ -145,7 +145,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 task.persist(this.boardId);
             }
         }
-        
+
+        public void MoveTask(int taskId)
+        {
+            TaskDAL task = allTasks.FirstOrDefault(t => t.TaskId == taskId);
+            if (task != null)
+            {
+                task.MoveTask();
+            }
+            else
+            {
+                throw new Exception("Task not found.");
+            }
+        }
+
         public void ChangeOwner(string newOwnerEmail)
         {
             if (joinedUsers.Contains(newOwnerEmail))
