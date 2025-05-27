@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Open();
 
                     SqliteCommand command = new SqliteCommand(null, connection);
-                    string insert = $"INSERT INTO {TableName} (email,password) Values {@"emailVal"},{@"passwordVal"}";
+                    string insert = $"INSERT INTO {TableName} (email,password) Values (@emailVal, @passwordVal)";
 
                     SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
                     SqliteParameter passwordParameter = new SqliteParameter(@"passwordVal", userDal.Password);
