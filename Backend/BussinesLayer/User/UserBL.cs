@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
     {
         private string email;
         private string password;
-        public UserDAL userDAL;
+        private UserDAL userDAL;
 
         public UserBL(string email, string password)
         {
             this.userDAL = new UserDAL(email,password);
             this.email = email;
             this.password = password;
+            this.userDAL = new UserDAL(email, password);
             userDAL.persist();
         }
 
@@ -32,5 +34,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         }
 
         public string Email {  get { return this.email; } }
+
+        public UserDAL UserDAL
+        {
+            get { return this.userDAL; }
+        }
     }
 }

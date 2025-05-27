@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using log4net;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.User
@@ -104,6 +105,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             UserBL user = new UserBL(email, password);
             users[email] = user;
             authFacade.Login(email);
+            user.UserDAL.userController.Insert(user.UserDAL);
             log.Info($"User with email {email} registered successfully.");
             return user;
         }
