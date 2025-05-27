@@ -210,7 +210,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             int nextTaskId = board.NextTaskId;
             board.AddTask(title, dueTime, description);
+            TaskBL task = board.GetTask(nextTaskId);
             TaskDAL taskDAL = new TaskDAL(nextTaskId, board.BoardId, title, dueTime, description);
+            task.TaskDAL = taskDAL;
             board.BoardDAL.AddTask(taskDAL);
             log.Info($"Successfully added task {board.NextTaskId} to board {boardname} for user with email {email}.");
         }

@@ -91,6 +91,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public TaskDAL TaskDAL
         {
             get { return this.taskDAL; }
+            set { this.taskDAL = value; }
         }
 
 
