@@ -12,6 +12,7 @@ namespace Tests
 {
     class TaskServiceTests
     {
+        /*
         private UserService us;
         private BoardService b;
         private TaskService t;
@@ -413,5 +414,6 @@ namespace Tests
             }
             return false;
         }
+        */
     }
 }

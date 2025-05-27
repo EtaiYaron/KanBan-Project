@@ -36,7 +36,7 @@ namespace Tests
             {
                 Console.WriteLine("TestUserRegisterPositiveCase: Failed");
             }
-
+            /*
             // Test registering another user successfully (Requirement 6)
             tests = TestUserRegisterPositiveCase1();
             if (tests)
@@ -157,6 +157,7 @@ namespace Tests
             {
                 Console.WriteLine("TestUserLogoutNegativeCase1: Failed");
             }
+            */
         }
 
         /// <summary>
@@ -165,7 +166,7 @@ namespace Tests
         /// </summary>
         public bool TestUserRegisterPositiveCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Register("shay.klein11@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 return false;

@@ -22,9 +22,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardId = bbl.BoardId;
             this.name = bbl.Name;
             this.owner = bbl.Owner;
-            this.maxTasks0 = bbl.MaxTasks0;
-            this.maxTasks1 = bbl.MaxTasks1;
-            this.maxTasks2 = bbl.MaxTasks2;
         }
 
         public int BoardId
