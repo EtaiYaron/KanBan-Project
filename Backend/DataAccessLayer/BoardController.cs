@@ -37,20 +37,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                 try
                 {
-                    string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,maxTasks0,maxTasks1,maxTasks2,nextTaskId) Values (@boardIdVal,@boardName,@ownerEmailVal,@maxTasks0,@maxTasks1,@maxTasks2,@nextTaskId)";
+                    string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,backlog,inProgress,done,nextTaskId) Values (@boardIdVal,@boardNameVal,@ownerEmailVal,@backlogVal,@inProgressVal,@doneVal,@nextTaskId)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardIdVal", boardDal.BoardId);
-                    SqliteParameter boardNameParameter = new SqliteParameter(@"boardName", boardDal.BoardName);
+                    SqliteParameter boardNameParameter = new SqliteParameter(@"boardNameVal", boardDal.BoardName);
                     SqliteParameter ownerEmailParameter = new SqliteParameter(@"ownerEmailVal", boardDal.OwnerEmail);
-                    SqliteParameter maxTasks0Parameter = new SqliteParameter(@"maxTasks0", boardDal.MaxTasks0);
-                    SqliteParameter maxTasks1Parameter = new SqliteParameter(@"maxTasks1", boardDal.MaxTasks1);
-                    SqliteParameter maxTasks2Parameter = new SqliteParameter(@"maxTasks2", boardDal.MaxTasks2);
+                    SqliteParameter backlogParameter = new SqliteParameter(@"backlogVal", boardDal.Backlog);
+                    SqliteParameter inProgressParameter = new SqliteParameter(@"inProgressVal", boardDal.InProgress);
+                    SqliteParameter doneParameter = new SqliteParameter(@"doneVal", boardDal.Done);
                     command.CommandText = insert;
                     command.Parameters.Add(boardIdParameter);
                     command.Parameters.Add(boardNameParameter);
                     command.Parameters.Add(ownerEmailParameter);
-                    command.Parameters.Add(maxTasks0Parameter);
-                    command.Parameters.Add(maxTasks1Parameter);
-                    command.Parameters.Add(maxTasks2Parameter);
+                    command.Parameters.Add(backlogParameter);
+                    command.Parameters.Add(inProgressParameter);
+                    command.Parameters.Add(doneParameter);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -229,11 +229,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             int boardId = dataReader.GetInt32(0);
             string boardName = dataReader.GetString(1);
             string ownerEmail = dataReader.GetString(2);
-            int maxTasks0 = dataReader.GetInt32(3);
-            int maxTasks1 = dataReader.GetInt32(4);
-            int maxTasks2 = dataReader.GetInt32(5);
+            int backlog = dataReader.GetInt32(3);
+            int inProgress = dataReader.GetInt32(4);
+            int done = dataReader.GetInt32(5);
             int nextTaskId = dataReader.GetInt32(6);
-            return new BoardDAL(boardId, boardName, ownerEmail, maxTasks0, maxTasks1, maxTasks2, nextTaskId);
+            return new BoardDAL(boardId, boardName, ownerEmail, backlog, inProgress, done, nextTaskId);
         }
     }
 }

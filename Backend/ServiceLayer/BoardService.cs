@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -298,6 +299,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 boardFacade.ChangeOwner(email, newOwnerEmail, boardname);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string AssignTaskToUser(string email, string boardName, int taskId, string emailTo)
+        {
+            try
+            {
+                boardFacade.AssignTaskToUser(email, boardName, taskId, emailTo);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
             }

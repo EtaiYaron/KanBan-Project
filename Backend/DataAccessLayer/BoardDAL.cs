@@ -14,9 +14,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private string boardName;
         private int boardId;
         private string ownerEmail;
-        private int maxTasks0;
-        private int maxTasks1;
-        private int maxTasks2;
+        private int backlog;
+        private int inProgress;
+        private int done;
         private BoardController boardController;
         private bool isPersistent;
         private int nextTaskId;
@@ -27,9 +27,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.boardId = boardId;
             this.boardName = boardName;
             this.ownerEmail = ownerEmail;
-            this.maxTasks0 = maxTasks0;
-            this.maxTasks1 = maxTasks1;
-            this.maxTasks2 = maxTasks2;
+            this.backlog = maxTasks0;
+            this.inProgress = maxTasks1;
+            this.done = maxTasks2;
             this.nextTaskId = nextTaskId;
             this.boardUserDALs = new List<BoardsUsersDAL>();
             this.allTasks = new List<TaskDAL>();
@@ -69,33 +69,33 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        public int MaxTasks0
+        public int Backlog
         {
-            get { return maxTasks0; }
+            get { return backlog; }
             set
             {
-                boardController.Update(this, "maxTasks0", value.ToString());
-                maxTasks0 = value;
+                boardController.Update(this, "backlog", value.ToString());
+                backlog = value;
             }
         }
 
-        public int MaxTasks1
+        public int InProgress
         {
-            get { return maxTasks1; }
+            get { return inProgress; }
             set
             {
-                boardController.Update(this, "maxTasks1", value.ToString());
-                maxTasks1 = value;
+                boardController.Update(this, "inProgress", value.ToString());
+                inProgress = value;
             }
         }
 
-        public int MaxTasks2
+        public int Done
         {
-            get { return maxTasks2; }
+            get { return done; }
             set
             {
-                boardController.Update(this, "maxTasks2", value.ToString());
-                maxTasks2 = value;
+                boardController.Update(this, "done", value.ToString());
+                done = value;
             }
         }
 
@@ -107,6 +107,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 boardController.Update(this, "nextTaskId", value.ToString());
                 nextTaskId = value;
             }
+        }
+
+        /// <summary>
+        /// This method is used to delete the board from the database and clear all associated data.
+        /// </summary>
+        public void DeleteBoard()
+        {
+            boardController.Delete(this);
+            isPersistent = false;
+            allTasks.Clear();
+            boardUserDALs.Clear();
+            joinedUsers.Clear();
         }
 
         /// <summary>
@@ -143,20 +155,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 allTasks.Add(task);
                 task.persist(this.boardId);
+                NextTaskId++;
             }
         }
 
         public void MoveTask(int taskId)
         {
             TaskDAL task = allTasks.FirstOrDefault(t => t.TaskId == taskId);
-            if (task != null)
-            {
-                task.MoveTask();
-            }
-            else
-            {
-                throw new Exception("Task not found.");
-            }
+            task.MoveTask();
         }
 
         public void ChangeOwner(string newOwnerEmail)
@@ -179,6 +185,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             else
             {
                 throw new Exception("New owner must be a member of the board.");
+            }
+        }
+
+        public void limitTasksColumn(String columnName, int limit)
+        {
+            if (columnName == "backlog")
+            {
+                this.Backlog = limit;
+            }
+            else if (columnName == "inProgress")
+            {
+                this.InProgress = limit;
+            }
+            else if (columnName == "done")
+            {
+                this.Done = limit;
             }
         }
 
