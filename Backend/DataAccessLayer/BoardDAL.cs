@@ -159,11 +159,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to move a task to the next column in the board.
+        /// </summary>
+        /// <param name="taskId"></param>
         public void MoveTask(int taskId)
         {
             TaskDAL task = allTasks.FirstOrDefault(t => t.TaskId == taskId);
             task.MoveTask();
         }
+
+
+        /// <summary>
+        /// This method is used to change the owner of the board.
+        /// </summary>
+        /// <param name="newOwnerEmail"></param>
+        /// <exception cref="Exception"></exception>
 
         public void ChangeOwner(string newOwnerEmail)
         {
@@ -188,6 +199,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+
+        /// <summary>
+        /// This method is used to limit the number of tasks in a specific column of the board.
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="limit"></param>
         public void limitTasksColumn(String columnName, int limit)
         {
             if (columnName == "backlog")
