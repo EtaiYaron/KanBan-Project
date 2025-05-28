@@ -38,13 +38,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                 try
                 {
-                    string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,backlog,inProgress,done,nextTaskId) Values (@boardIdVal,@boardNameVal,@ownerEmailVal,@backlogVal,@inProgressVal,@doneVal,@nextTaskId)";
+                    string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,backlog,inProgress,done,nextTaskID) Values (@boardIdVal,@boardNameVal,@ownerEmailVal,@backlogVal,@inProgressVal,@doneVal,@nextTaskId)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardIdVal", boardDal.BoardId);
                     SqliteParameter boardNameParameter = new SqliteParameter(@"boardNameVal", boardDal.BoardName);
                     SqliteParameter ownerEmailParameter = new SqliteParameter(@"ownerEmailVal", boardDal.OwnerEmail);
                     SqliteParameter backlogParameter = new SqliteParameter(@"backlogVal", boardDal.Backlog);
                     SqliteParameter inProgressParameter = new SqliteParameter(@"inProgressVal", boardDal.InProgress);
                     SqliteParameter doneParameter = new SqliteParameter(@"doneVal", boardDal.Done);
+                    SqliteParameter nextTaskParameter = new SqliteParameter(@"nextTaskId", boardDal.NextTaskId);
                     command.CommandText = insert;
                     command.Parameters.Add(boardIdParameter);
                     command.Parameters.Add(boardNameParameter);
@@ -52,6 +53,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(backlogParameter);
                     command.Parameters.Add(inProgressParameter);
                     command.Parameters.Add(doneParameter);
+                    command.Parameters.Add(nextTaskParameter);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"Successfully inserted to the DB board with id: {boardDal.BoardId}, name: {boardDal.BoardName}, owner: {boardDal.OwnerEmail}.");

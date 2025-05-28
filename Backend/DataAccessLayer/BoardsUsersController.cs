@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 int res = -1;
                 try
                 {
-                    string insert = $"INSERT INTO {TableName} (boardId,userEmail,isOwner) VALUES (@boardId,@userEmail,@isOwner)";
+                    string insert = $"INSERT INTO {TableName} (boardId,userEmail,isOwner) VALUES (@boardId,@email,@isOwner)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", boardUserDal.BoardId);
                     SqliteParameter emailParameter = new SqliteParameter(@"email", boardUserDal.UserEmail);
                     SqliteParameter ownerEmailParameter = new SqliteParameter(@"isOwner", boardUserDal.IsOwner);
