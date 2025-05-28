@@ -161,9 +161,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="description"></param>
         public void EditTask(string title, DateTime? dueDate, string description)
         {
-            this.Title = title;
-            this.DueDate = dueDate;
-            this.Description = description;
+            if (title != null)
+            {
+                this.Title = title;
+            }
+            if (dueDate != null)
+            {
+                this.DueDate = dueDate;
+            }
+            if (description != null)
+            {
+                this.Description = description;
+            }
         }
 
 
