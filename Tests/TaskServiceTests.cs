@@ -327,6 +327,7 @@ namespace Tests
         /// </summary>
         public bool TestAssignTaskToUserPositiveCase1()
         {
+            us.Login("DonaldTrump@gmail.com", "UsaPresident2025");
             t.AddTask("Shauli@gmail.com", "USA", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
             id++;
             b.JoinBoard("DonaldTrump@gmail.com", cnt);
