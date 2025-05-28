@@ -48,7 +48,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     SqliteParameter dueDateParameter = new SqliteParameter(@"dueDate", taskDAL.DueDate.ToString());
                     SqliteParameter descriptionParameter = new SqliteParameter(@"description", taskDAL.Description);
                     SqliteParameter stateParameter = new SqliteParameter(@"state", taskDAL.State);
-                    SqliteParameter assigneeEmailParameter = new SqliteParameter(@"assigneeEmail", taskDAL.AssigneeEmail);
+                    string assigneeEmail = taskDAL.AssigneeEmail;
+                    if (taskDAL.AssigneeEmail == null)
+                    {
+                        assigneeEmail = "";
+                    }
+                    SqliteParameter assigneeEmailParameter = new SqliteParameter(@"assigneeEmail", assigneeEmail);
+                    
                     command.CommandText = insert;
                     command.Parameters.Add(taskIdParameter);
                     command.Parameters.Add(boardIdParameter);
