@@ -397,6 +397,8 @@ namespace Tests
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
             t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
+            t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "task", new DateTime(2026, 11, 11), "try to add task");
+            b.JoinBoard("Shauli@gmail.com", 0);
             if (res.ErrorMessage == null)
             {
                 return true;
