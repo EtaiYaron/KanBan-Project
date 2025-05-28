@@ -20,28 +20,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private TaskController TaskController;
         private bool isPersistent;
 
-        /// <summary>
-        /// Constructor for the TaskDAL class.
-        /// </summary>
-        /// <param name="taskId"></param>
-        /// <param name="boardId"></param>
-        /// <param name="title"></param>
-        /// <param name="dueDate"></param>
-        /// <param name="description"></param>
-        public TaskDAL(int taskId,long boardId, string title, DateTime dueDate, string description)
-        {
-            this.taskId = taskId;
-            this.boardId = boardId;
-            this.title = title;
-            this.creationTime = DateTime.Now;
-            this.dueDate = dueDate;
-            this.description = description;
-            this.state = 0;
-            this.TaskController = new TaskController();
-            this.isPersistent = false;
-            this.assigneeEmail = null;
-        }
-
 
         /// <summary>
         /// Constructor for the TaskDAL class.
