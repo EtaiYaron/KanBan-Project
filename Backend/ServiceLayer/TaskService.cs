@@ -129,6 +129,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 email = email.ToLower();
+                emailTo = emailTo.ToLower();
                 boardFacade.AssignTaskToUser(email, boardname, taskId, emailTo);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);

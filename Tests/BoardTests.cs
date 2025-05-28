@@ -396,13 +396,13 @@ namespace Tests
         public bool TestCreateBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
-            t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
+            //t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
             b.JoinBoard("shauli@gmail.com", 0);
-            t.AssignTaskToUser("shauli@gmail.com", "name", 0, "yaronet@post.bgu.ac.il");
-            t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK1321412", null, null);
-
-            b.LeaveBoard("shauli@gmail.com", 0);
-            t.MoveTask("yaronet@post.bgu.ac.il", "name", 0, 1);
+            //t.AssignTaskToUser("Shauli@gmail.com", "name", 0, "yaronet@post.bgu.ac.il");
+            //t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK1321412", null, null);
+            //t.MoveTask("yaronet@post.bgu.ac.il", "name", 0, 1);
+            //b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
+            b.ChangeOwner("yaronet@post.bgu.ac.il", "shauli@gmail.com", "name");
             if (res.ErrorMessage == null)
             {
                 return true;

@@ -110,45 +110,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-        /// <summary>
-        /// This method is used to update a specific attribute of a board in the database.
-        /// </summary>
-        /// <param name="boardDAL"></param>
-        /// <param name="attributeName"></param>
-        /// <param name="attributeValue"></param>
-        /// <returns>true if the update was successful, otherwise false.</returns>
-        public bool Update(BoardDAL boardDAL, string attributeName, int attributeValue)
-        {
-            log.Info($"Attempting to update in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
-            int res = -1;
-            using (var connection = new SqliteConnection(_connectionString))
-            {
-                SqliteCommand command = new SqliteCommand
-                {
-                    Connection = connection,
-                    CommandText = $"UPDATE {TableName} SET {attributeName}=@attributeValue WHERE boardId={boardDAL.BoardId}"
-                };
-
-                try
-                {
-                    command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
-                    connection.Open();
-                    res = command.ExecuteNonQuery();
-                    log.Info($"Successfully updated in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
-                }
-                catch (Exception ex)
-                {
-                    log.Error($"Failed to update board with id: {boardDAL.BoardId}. Error: {ex.Message}");
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-            }
-            return res > 0;
-        }
-
 
         /// <summary>
         /// This method is used to delete a board from the database by its BoardDAL object.

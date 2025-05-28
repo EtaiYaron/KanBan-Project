@@ -311,6 +311,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 email = email.ToLower();
+                newOwnerEmail = newOwnerEmail.ToLower();
                 boardFacade.ChangeOwner(email, newOwnerEmail, boardname);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
