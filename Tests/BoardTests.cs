@@ -34,7 +34,7 @@ namespace Tests
             {
                 Console.WriteLine("TestCreateBoardPositiveCase: Failed");
             }
-            /*
+            
             // Test: Creating a board with a different user (Requirement 8)
             tests = TestCreateBoardPositiveCase1();
             if (tests)
@@ -376,8 +376,6 @@ namespace Tests
             {
                 Console.WriteLine("TestChangeOwnerNegativeCase1: Failed");
             }
-
-            */
         }
 
         /// <summary>
@@ -396,13 +394,6 @@ namespace Tests
         public bool TestCreateBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
-            //t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
-            b.JoinBoard("shauli@gmail.com", 0);
-            //t.AssignTaskToUser("Shauli@gmail.com", "name", 0, "yaronet@post.bgu.ac.il");
-            //t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK1321412", null, null);
-            //t.MoveTask("yaronet@post.bgu.ac.il", "name", 0, 1);
-            //b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
-            b.ChangeOwner("yaronet@post.bgu.ac.il", "shauli@gmail.com", "name");
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -653,7 +644,6 @@ namespace Tests
         {
             us.Register("Kobe2424@gmail.com", "Kobe1");
             b.JoinBoard("Kobe2424@gmail.com", cnt);
-            cnt++;
             Response res = JsonSerializer.Deserialize<Response>(b.GetUserBoards("Kobe2424@gmail.com"));
             if (res.ErrorMessage == null)
             {
