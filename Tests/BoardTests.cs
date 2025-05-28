@@ -399,6 +399,7 @@ namespace Tests
             t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
             //t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK", null, null);
             b.JoinBoard("Shauli@gmail.com", 0);
+            //t.AssignTaskToUser("yaronet@post.bgu.ac.il", "name", 0, "Shauli@gmail.com");
             if (res.ErrorMessage == null)
             {
                 return true;
