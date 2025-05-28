@@ -24,6 +24,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
+            LoadAll();
         }
 
         /// <summary>
@@ -162,6 +163,21 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             String EmailRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:(?!\\d+\\.\\d+\\.\\d+\\.\\d+$)(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3}|\\[(\\d{1,3}\\.){3}\\d{1,3}\\])$";
             return Regex.IsMatch(email, EmailRegex, RegexOptions.IgnoreCase);
+        }
+
+
+        private void LoadAll()
+        {
+            log.Info("Loading all users from the database.");
+            users.Clear();
+            UserController userController = new UserController();
+            List<UserDAL> userDals = userController.SelectAll();
+            foreach (UserDAL userDal in userDals)
+            {
+                UserBL user = new UserBL(userDal.Email, userDal.Password);
+                users[userDal.Email] = user;
+            }
+            log.Info("All users loaded successfully.");
         }
     }
 }

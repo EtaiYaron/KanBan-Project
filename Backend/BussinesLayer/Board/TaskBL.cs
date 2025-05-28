@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private long boardId;
         private string assignee;
 
-        public TaskBL(int taskId, long boardId ,string title, DateTime dueDate, string description)
+        public TaskBL(int taskId, long boardId ,string title, DateTime? dueDate, string description)
         {
             this.taskId = taskId;
             this.title = title;

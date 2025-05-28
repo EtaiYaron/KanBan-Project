@@ -34,6 +34,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.boards = new Dictionary<string, Dictionary<string, BoardBL>>();
             this.authenticationFacade = authenticationFacade;
             this.nextBoardId = 0;
+            LoadAllBoards();
         }
 
         /// <summary>
@@ -678,6 +679,42 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
         }
 
+        private void LoadAllBoards()
+        {
+            log.Info("Loading all boards from the database.");
+            boards.Clear();
+            BoardController boardController = new BoardController();
+            BoardsUsersController boardsUsersController = new BoardsUsersController();
+            TaskController taskController = new TaskController();
+            List<BoardDAL> loadedBoards = boardController.SelectAllBoards();
+            List<BoardsUsersDAL> loadedBoardsUsers = boardsUsersController.SelectAll();
+            List<TaskDAL> loadedTasks = taskController.SelectAll();
+            foreach (BoardsUsersDAL boardsUsersDAL in loadedBoardsUsers)
+            {
+                if (! boards.ContainsKey(boardsUsersDAL.UserEmail))
+                {
+                    boards[boardsUsersDAL.UserEmail] = new Dictionary<string, BoardBL>();
+                }
+                foreach (BoardDAL boardDAL in loadedBoards)
+                {
+                    if (boardDAL.BoardId == boardsUsersDAL.BoardId)
+                    {
+                        BoardBL boardBL = new BoardBL(boardDAL.BoardId, boardDAL.BoardName, boardDAL.OwnerEmail);
+                        foreach (TaskDAL taskDAL in loadedTasks)
+                        {
+                            if (taskDAL.BoardId == boardDAL.BoardId)
+                            {
+                                TaskBL taskBL = new TaskBL(taskDAL.TaskId, taskDAL.BoardId, taskDAL.Title , taskDAL.DueDate, taskDAL.Description); 
+                                boardBL.GetColumn(taskDAL.State).AddTask(taskBL);
+                            }
+                        }
+                        boards[boardsUsersDAL.UserEmail].Add(boardBL.Name, boardBL);
+                    }
+                }
+
+            }
+            log.Info("Successfully loaded all boards from the database.");
+        }
     }
 
 

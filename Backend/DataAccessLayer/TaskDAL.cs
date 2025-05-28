@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="dueDate"></param>
         /// <param name="creationTime"></param>
         /// <param name="description"></param>
-        public TaskDAL(int taskId, long boardId, string title, DateTime dueDate, DateTime creationTime, string description)
+        public TaskDAL(int taskId, long boardId, string title, DateTime? dueDate, DateTime creationTime, string description)
         {
             this.taskId = taskId;
             this.boardId = boardId;
