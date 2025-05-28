@@ -65,6 +65,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
             nextBoardId++;
+            curr.BoardDAL.BoardController.UpdateLastBoardId(nextBoardId);
             curr.BoardDAL.persist();
             curr.JoinUser(email);
             curr.BoardDAL.JoinBoard(email);
@@ -691,7 +692,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             List<TaskDAL> loadedTasks = taskController.SelectAll();
             foreach (BoardsUsersDAL boardsUsersDAL in loadedBoardsUsers)
             {
-                if (! boards.ContainsKey(boardsUsersDAL.UserEmail))
+                if (!boards.ContainsKey(boardsUsersDAL.UserEmail))
                 {
                     boards[boardsUsersDAL.UserEmail] = new Dictionary<string, BoardBL>();
                 }
@@ -704,7 +705,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                         {
                             if (taskDAL.BoardId == boardDAL.BoardId)
                             {
-                                TaskBL taskBL = new TaskBL(taskDAL.TaskId, taskDAL.BoardId, taskDAL.Title , taskDAL.DueDate, taskDAL.Description); 
+                                TaskBL taskBL = new TaskBL(taskDAL.TaskId, taskDAL.BoardId, taskDAL.Title, taskDAL.DueDate, taskDAL.Description); 
                                 boardBL.GetColumn(taskDAL.State).AddTask(taskBL);
                             }
                         }
@@ -713,6 +714,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 }
 
             }
+
+            this.nextBoardId = boardController.SelectBoardId();
             log.Info("Successfully loaded all boards from the database.");
         }
     }

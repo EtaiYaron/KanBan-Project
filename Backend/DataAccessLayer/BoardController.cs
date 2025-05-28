@@ -188,6 +188,71 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
+        public int SelectBoardId()
+        {
+            log.Info("Attempting to select the last board id from the DB.");
+            int result = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"SELECT * FROM LastBoardId;";
+                SqliteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+                    result = dataReader.GetInt32(0);
+                    log.Info($"Successfully got the last board id");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to select board id. Error: {ex.Message}");
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return result;
+        }
+
+        public bool UpdateLastBoardId(int lastBoardId)
+        {
+            log.Info($"Attempting to update the last board id");
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"UPDATE LastBoardId SET boardId=@lastBoardId"
+                };
+
+                try
+                {
+                    command.Parameters.Add(new SqliteParameter(@"lastBoardId", lastBoardId));
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    log.Info($"Successfully updated last board id");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to update last board id: {lastBoardId}. Error: {ex.Message}");
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
 
 
         /// <summary>
