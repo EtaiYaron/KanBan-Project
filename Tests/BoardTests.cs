@@ -34,7 +34,7 @@ namespace Tests
             {
                 Console.WriteLine("TestCreateBoardPositiveCase: Failed");
             }
-            /*
+            
             // Test: Creating a board with a different user (Requirement 8)
             tests = TestCreateBoardPositiveCase1();
             if (tests)
@@ -376,8 +376,6 @@ namespace Tests
             {
                 Console.WriteLine("TestChangeOwnerNegativeCase1: Failed");
             }
-
-            */
         }
 
         /// <summary>
