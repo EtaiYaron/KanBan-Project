@@ -308,20 +308,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return JsonSerializer.Serialize(response);
             }
         }
-
-        public string AssignTaskToUser(string email, string boardName, int taskId, string emailTo)
-        {
-            try
-            {
-                boardFacade.AssignTaskToUser(email, boardName, taskId, emailTo);
-                Response response = new Response();
-                return JsonSerializer.Serialize(response);
-            }
-            catch (Exception ex)
-            {
-                Response response = new Response(ex.Message);
-                return JsonSerializer.Serialize(response);
-            }
-        }
     }
 }
