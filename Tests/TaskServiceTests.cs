@@ -313,7 +313,7 @@ namespace Tests
             id++;
             cnt++;
             b.JoinBoard("yaronet@post.bgu.ac.il", cnt);
-            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "ABCD", id, "yaronet@post.bgu.ac.il"));
+            Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", id, "yaronet@post.bgu.ac.il"));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -330,7 +330,7 @@ namespace Tests
             t.AddTask("Shauli@gmail.com", "USA", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
             id++;
             b.JoinBoard("DonaldTrump@gmail.com", cnt);
-            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "USA", id, "DonaldTrump@gmail.com"));
+            Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "USA", id, "DonaldTrump@gmail.com"));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -344,7 +344,7 @@ namespace Tests
         /// </summary>
         public bool TestAssignTaskToUserNegativeCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.com", "ABCD", id + 1, "yaronet@post.bgu.ac.il"));
+            Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", id + 1, "yaronet@post.bgu.ac.il"));
             if (res.ErrorMessage != null)
             {
                 return true;
@@ -358,7 +358,7 @@ namespace Tests
         /// </summary>
         public bool TestAssignTaskToUserNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.AssignTaskToUser("Shauli@gmail.co", "USA", id, "DonaldTrump@gmail.com"));
+            Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.co", "USA", id, "DonaldTrump@gmail.com"));
             if (res.ErrorMessage != null)
             {
                 return true;
