@@ -123,11 +123,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             get { return this.assigneeEmail; }
             set
             {
-                if (isPersistent)
-                {
-                    TaskController.Update(this, "assigneeEmail", value);
-                    this.assigneeEmail = value;
-                }
+                TaskController.Update(this, "assigneeEmail", value);
+                this.assigneeEmail = value;
             }
         }
 

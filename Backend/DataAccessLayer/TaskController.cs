@@ -131,11 +131,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SqliteConnection(_connectionString))
             {
                 SqliteCommand command = new SqliteCommand(null, connection);
-                string update = $"UPDATE {TableName} SET {attributeName} = @attributeValue WHERE TaskId = @taskId";
+                string update = $"UPDATE {TableName} SET {attributeName} = @attributeValue WHERE taskId = @taskId";
+                command.CommandText = update;
 
                 try
                 {
-                    command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
+                    SqliteParameter attribute = new SqliteParameter(@"attributeValue", attributeValue);
+                    command.Parameters.Add(attribute);
+                    SqliteParameter taskId = new SqliteParameter(@"taskId", taskDAL.TaskId);
+                    command.Parameters.Add(taskId);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"Task with ID: {taskDAL.TaskId} updated successfully - Attribute: {attributeName}, Value: {attributeValue}.");

@@ -386,7 +386,7 @@ namespace Tests
         public void CreatingUser()
         {
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
-            us.Register("Shauli@gmail.com", "Haparlament1");
+            us.Register("shauli@gmail.com", "Haparlament1");
         }
 
         /// <summary>
@@ -397,9 +397,9 @@ namespace Tests
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
             t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
-            //t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK", null, null);
-            b.JoinBoard("Shauli@gmail.com", 0);
-            //t.AssignTaskToUser("yaronet@post.bgu.ac.il", "name", 0, "Shauli@gmail.com");
+            b.JoinBoard("shauli@gmail.com", 0);
+            t.AssignTaskToUser("shauli@gmail.com", "name", 0, "yaronet@post.bgu.ac.il");
+            t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK1321412", null, null);
             if (res.ErrorMessage == null)
             {
                 return true;
