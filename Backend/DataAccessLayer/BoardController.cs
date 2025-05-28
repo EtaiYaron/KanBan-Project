@@ -188,6 +188,36 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
+        public bool InsertBoardId()
+        {    
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                try
+                {
+                    SqliteCommand command = new SqliteCommand(null, connection);
+                    string insert = "INSERT INTO LastBoardId Values (@boardIdPar)";
+
+                    SqliteParameter id = new SqliteParameter(@"boardIdPar", 1);
+                    command.CommandText = insert;
+                    command.Parameters.Add(id);
+
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to insert 0 to board id as default");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return res > 0;
+        }
+
         public int SelectBoardId()
         {
             log.Info("Attempting to select the last board id from the DB.");
@@ -195,14 +225,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SqliteConnection(_connectionString))
             {
                 SqliteCommand command = new SqliteCommand(null, connection);
-                command.CommandText = $"SELECT * FROM LastBoardId;";
+                command.CommandText = "SELECT boardId FROM LastBoardId;";
                 SqliteDataReader dataReader = null;
                 try
                 {
                     connection.Open();
                     dataReader = command.ExecuteReader();
-                    result = dataReader.GetInt32(0);
-                    log.Info($"Successfully got the last board id");
+                    if (dataReader.Read())
+                    {
+                        result = dataReader.GetInt32(0);
+                        log.Info($"Successfully got the last board id: {result}");
+                    }
+                    else
+                    {
+                        log.Error("No rows found in LastBoardId table.");
+                    }
                 }
                 catch (Exception ex)
                 {

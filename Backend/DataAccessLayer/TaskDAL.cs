@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private string description;
         private int state;
         private long boardId;
-        private string? assigneeEmail;
+        private string assigneeEmail;
         private TaskController TaskController;
         private bool isPersistent;
 
@@ -44,6 +44,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.assigneeEmail = null;
         }
 
+        public void AssingeeEmail(string email)
+        {
+            this.assigneeEmail = email;
+        }
+
         public int TaskId
         {
             get { return this.taskId; }
@@ -69,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    TaskController.Update(this, "dueDate", dueDate.ToString());
+                    TaskController.Update(this, "dueDate", value.ToString());
                     dueDate = value; 
                 }
             }
@@ -123,6 +128,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             get { return this.assigneeEmail; }
             set
             {
+                Console.WriteLine("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 TaskController.Update(this, "assigneeEmail", value);
                 this.assigneeEmail = value;
             }
@@ -191,23 +197,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 TaskController.Insert(this);
                 isPersistent = true;
             }
-        }
-
-
-        /// <summary>
-        /// This method is used to persist the task in the database with a specific board ID.
-        /// </summary>
-        /// <param name="boardId"></param>
-        /// <exception cref="Exception"></exception>
-        public void persist(long boardId)
-        {
-            if (!isPersistent)
-            {
-                this.boardId = boardId;
-                TaskController.Insert(this);
-                this.isPersistent = true;
-            }
-            
         }
 
     }

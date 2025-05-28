@@ -701,6 +701,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                     if (boardDAL.BoardId == boardsUsersDAL.BoardId)
                     {
                         BoardBL boardBL = new BoardBL(boardDAL.BoardId, boardDAL.BoardName, boardDAL.OwnerEmail);
+                        boardBL.JoinUser(boardsUsersDAL.UserEmail);
                         foreach (TaskDAL taskDAL in loadedTasks)
                         {
                             if (taskDAL.BoardId == boardDAL.BoardId)
@@ -716,6 +717,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
 
             this.nextBoardId = boardController.SelectBoardId();
+            if (nextBoardId < 0)
+            {
+                this.nextBoardId = 1;
+                boardController.InsertBoardId();
+            }
             log.Info("Successfully loaded all boards from the database.");
         }
     }

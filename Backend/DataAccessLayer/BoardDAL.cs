@@ -154,7 +154,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             if (!allTasks.Any(t => t.TaskId == task.TaskId))
             {
                 allTasks.Add(task);
-                task.persist(this.boardId);
                 NextTaskId++;
             }
         }

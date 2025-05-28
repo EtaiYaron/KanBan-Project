@@ -44,8 +44,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     SqliteParameter taskIdParameter = new SqliteParameter(@"taskId", taskDAL.TaskId);
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", taskDAL.BoardId);
                     SqliteParameter titleParameter = new SqliteParameter(@"title", taskDAL.Title);
-                    SqliteParameter creationTimeParameter = new SqliteParameter(@"creationTime", taskDAL.CreationTime.ToString());
-                    SqliteParameter dueDateParameter = new SqliteParameter(@"dueDate", taskDAL.DueDate.ToString());
+                    SqliteParameter creationTimeParameter = new SqliteParameter(@"creationTime", taskDAL.CreationTime);
+                    SqliteParameter dueDateParameter = new SqliteParameter(@"dueDate", taskDAL.DueDate);
                     SqliteParameter descriptionParameter = new SqliteParameter(@"description", taskDAL.Description);
                     SqliteParameter stateParameter = new SqliteParameter(@"state", taskDAL.State);
                     string assigneeEmail = taskDAL.AssigneeEmail;
@@ -254,10 +254,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DateTime dueDate = dataReader.GetDateTime(4);
             string description = dataReader.GetString(5);
             string assigneeEmail = dataReader.GetString(6);
-            return new TaskDAL(taskId, boardId, title, dueDate, creationTime, description)
-            {
-                AssigneeEmail = assigneeEmail
-            };
+            TaskDAL t = new TaskDAL(taskId, boardId, title, dueDate, creationTime, description);
+            t.AssingeeEmail(assigneeEmail);
+            return t;
         }
     }
 }
