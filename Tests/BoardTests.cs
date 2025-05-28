@@ -400,6 +400,9 @@ namespace Tests
             b.JoinBoard("shauli@gmail.com", 0);
             t.AssignTaskToUser("shauli@gmail.com", "name", 0, "yaronet@post.bgu.ac.il");
             t.EditTask("yaronet@post.bgu.ac.il", "name", 0, "TASK1321412", null, null);
+
+            b.LeaveBoard("shauli@gmail.com", 0);
+            t.MoveTask("yaronet@post.bgu.ac.il", "name", 0, 1);
             if (res.ErrorMessage == null)
             {
                 return true;

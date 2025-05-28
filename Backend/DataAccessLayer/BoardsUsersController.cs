@@ -83,6 +83,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                 try
                 {
+                    command.Parameters.Add(new SqliteParameter(@"boardId", boardUserDal.BoardId));
+                    command.Parameters.Add(new SqliteParameter(@"userEmail", boardUserDal.UserEmail));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
