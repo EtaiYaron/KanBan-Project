@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the user inserted successfully into the database</returns>
         public bool Insert(UserDAL userDal)
         {
-            //log.Info($"Attempting to insert user with email: {userDal.Email} and password: {userDal.Password}.");
+            log.Info($"Attempting to insert to the DB user with email: {userDal.Email} and password: {userDal.Password}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -53,6 +53,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(passwordParameter);
 
                     res = command.ExecuteNonQuery();
+                    log.Info($"User with email: {userDal.Email} inserted successfully into the DB.");
                 }
                 catch (Exception ex) {
                     log.Error($"Failed to insert user with email: {userDal.Email}. Error: {ex.Message}");
@@ -73,6 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <<returns>true if the user deleted successfully from the database</returns>
         public bool Delete(UserDAL userDal)
         {
+            log.Info($"Attempting to delete user with email: {userDal.Email}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -85,6 +87,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(emailParameter);
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"User with email: {userDal.Email} deleted successfully from the DB.");
                 }
                 catch (Exception ex)
                 {
@@ -105,6 +108,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <<returns>List of all users in the database</returns>
         public List<UserDAL> SelectAll()
         {
+            log.Info("Attempting to select all users from the DB.");
             List<UserDAL> result = new List<UserDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -120,6 +124,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         result.Add(ConvertReaderToUserDAL(dataReader));
                     }
+                    log.Info("Successfully selected all users from the DB.");
                 }
                 catch (Exception ex)
                 {
