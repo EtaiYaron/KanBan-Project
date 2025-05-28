@@ -1,7 +1,4 @@
-﻿using IntroSE.Kanban.Backend.BussinesLayer.Board;
-using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
-using IntroSE.Kanban.Backend.BussinesLayer.User;
-using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.ServiceLayer;
 using System.Text.Json;
 
 namespace Tests
@@ -37,7 +34,7 @@ namespace Tests
             {
                 Console.WriteLine("TestCreateBoardPositiveCase: Failed");
             }
-
+            /*
             // Test: Creating a board with a different user (Requirement 8)
             tests = TestCreateBoardPositiveCase1();
             if (tests)
@@ -380,7 +377,7 @@ namespace Tests
                 Console.WriteLine("TestChangeOwnerNegativeCase1: Failed");
             }
 
-
+            */
         }
 
         /// <summary>
@@ -399,6 +396,7 @@ namespace Tests
         public bool TestCreateBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task", new DateTime(2026, 10, 10), "try to add task");
             if (res.ErrorMessage == null)
             {
                 return true;

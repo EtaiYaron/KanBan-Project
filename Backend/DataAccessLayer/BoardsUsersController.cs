@@ -39,11 +39,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     string insert = $"INSERT INTO {TableName} (boardId,userEmail,isOwner) VALUES (@boardId,@email,@isOwner)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", boardUserDal.BoardId);
                     SqliteParameter emailParameter = new SqliteParameter(@"email", boardUserDal.UserEmail);
-                    SqliteParameter ownerEmailParameter = new SqliteParameter(@"isOwner", boardUserDal.IsOwner);
+                    SqliteParameter ownerEmailParameter = new SqliteParameter(@"isOwner", boardUserDal.IsOwner ? 1 : 0);
 
                     command.CommandText = insert;
                     command.Parameters.Add(boardIdParameter);
                     command.Parameters.Add(emailParameter);
+                    command.Parameters.Add(ownerEmailParameter);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"Board user with boardId: {boardUserDal.BoardId} and email: {boardUserDal.UserEmail} inserted successfully.");
