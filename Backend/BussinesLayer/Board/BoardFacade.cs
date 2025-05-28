@@ -64,7 +64,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
             nextBoardId++;
-            curr.BoardDAL.BoardController.Insert(curr.BoardDAL);
+            curr.BoardDAL.persist();
             curr.JoinUser(email);
             curr.BoardDAL.JoinBoard(email);
             log.Info($"Successfully created new board {boardname} for user with email {email}.");
@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             boards[email].Remove(boardname);
             curr.BoardDAL.LeaveBoard(email);
-            curr.BoardDAL.BoardController.Delete(curr.BoardDAL);
+            curr.BoardDAL.DeleteBoard();
             log.Info($"Successfully deleted board {boardname} for user with email {email}.");
             return curr;
         }
@@ -219,6 +219,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             int nextTaskId = board.NextTaskId;
             board.AddTask(title, dueTime, description);
             TaskBL task = board.GetTask(nextTaskId);
+            task.TaskDAL.persist();
             board.BoardDAL.AddTask(task.TaskDAL);
             log.Info($"Successfully added task {board.NextTaskId} to board {boardname} for user with email {email}.");
         }
@@ -400,8 +401,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
                 throw new Exception("there are already more tasks in the column than the new limit.");
             }
-            columnBL.MaxTasks = newLimit;
-            board.BoardDAL.BoardController.Update(board.BoardDAL, columnBL.Name, newLimit);
+            board.BoardDAL.limitTasksColumn(GetNameOfColumn(email, boardname, column), newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;
         }

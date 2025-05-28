@@ -31,6 +31,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns true if the task was inserted successfully</returns>
         public bool Insert(TaskDAL taskDAL)
         {
+            log.Info($"Attempting to insert to the DB task with ID: {taskDAL.TaskId}, Board ID: {taskDAL.BoardId}, Title: {taskDAL.Title}.");
             using (var connection = new SqliteConnection(_connectionString))
             {
                 int res = -1;
@@ -60,6 +61,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
+                    log.Info($"Task with ID: {taskDAL.TaskId} inserted successfully.");
                 }
                 catch (Exception ex)
                 {
@@ -81,6 +83,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns true if the task was deleted successfully</returns>
         public bool Delete(TaskDAL taskDAL)
         {
+            log.Info($"Attempting to delete from the DB task with ID: {taskDAL.TaskId}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -93,6 +96,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Task with ID: {taskDAL.TaskId} deleted successfully.");
                 }
                 catch (Exception ex)
                 {
@@ -116,6 +120,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns true if the task was updated successfully</returns>
         public bool Update(TaskDAL taskDAL, string attributeName, string attributeValue)
         {
+            log.Info($"Attempting to update task with ID: {taskDAL.TaskId} - Attribute: {attributeName}, Value: {attributeValue}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -127,6 +132,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Task with ID: {taskDAL.TaskId} updated successfully - Attribute: {attributeName}, Value: {attributeValue}.");
                 }
                 catch (Exception ex)
                 {
@@ -148,6 +154,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns a list of tasks</returns>
         public List<TaskDAL> SelectAll()
         {
+            log.Info("Selecting all tasks from the database.");
             List<TaskDAL> results = new List<TaskDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -162,6 +169,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToTaskDAL(dataReader));
                     }
+                    log.Info($"Successfully selected all tasks from the database.");
                 }
                 catch (Exception ex)
                 {
@@ -187,6 +195,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns a list of all tasks in board</returns>
         public List<TaskDAL> SelectByBoardId(long boardId)
         {
+            log.Info($"Selecting tasks by board ID: {boardId} from the database.");
             List<TaskDAL> results = new List<TaskDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -201,6 +210,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToTaskDAL(dataReader));
                     }
+                    log.Info($"Successfully selected tasks for board ID: {boardId}.");
                 }
                 catch (Exception ex)
                 {

@@ -175,6 +175,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.State = this.state + 1;
         }
 
+
+        /// <summary>
+        /// This method is used to delete the task from the database.
+        /// </summary>
         public void DeleteTask()
         {
             if (isPersistent)
@@ -205,16 +209,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        
+
+        /// <summary>
+        /// This method is used to persist the task in the database with a specific board ID.
+        /// </summary>
+        /// <param name="boardId"></param>
+        /// <exception cref="Exception"></exception>
         public void persist(long boardId)
         {
             if (!isPersistent)
             {
-                throw new Exception("cannot save persisted object.");
+                this.boardId = boardId;
+                TaskController.Insert(this);
+                this.isPersistent = true;
             }
-            this.boardId = boardId;
-            TaskController.Insert(this);
-            this.isPersistent = true;
+            
         }
 
     }

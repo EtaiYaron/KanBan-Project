@@ -15,8 +15,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private DateTime? dueDate;
         private string description;
         private TaskDAL taskDAL;
-        private bool isPersistent;
-        private string assigneeEmail;
         private long boardId;
         private string assignee;
 
@@ -48,11 +46,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// This method is used to move a task to the next column.
         /// </summary>
         /// <param name="dest"></param>
+        /*
         public void moveTask(int dest)
         {
             this.taskId = dest;
         }
         
+        */ 
+
         public string Assignee
         {
             get { return this.assignee; }
