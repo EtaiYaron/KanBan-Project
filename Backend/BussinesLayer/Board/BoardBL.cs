@@ -101,19 +101,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             if (title != null)
             {
                 task.Title = title;
-                task.TaskDAL.Title = title;
             }
             if (dueDate != null)
             {
                 task.DueDate = dueDate;
-                task.TaskDAL.DueDate = dueDate;
             }
             if (description != null)
             {
                 task.Description = description;
-                task.TaskDAL.Description = description;
             }
-
+            task.TaskDAL.EditTask(title, dueDate, description);
         }
 
         /// <summary>
