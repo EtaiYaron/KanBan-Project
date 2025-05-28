@@ -30,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the board was inserted successfully, otherwise false.</returns>
         public bool Insert(BoardDAL boardDal)
         {
+            log.Info($"Attempting to insert to the DB board with id: {boardDal.BoardId}, name: {boardDal.BoardName}, owner: {boardDal.OwnerEmail}.");
             using (var connection = new SqliteConnection(_connectionString))
             {
                 SqliteCommand command = new SqliteCommand(null, connection);
@@ -37,22 +38,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                 try
                 {
-                    string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,maxTasks0,maxTasks1,maxTasks2,nextTaskId) Values (@boardIdVal,@boardName,@ownerEmailVal,@maxTasks0,@maxTasks1,@maxTasks2,@nextTaskId)";
+                    string insert = $"INSERT INTO {TableName} (boardId,boardName,ownerEmail,backlog,inProgress,done,nextTaskId) Values (@boardIdVal,@boardNameVal,@ownerEmailVal,@backlogVal,@inProgressVal,@doneVal,@nextTaskId)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardIdVal", boardDal.BoardId);
-                    SqliteParameter boardNameParameter = new SqliteParameter(@"boardName", boardDal.BoardName);
+                    SqliteParameter boardNameParameter = new SqliteParameter(@"boardNameVal", boardDal.BoardName);
                     SqliteParameter ownerEmailParameter = new SqliteParameter(@"ownerEmailVal", boardDal.OwnerEmail);
-                    SqliteParameter maxTasks0Parameter = new SqliteParameter(@"maxTasks0", boardDal.MaxTasks0);
-                    SqliteParameter maxTasks1Parameter = new SqliteParameter(@"maxTasks1", boardDal.MaxTasks1);
-                    SqliteParameter maxTasks2Parameter = new SqliteParameter(@"maxTasks2", boardDal.MaxTasks2);
+                    SqliteParameter backlogParameter = new SqliteParameter(@"backlogVal", boardDal.Backlog);
+                    SqliteParameter inProgressParameter = new SqliteParameter(@"inProgressVal", boardDal.InProgress);
+                    SqliteParameter doneParameter = new SqliteParameter(@"doneVal", boardDal.Done);
                     command.CommandText = insert;
                     command.Parameters.Add(boardIdParameter);
                     command.Parameters.Add(boardNameParameter);
                     command.Parameters.Add(ownerEmailParameter);
-                    command.Parameters.Add(maxTasks0Parameter);
-                    command.Parameters.Add(maxTasks1Parameter);
-                    command.Parameters.Add(maxTasks2Parameter);
+                    command.Parameters.Add(backlogParameter);
+                    command.Parameters.Add(inProgressParameter);
+                    command.Parameters.Add(doneParameter);
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Successfully inserted to the DB board with id: {boardDal.BoardId}, name: {boardDal.BoardName}, owner: {boardDal.OwnerEmail}.");
                 }
                 catch (Exception ex)
                 {
@@ -76,6 +78,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the update was successful, otherwise false.</returns>
         public bool Update(BoardDAL boardDAL, string attributeName, string attributeValue)
         {
+            log.Info($"Attempting to update in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -90,6 +93,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Successfully updated in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
                 }
                 catch (Exception ex)
                 {
@@ -113,6 +117,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the update was successful, otherwise false.</returns>
         public bool Update(BoardDAL boardDAL, string attributeName, int attributeValue)
         {
+            log.Info($"Attempting to update in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -127,6 +132,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Successfully updated in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
                 }
                 catch (Exception ex)
                 {
@@ -149,6 +155,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the board was deleted successfully, otherwise false.</returns>
         public bool Delete(BoardDAL boardDAL)
         {
+            log.Info($"Attempting to delete from the DB board with id: {boardDAL.BoardId}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -157,12 +164,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     Connection = connection,
                     CommandText = $"DELETE FROM {TableName} WHERE boardId={boardDAL.BoardId}"
                 };
-
-
                 try
                 {
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted from the DB board with id: {boardDAL.BoardId}.");
                 }
                 catch (Exception ex)
                 {
@@ -185,6 +191,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>A list of BoardDAL objects representing all boards in the database.</returns>
         public List<BoardDAL> SelectAllBoards()
         {
+            log.Info("Attempting to select all boards from the DB.");
             List<BoardDAL> results = new List<BoardDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -199,6 +206,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToTask(dataReader));
                     }
+                    log.Info($"Successfully selected all boards from the DB.");
                 }
                 catch (Exception ex)
                 {
@@ -229,11 +237,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             int boardId = dataReader.GetInt32(0);
             string boardName = dataReader.GetString(1);
             string ownerEmail = dataReader.GetString(2);
-            int maxTasks0 = dataReader.GetInt32(3);
-            int maxTasks1 = dataReader.GetInt32(4);
-            int maxTasks2 = dataReader.GetInt32(5);
+            int backlog = dataReader.GetInt32(3);
+            int inProgress = dataReader.GetInt32(4);
+            int done = dataReader.GetInt32(5);
             int nextTaskId = dataReader.GetInt32(6);
-            return new BoardDAL(boardId, boardName, ownerEmail, maxTasks0, maxTasks1, maxTasks2, nextTaskId);
+            return new BoardDAL(boardId, boardName, ownerEmail, backlog, inProgress, done, nextTaskId);
         }
     }
 }

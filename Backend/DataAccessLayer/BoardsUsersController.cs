@@ -29,26 +29,28 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the board user was inserted successfully, otherwise false.</returns>
         public bool Insert(BoardsUsersDAL boardUserDal)
         {
+            log.Info($"Attempting to insert BoardUser to the DB with boardId: {boardUserDal.BoardId} and email: {boardUserDal.UserEmail}.");
             using (var connection = new SqliteConnection(_connectionString))
             {
                 SqliteCommand command = new SqliteCommand(null, connection);
                 int res = -1;
                 try
                 {
-                    string insert = $"INSERT INTO {TableName} (boardId,userEmail,ownerEmail) VALUES (@boardId,@userEmail,@ownerEmail)";
+                    string insert = $"INSERT INTO {TableName} (boardId,userEmail,isOwner) VALUES (@boardId,@userEmail,@isOwner)";
                     SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", boardUserDal.BoardId);
                     SqliteParameter emailParameter = new SqliteParameter(@"email", boardUserDal.UserEmail);
-                    SqliteParameter ownerEmailParameter = new SqliteParameter(@"ownerEmail", boardUserDal.IsOwner);
+                    SqliteParameter ownerEmailParameter = new SqliteParameter(@"isOwner", boardUserDal.IsOwner);
 
                     command.CommandText = insert;
                     command.Parameters.Add(boardIdParameter);
                     command.Parameters.Add(emailParameter);
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Board user with boardId: {boardUserDal.BoardId} and email: {boardUserDal.UserEmail} inserted successfully.");
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to insert board user with boardId: {boardUserDal.BoardId} and email: {boardUserDal.UserEmail}. Error: {ex.Message}");
+                    log.Error($"Failed to insert BoardUser to the DB, with boardId: {boardUserDal.BoardId} and email: {boardUserDal.UserEmail}. Error: {ex.Message}");
                 }
                 finally
                 {
@@ -68,6 +70,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the board user was deleted successfully, otherwise false.</returns>
         public bool Delete(BoardsUsersDAL boardUserDal)
         {
+            log.Info($"Attempting to delete BoardUser from the DB, with boardId: {boardUserDal.BoardId}, email: {boardUserDal.UserEmail}, ownerEmail: {boardUserDal.IsOwner}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -105,6 +108,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>true if the isOwner field was updated successfully, otherwise false.</returns>
         public bool UpdateIsOwner(BoardsUsersDAL boardUserDal, bool newIsOwner)
         {
+            log.Info($"Attempting to update isOwner for boardId: {boardUserDal.BoardId}, email: {boardUserDal.UserEmail} to {newIsOwner}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -118,6 +122,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     command.Parameters.Add(new SqliteParameter(@"newIsOwner", newIsOwner));
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                    log.Info($"Successfully updated isOwner for boardId: {boardUserDal.BoardId}, email: {boardUserDal.UserEmail} to {newIsOwner}.");
                 }
                 catch (Exception ex)
                 {
@@ -139,6 +144,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns></returns>
         public List<BoardsUsersDAL> SelectAll()
         {
+            log.Info("Attempting to select all BoardUsersDALs from the DB.");
             List<BoardsUsersDAL> results = new List<BoardsUsersDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -154,6 +160,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToBoardsUsersDAL(dataReader));
                     }
+                    log.Info("Successfully selected all BoardUsersDALs from the DB.");
                 }
                 finally
                 {
@@ -179,6 +186,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns a list of BoardUsersDALs that belong to the specified boardId.</returns>
         public List<BoardsUsersDAL> SelectByBoardId(int boardId)
         {
+            log.Info($"Attempting to select all BoardUsersDALs from the DB by boardId: {boardId}.");
             List<BoardsUsersDAL> results = new List<BoardsUsersDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -194,6 +202,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     {
                         results.Add(ConvertReaderToBoardsUsersDAL(dataReader));
                     }
+                    log.Info($"Successfully selected all BoardUsersDALs from the DB by boardId: {boardId}.");
                 }
                 finally
                 {
