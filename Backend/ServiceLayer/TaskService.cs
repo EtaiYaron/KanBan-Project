@@ -124,6 +124,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Assigns a task to a specified user on a board.
+        /// </summary>
+        /// <param name="email">The email of the user performing the assignment.</param>
+        /// <param name="boardname">The name of the board containing the task.</param>
+        /// <param name="taskId">The ID of the task to assign.</param>
+        /// <param name="emailTo">The email of the user to assign the task to.</param>
+        /// <returns>A JSON serialized response indicating success or error details.</returns>
         public string AssignTaskToUser(string email, string boardname, int taskId, string emailTo)
         {
             try

@@ -31,6 +31,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             tasks.Add(task.TaskId, task);
         }
 
+        /// <summary>
+        /// Removes a task with the specified task ID from the column.
+        /// </summary>
+        /// <param name="taskid">The ID of the task to remove.</param>
         public void RemoveTask(int taskid)
         {
             tasks.Remove(taskid);

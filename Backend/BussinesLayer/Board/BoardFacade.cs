@@ -583,6 +583,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.Name;
         }
 
+        /// <summary>
+        /// Assigns a task to a user within a board.
+        /// The assigning user must be logged in, both users must be members of the board, and only the current assignee (or unassigned) can reassign the task.
+        /// Updates the assignee in both the business and data access layers.
+        /// </summary>
+        /// <param name="email">The email of the user performing the assignment (must be logged in and a board member).</param>
+        /// <param name="boardname">The name of the board containing the task.</param>
+        /// <param name="taskId">The ID of the task to assign.</param>
+        /// <param name="emailTo">The email of the user to assign the task to (must be a board member).</param>
+        /// <exception cref="Exception">Thrown if either user is not in the board.</exception>
+        /// <exception cref="ArgumentException">Thrown if the task does not exist or if the assigning user is not the current assignee.</exception>
         public void AssignTaskToUser(string email, string boardname, int taskId, string emailTo)
         {
             log.Info($"Attempting to assign task with ID {taskId} from {email} to {emailTo}.");

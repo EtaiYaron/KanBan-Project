@@ -306,6 +306,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Changes the owner of a board to a new user.
+        /// The current owner must be logged in, must be the actual owner of the board, and both the current and new owner must be members of the board.
+        /// If the requirements are not met, an exception is thrown.
+        /// </summary>
+        /// <param name="email">The email of the current owner of the board.</param>
+        /// <param name="newOwnerEmail">The email of the new owner to assign.</param>
+        /// <param name="boardname">The name of the board whose ownership is to be changed.</param>
+        /// <returns>An empty response if successful, or an error message if an exception occurs.</returns>
         public string ChangeOwner(string email, string newOwnerEmail, string boardname)
         {
             try
