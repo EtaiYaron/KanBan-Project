@@ -28,6 +28,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.taskDAL = new TaskDAL(taskId, boardId, title, dueDate, this.creationTime, description);
         }
 
+        public TaskBL(TaskDAL taskDAL)
+        {
+            this.taskId = taskDAL.TaskId;
+            this.title = taskDAL.Title;
+            this.creationTime = taskDAL.CreationTime;
+            this.dueDate = taskDAL.DueDate;
+            this.description = taskDAL.Description;
+            this.assignee = taskDAL.AssigneeEmail;
+            this.taskDAL = taskDAL;
+        }
+
         public string Assignee
         {
             get { return this.assignee; }

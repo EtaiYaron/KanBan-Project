@@ -12,12 +12,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private readonly int columnId;
         private readonly string name;
         private int maxTasks;
-        public ColumnBL(int columnId, string name)
+        public ColumnBL(int columnId, string name, int maxTasks=-1)
         {
             tasks = new Dictionary<int, TaskBL>();
             this.columnId = columnId;
             this.name = name;
-            this.maxTasks = -1;
+            this.maxTasks = maxTasks;
         }
         /// <summary>
         /// This method is used to add a task to the board.

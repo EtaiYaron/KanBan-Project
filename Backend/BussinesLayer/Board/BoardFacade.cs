@@ -680,7 +680,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
         }
 
-        private void LoadAllBoards()
+        public void LoadAllBoards()
         {
             log.Info("Loading all boards from the database.");
             boards.Clear();
@@ -690,30 +690,32 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             List<BoardDAL> loadedBoards = boardController.SelectAllBoards();
             List<BoardsUsersDAL> loadedBoardsUsers = boardsUsersController.SelectAll();
             List<TaskDAL> loadedTasks = taskController.SelectAll();
+
+            Dictionary<int, BoardBL> boardIdToBoardBL = new Dictionary<int, BoardBL>();
+
+            foreach (BoardDAL boardDAL in loadedBoards)
+            {
+                BoardBL boardBL = new BoardBL(boardDAL);
+                foreach (TaskDAL taskDAL in loadedTasks)
+                {
+                    if (taskDAL.BoardId == boardDAL.BoardId)
+                    {
+                        TaskBL taskBL = new TaskBL(taskDAL);
+                        boardBL.GetColumn(taskDAL.State).AddTask(taskBL);
+                    }
+                }
+                boardIdToBoardBL[boardDAL.BoardId] = boardBL;
+            }
+
             foreach (BoardsUsersDAL boardsUsersDAL in loadedBoardsUsers)
             {
                 if (!boards.ContainsKey(boardsUsersDAL.UserEmail))
                 {
                     boards[boardsUsersDAL.UserEmail] = new Dictionary<string, BoardBL>();
                 }
-                foreach (BoardDAL boardDAL in loadedBoards)
-                {
-                    if (boardDAL.BoardId == boardsUsersDAL.BoardId)
-                    {
-                        BoardBL boardBL = new BoardBL(boardDAL.BoardId, boardDAL.BoardName, boardDAL.OwnerEmail);
-                        boardBL.JoinUser(boardsUsersDAL.UserEmail);
-                        foreach (TaskDAL taskDAL in loadedTasks)
-                        {
-                            if (taskDAL.BoardId == boardDAL.BoardId)
-                            {
-                                TaskBL taskBL = new TaskBL(taskDAL.TaskId, taskDAL.BoardId, taskDAL.Title, taskDAL.DueDate, taskDAL.Description); 
-                                boardBL.GetColumn(taskDAL.State).AddTask(taskBL);
-                            }
-                        }
-                        boards[boardsUsersDAL.UserEmail].Add(boardBL.Name, boardBL);
-                    }
-                }
-
+                BoardBL boardBL = boardIdToBoardBL[boardsUsersDAL.BoardId];
+                boardBL.JoinUser(boardsUsersDAL.UserEmail);
+                boards[boardsUsersDAL.UserEmail].Add(boardBL.Name, boardBL);
             }
 
             this.nextBoardId = boardController.SelectBoardId();
@@ -725,6 +727,4 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             log.Info("Successfully loaded all boards from the database.");
         }
     }
-
-
 }

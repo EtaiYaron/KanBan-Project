@@ -36,6 +36,22 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
         }
 
+        public BoardBL(BoardDAL boardDAL)
+        {
+            this.boardId = boardDAL.BoardId;
+            this.name = boardDAL.BoardName;
+            this.owner = boardDAL.OwnerEmail;
+            this.joinedUsers = new HashSet<string>();
+
+            this.nextTaskId = boardDAL.NextTaskId;
+            columns = new ColumnBL[NumOfColumns];
+            columns[0] = new ColumnBL(0, columnNames[0], boardDAL.Backlog);
+            columns[1] = new ColumnBL(1, columnNames[1], boardDAL.InProgress);
+            columns[2] = new ColumnBL(2, columnNames[2], boardDAL.Done);
+            this.boardDAL = boardDAL;
+
+        }
+
         /// <summary>
         /// This method is used to add a task to the board.
         /// </summary>

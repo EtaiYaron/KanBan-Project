@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
-            LoadAll();
+            LoadAllUsers();
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         }
 
 
-        private void LoadAll()
+        public void LoadAllUsers()
         {
             log.Info("Loading all users from the database.");
             users.Clear();

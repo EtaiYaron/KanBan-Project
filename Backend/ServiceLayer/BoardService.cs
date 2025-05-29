@@ -290,11 +290,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="email">The email of the user requesting the board name.</param>
         /// <param name="boardId">The unique identifier of the board.</param>
         /// <returns>A response containing the board's name if successful, or an error message if an exception occurs.</returns>
-        public string GetBoardNameById(string email, int boardId)
+        public string GetBoardNameById(int boardId)
         {
             try
             {
-                email = email.ToLower();
                 string name = boardFacade.GetBoardNameById(boardId);
                 Response response = new Response(null, name);
                 return JsonSerializer.Serialize(response);

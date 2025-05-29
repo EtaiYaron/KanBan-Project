@@ -128,7 +128,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             get { return this.assigneeEmail; }
             set
             {
-                Console.WriteLine("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 TaskController.Update(this, "assigneeEmail", value);
                 this.assigneeEmail = value;
             }

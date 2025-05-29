@@ -264,7 +264,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with a list of IDs of all user's boards, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetUserBoards(string email)
         {
-            throw new NotImplementedException();
+            return serviceFactory.BoardService.GetUserBoards(email);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string JoinBoard(string email, int boardID)
         {
-            throw new NotImplementedException();
+            return serviceFactory.BoardService.JoinBoard(email, boardID);
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LeaveBoard(string email, int boardID)
         {
-            throw new NotImplementedException();
+            return serviceFactory.BoardService.LeaveBoard(email, boardID);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string AssignTask(string email, string boardName, int columnOrdinal, int taskID, string emailAssignee)
         {
-            throw new NotImplementedException();
+            return serviceFactory.TaskService.AssignTaskToUser(email, boardName, taskID, emailAssignee);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response with the board's name, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string GetBoardName(int boardId)
         {
-            throw new NotImplementedException();
+            return serviceFactory.BoardService.GetBoardNameById(boardId);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string TransferOwnership(string currentOwnerEmail, string newOwnerEmail, string boardName)
         {
-            throw new NotImplementedException();
+            return serviceFactory.BoardService.ChangeOwner(currentOwnerEmail, newOwnerEmail, boardName);
         }
 
         ///<summary>This method loads all persisted data.
