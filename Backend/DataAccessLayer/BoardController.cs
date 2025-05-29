@@ -315,6 +315,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public void DeleteBoardId()
+        {
+            log.Info("Attempting to delete board id from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = "DELETE FROM LastBoardId";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all board id from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting board id: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
 
 
         /// <summary>

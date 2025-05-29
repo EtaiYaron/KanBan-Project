@@ -726,5 +726,20 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
             log.Info("Successfully loaded all boards from the database.");
         }
+
+        public void DeleteAllBoards()
+        {
+            log.Info("Deleting all boards and related data from the database.");
+            boards.Clear();
+            nextBoardId = 0;
+            BoardController boardController = new BoardController();
+            BoardsUsersController boardsUsersController = new BoardsUsersController();
+            TaskController taskController = new TaskController();
+            boardController.DeleteAllBoards();
+            boardController.DeleteBoardId();
+            boardsUsersController.DeleteAllBoardUsers();
+            taskController.DeleteAllTasks();
+            log.Info("Successfully deleted all boards and related data from the database.");
+        }
     }
 }

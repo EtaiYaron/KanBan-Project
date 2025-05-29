@@ -179,5 +179,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             }
             log.Info("All users loaded successfully.");
         }
+
+        public void DeleteAllUsers()
+        { 
+            log.Info("Deleting all users from the database.");
+            users.Clear();
+            UserController userController = new UserController();
+            userController.DeleteAllUsers();
+            authFacade = new AuthenticationFacade();
+            log.Info("All users deleted successfully.");
+        }
     }
+
 }

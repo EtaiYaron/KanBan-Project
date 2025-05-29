@@ -348,7 +348,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string DeleteData()
         {
-            throw new NotImplementedException();
+            
+            string response = serviceFactory.BoardService.DeleteAllBoards();
+            response = serviceFactory.UserService.DeleteAllUsers();
+            return response;
         }
     }
 }
