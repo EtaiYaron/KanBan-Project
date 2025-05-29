@@ -239,6 +239,29 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
+        public void DeleteAllTasks()
+        {
+            log.Info("Attempting to delete all tasks from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all tasks from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all tasks: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
 
         /// <summary>
         /// This method is used to convert a data reader to a task.

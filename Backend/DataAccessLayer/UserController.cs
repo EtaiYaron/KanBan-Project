@@ -141,6 +141,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return result;
         }
 
+        public void DeleteAllUsers()
+        {
+            log.Info("Attempting to delete all users from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all users from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all users: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
         /// <summary>
         /// This method is used to convert a SqliteDataReader to a UserDAL object.
         /// </summary>

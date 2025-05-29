@@ -222,6 +222,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
+        public void DeleteAllBoardUsers()
+        {
+            log.Info("Attempting to delete all board users from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all boards users from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all board users: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
 
         /// <summary>
         /// This method is used to convert a SqliteDataReader to a BoardsUsersDAL object.
