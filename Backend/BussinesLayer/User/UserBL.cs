@@ -22,6 +22,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             userDAL.persist();
         }
 
+        public UserBL(UserDAL userDAL)
+        {
+            this.email = userDAL.Email;
+            this.password = userDAL.Password;
+            this.userDAL = userDAL;
+        }
+
         /// <summary>
         /// This method is used to log in the user using the provided password.
         /// </summary>

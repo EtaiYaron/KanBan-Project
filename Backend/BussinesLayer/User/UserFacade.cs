@@ -174,7 +174,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             List<UserDAL> userDals = userController.SelectAll();
             foreach (UserDAL userDal in userDals)
             {
-                UserBL user = new UserBL(userDal.Email, userDal.Password);
+                UserBL user = new UserBL(userDal);
                 users[userDal.Email] = user;
             }
             log.Info("All users loaded successfully.");

@@ -334,7 +334,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>An empty response, unless an error occurs (see <see cref="GradingService"/>)</returns>
         public string LoadData()
         {
-            throw new NotImplementedException();
+            string response = serviceFactory.UserService.LoadAllUsers();
+            response = serviceFactory.BoardService.LoadAllBoards();
+            return response;
         }
 
         ///<summary>This method deletes all persisted data.
