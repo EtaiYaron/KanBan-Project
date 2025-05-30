@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 boardFacade.AddTask(email, boardName, title, dueTime, description);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -65,7 +65,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 BoardBL bbl = boardFacade.EditTask(email, boardName, taskId, title, dueTime, description);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -89,7 +89,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 BoardBL bbl = boardFacade.MoveTask(email, boardName, taskId, dest);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 TaskBL tbl = boardFacade.GetTask(email, boardName, taskId);
                 Response response = new Response(null, new TaskSL(tbl));
                 return JsonSerializer.Serialize(response);
@@ -136,8 +136,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
-                emailTo = emailTo.ToLower();
+                //email = email.ToLower();
+                //emailTo = emailTo.ToLower();
                 boardFacade.AssignTaskToUser(email, boardname, taskId, emailTo);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);

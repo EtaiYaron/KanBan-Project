@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    TaskController.Update(this, "dueDate", value.ToString());
+                    TaskController.UpdateDueDate(this, value);
                     dueDate = value; 
                 }
             }

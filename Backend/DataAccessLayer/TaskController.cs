@@ -8,6 +8,7 @@ using System.IO;
 using System.Security.AccessControl;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
 using log4net;
+using Microsoft.VisualBasic;
 
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -147,6 +148,36 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 catch (Exception ex)
                 {
                     log.Error($"Error updating task with ID {taskDAL.TaskId}: {ex.Message} - Attribute: {attributeName}, Value: {attributeValue}");
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
+        public bool UpdateDueDate(TaskDAL taskDAL, DateTime? newDueDate)
+        {
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                string update = $"UPDATE {TableName} SET dueDate = @attributeValue WHERE taskId = @taskId";
+                command.CommandText = update;
+
+                try
+                {
+                    SqliteParameter attribute = new SqliteParameter(@"attributeValue", newDueDate);
+                    command.Parameters.Add(attribute);
+                    SqliteParameter taskId = new SqliteParameter(@"taskId", taskDAL.TaskId);
+                    command.Parameters.Add(taskId);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
                 }
                 finally
                 {

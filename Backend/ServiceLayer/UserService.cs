@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 UserBL ubl = userFacade.Login(email, password);
                 Response response = new Response(null, email.ToLower());
                 return JsonSerializer.Serialize(response);
@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 UserBL ubl = userFacade.Register(email, password);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                email = email.ToLower();
+                //email = email.ToLower();
                 UserBL ubl = userFacade.Logout(email);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
