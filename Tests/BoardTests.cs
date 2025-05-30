@@ -416,7 +416,7 @@ namespace Tests
         /// </summary>
         public bool TestCreateBoardPositiveCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("Shauli@gmail.com", "name1"));
+            Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("shauli@gmail.com", "name1"));
             cnt++;
             if (res.ErrorMessage == null)
             {
@@ -473,7 +473,7 @@ namespace Tests
         /// </summary>
         public bool TestDeleteBoardPositiveCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("Shauli@gmail.com", "name1"));
+            Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("shauli@gmail.com", "name1"));
             if (res.ErrorMessage != null)
             {
                 return false;
@@ -501,9 +501,9 @@ namespace Tests
         /// </summary>
         public bool TestDeleteBoardNegativeCase1()
         {
-            b.CreateBoard("Shauli@gmail.com", "name1");
+            b.CreateBoard("shauli@gmail.com", "name1");
             cnt++;
-            Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("Shauli@gmail.com", "name"));
+            Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("shauli@gmail.com", "name"));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -682,7 +682,7 @@ namespace Tests
         /// </summary>
         public bool TestDeleteBoardNegativeCase2()
         {
-            b.CreateBoard("Shauli@gmail.com", "Mile2");
+            b.CreateBoard("shauli@gmail.com", "Mile2");
             cnt++;
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("yaronet@post.bgu.ac.il", "Mile2"));
             if (res.ErrorMessage != null)
@@ -817,7 +817,7 @@ namespace Tests
         public bool TestChangeOwnerPositiveCase()
         {
             b.JoinBoard("yaronet@post.bgu.ac.il", cnt-1);
-            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("Shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
+            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -849,7 +849,7 @@ namespace Tests
         /// </summary>
         public bool TestChangeOwnerNegativeCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("Shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
+            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
             if (res.ErrorMessage != null)
             {
                 return true;

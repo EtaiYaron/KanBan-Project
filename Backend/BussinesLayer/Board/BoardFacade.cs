@@ -402,6 +402,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
                 throw new Exception("there are already more tasks in the column than the new limit.");
             }
+
+            board.setColumnLimit(column, newLimit);
             board.BoardDAL.limitTasksColumn(column, newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;

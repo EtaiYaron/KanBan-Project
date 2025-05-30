@@ -161,6 +161,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return null;
         }
 
+        public void setColumnLimit(int columnOrdinal, int newLimit)
+        {
+            this.columns[columnOrdinal].MaxTasks = newLimit;
+        }
         public string Owner
         {
             get { return owner; }
