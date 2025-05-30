@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
         /// <param name="email"></param>
         public void Login(string email)
         {
-            loggedUsers.Add(email.ToLower());
+            loggedUsers.Add(email);
             return;
         }
 
@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
         /// <param name="email"></param>
         public void Logout(string email) 
         { 
-            loggedUsers.Remove(email.ToLower());
+            loggedUsers.Remove(email);
             return;
         }
 
@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
         /// <returns></returns>
         public bool isLoggedIn(string email)
         {
-            return loggedUsers.Contains(email.ToLower());
+            return loggedUsers.Contains(email);
         }
     }
 }
