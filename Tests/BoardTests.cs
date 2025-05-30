@@ -35,7 +35,7 @@ namespace Tests
                 Console.WriteLine("TestCreateBoardPositiveCase: Failed");
             }
             
-            /*
+            
             // Test: Creating a board with a different user (Requirement 8)
             tests = TestCreateBoardPositiveCase1();
             if (tests)
@@ -377,7 +377,7 @@ namespace Tests
             {
                 Console.WriteLine("TestChangeOwnerNegativeCase1: Failed");
             }
-            */
+            
         }
 
         /// <summary>
@@ -385,8 +385,8 @@ namespace Tests
         /// </summary>
         public void CreatingUser()
         {
-            //us.Register("yaronet@post.bgu.ac.il", "Admin1");
-            //us.Register("shauli@gmail.com", "Haparlament1");
+            us.Register("yaronet@post.bgu.ac.il", "Admin1");
+            us.Register("shauli@gmail.com", "Haparlament1");
         }
 
         /// <summary>
@@ -395,13 +395,14 @@ namespace Tests
         /// </summary>
         public bool TestCreateBoardPositiveCase()
         {
-            /*
+            
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
+            /*
             t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 1, 1), "my description");
             b.JoinBoard("Shauli@gmail.com", 1);
             */
             //Response res = JsonSerializer.Deserialize<Response>(us.Login("yaronet@post.bgu.ac.il", "Admin1"));
-            Response res = new Response();
+            //Response res = new Response();
             if (res.ErrorMessage == null)
             {
                 return true;
@@ -571,13 +572,14 @@ namespace Tests
         }
 
         /// <summary>
-        /// Checks if limiting tasks in a column to zero and adding a task fails.
+        /// Checks if limiting tasks in a column to one and adding 2 tasks fails.
         /// Requirement: 11 (task limit)
         /// </summary>
         public bool TestLimitTasksNegativeCase()
         {
-            b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 0);
-            Response res = JsonSerializer.Deserialize<Response>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks"));
+            b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 1);
+            t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
+            Response res = JsonSerializer.Deserialize<Response>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "test limis tasks"));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -591,7 +593,7 @@ namespace Tests
         /// </summary>
         public bool TestLimitTasksNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 3, 0));
+            Response res = JsonSerializer.Deserialize<Response>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 1, 0));
             if (res.ErrorMessage == null)
             {
                 return false;
@@ -650,7 +652,7 @@ namespace Tests
         /// </summary>
         public bool TestGetUserBoardsPositiveCase1()
         {
-            us.Register("Kobe2424@gmail.com", "Kobe1");
+            us.Register("Kobe2424@gmail.com", "Kobe24");
             b.JoinBoard("Kobe2424@gmail.com", cnt);
             Response res = JsonSerializer.Deserialize<Response>(b.GetUserBoards("Kobe2424@gmail.com"));
             if (res.ErrorMessage == null)
@@ -696,6 +698,7 @@ namespace Tests
         /// </summary>
         public bool TestJoinBoardPositiveCase()
         {
+            cnt++;
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt));
             if (res.ErrorMessage == null)
             {
@@ -813,7 +816,7 @@ namespace Tests
         /// </summary>
         public bool TestChangeOwnerPositiveCase()
         {
-            b.JoinBoard("yaronet@post.bgu.ac.il", cnt);
+            b.JoinBoard("yaronet@post.bgu.ac.il", cnt-1);
             Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("Shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
             if (res.ErrorMessage == null)
             {
@@ -855,12 +858,12 @@ namespace Tests
         }
 
         /// <summary>
-        /// Checks if a user cannot transfer ownership to themselves if not the owner.
+        /// Checks if the member of the boatd cannot transfer ownership to a user that is not in the board.
         /// Requirement: 13 (ownership transfer)
         /// </summary>
         public bool TestChangeOwnerNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("DonaldTrump@gmail.com", "DonaldTrump@gmail.com", "newBoard2"));
+            Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("DonaldTrump@gmail.com", "shauli@gmail.com", "newBoard2"));
             if (res.ErrorMessage != null)
             {
                 return true;
