@@ -47,7 +47,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL CreateBoard(string email, string boardname)
         {
             log.Info($"Attempting to create board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             if (string.IsNullOrEmpty(boardname) || string.IsNullOrEmpty(boardname.Trim()))
             {
                 log.Error($"CreateBoard failed, boardName can't be null.");
@@ -100,7 +100,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL DeleteBoard(string email, string boardname)
         {
             log.Info($"Attempting to delete board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL curr = boards[email][boardname];
             if (curr.Owner != email)
@@ -144,7 +144,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL MoveTask(string email, string boardname, int taskId, int destcolumn)
         {
             log.Info($"Attempting to move task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             TaskBL task = board.GetTask(taskId);
@@ -194,7 +194,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public void AddTask(string email, string boardname, string title, DateTime dueTime, string description = "")
         {
             log.Info($"Attempting to add task in board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             if (string.IsNullOrEmpty(title.Trim()) || title.Length > maxTitleLength)
@@ -241,7 +241,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL EditTask(string email, string boardname, int taskId, string title, DateTime? dueTime, string description = "")
         {
             log.Info($"Attempting to Edit task {taskId} in board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             TaskBL task = board.GetTask(taskId);
@@ -297,7 +297,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public string GetNameOfColumn(string email, string boardName, int columnOrdinal)
         {
             log.Info($"Attempting to get the column name of column with ordinal {columnOrdinal}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardName);
             if (columnOrdinal < backlogOrdinal || columnOrdinal > doneOrdinal)
             {
@@ -316,7 +316,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL GetBoard(string email, string boardname)
         {
             log.Info($"Attempting to get board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             log.Info($"successfully got board {boardname} for user with email {email}.");
             return boards[email][boardname];
@@ -333,7 +333,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public TaskBL GetTask(string email, string boardname, int taskId)
         {
             log.Info($"Attempting to get task {taskId} from board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             TaskBL task = board.GetTask(taskId);
@@ -355,7 +355,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public List<int> GetUserBoards(string email)
         {
             log.Info($"Attempting to get all boards for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             List<int> boardIds = new List<int>();
             if (!boards.ContainsKey(email))
             {
@@ -381,7 +381,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL LimitTasks(string email, string boardname, int column, int newLimit)
         {
             log.Info($"Attempting to limit tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             if (column > doneOrdinal || column < backlogOrdinal)
             {
@@ -418,7 +418,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public List<TaskBL> GetTasksOfColumn(string email, string boardname, int column)
         {
             log.Info($"Attempting to get tasks of column {column} on board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             if (column < backlogOrdinal || column > doneOrdinal)
             {
@@ -441,7 +441,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public int GetColumnLimit(string email, string boardname, int column)
         {
             log.Info($"Attempting to get column limit of column {column} on board {boardname} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             if (column < backlogOrdinal || column > doneOrdinal)
             {
@@ -462,7 +462,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public List<TaskBL> GetInProgressTasks(string email)
         {
             log.Info($"Attempting to get in progress tasks for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
 
             List<TaskBL> tasks = new List<TaskBL>();
             if (!boards.ContainsKey(email))
@@ -493,7 +493,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public void JoinBoard(string email, int boardId)
         {
             log.Info($"Attempting to join board with ID {boardId} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             BoardBL board = GetBoardIfExists(boardId);
             if (board.IsUserInBoard(email))
             {
@@ -527,7 +527,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public void LeaveBoard(string email, int boardId)
         {
             log.Info($"Attempting to leave board with ID {boardId} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             BoardBL board = GetBoardIfExists(boardId);
             if (!board.IsUserInBoard(email))
                 throw new Exception("User is not in board");
@@ -552,7 +552,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public void ChangeOwner(string owneremail, string newOwnerEmail, string boardname)
         {
             log.Info($"Attempting to change owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
-            EnsureUserIsLoggedIn(owneremail);
+            //EnsureUserIsLoggedIn(owneremail);
             ValidateBoardExists(owneremail, boardname);
             BoardBL board = boards[owneremail][boardname];
             if (!board.IsUserInBoard(owneremail) || !board.IsUserInBoard(newOwnerEmail))
@@ -599,7 +599,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public void AssignTaskToUser(string email, string boardname, int taskId, string emailTo)
         {
             log.Info($"Attempting to assign task with ID {taskId} from {email} to {emailTo}.");
-            EnsureUserIsLoggedIn(email);
+            //EnsureUserIsLoggedIn(email);
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             if (!board.IsUserInBoard(email) || !board.IsUserInBoard(emailTo))
