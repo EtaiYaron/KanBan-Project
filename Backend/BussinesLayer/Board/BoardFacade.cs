@@ -731,7 +731,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info("Deleting all boards and related data from the database.");
             boards.Clear();
-            nextBoardId = 0;
+            this.nextBoardId = 1;
             BoardController boardController = new BoardController();
             BoardsUsersController boardsUsersController = new BoardsUsersController();
             TaskController taskController = new TaskController();
