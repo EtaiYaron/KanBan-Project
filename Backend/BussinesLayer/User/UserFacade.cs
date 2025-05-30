@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
-            LoadAllUsers();
+            //LoadAllUsers();
         }
 
         /// <summary>
