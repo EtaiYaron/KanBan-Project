@@ -47,6 +47,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         public BoardBL CreateBoard(string email, string boardname)
         {
             log.Info($"Attempting to create board {boardname} for user with email {email}.");
+            /*
             EnsureUserIsLoggedIn(email);
             if (string.IsNullOrEmpty(boardname) || string.IsNullOrEmpty(boardname.Trim()))
             {
@@ -58,6 +59,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"CreateBoard failed, boardName {boardname} already exist for user with email {email}.");
                 throw new ArgumentException("boardname already exist under this user");
             }
+            */
             if (!boards.ContainsKey(email))
             {
                 boards.Add(email, new Dictionary<string, BoardBL>());
