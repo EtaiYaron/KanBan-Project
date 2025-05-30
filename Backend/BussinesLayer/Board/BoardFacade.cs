@@ -153,7 +153,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"MoveTask failed, task {taskId} doesn't exist in board {boardname}.");
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
-            if (task.Assignee != email)
+            if (task.Assignee!=null && task.Assignee != email)
             {
                 log.Error($"MoveTask failed, only assignee can move task.");
                 throw new ArgumentException("only assignee can move task");
@@ -223,7 +223,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             TaskBL task = board.GetTask(nextTaskId);
             task.TaskDAL.persist();
             board.BoardDAL.AddTask(task.TaskDAL);
-            log.Info($"Successfully added task {board.NextTaskId} to board {boardname} for user with email {email}.");
+            log.Info($"Successfully added task {board.NextTaskId-1} to board {boardname} for user with email {email}.");
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"EditTask failed, task {taskId} isn't exist in board {boardname}.");
                 throw new ArgumentException("taskId isn't exist task in this board");
             }
-            if (task.Assignee != email)
+            if (task.Assignee!=null && task.Assignee != email)
             {
                 log.Error($"EditTask failed, only assignee can edit task.");
                 throw new ArgumentException("only assignee can edit task");
@@ -402,7 +402,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
                 throw new Exception("there are already more tasks in the column than the new limit.");
             }
-            board.BoardDAL.limitTasksColumn(GetNameOfColumn(email, boardname, column), newLimit);
+            board.BoardDAL.limitTasksColumn(column, newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;
         }
@@ -731,7 +731,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info("Deleting all boards and related data from the database.");
             boards.Clear();
-            this.nextBoardId = 1;
+            nextBoardId = 0;
             BoardController boardController = new BoardController();
             BoardsUsersController boardsUsersController = new BoardsUsersController();
             TaskController taskController = new TaskController();

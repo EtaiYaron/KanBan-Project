@@ -204,17 +204,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="columnName"></param>
         /// <param name="limit"></param>
-        public void limitTasksColumn(String columnName, int limit)
+        public void limitTasksColumn(int columnOrdinal, int limit)
         {
-            if (columnName == "Backlog")
+            if (columnOrdinal == 0)
             {
                 this.Backlog = limit;
             }
-            else if (columnName == "In Progress")
+            else if (columnOrdinal == 1)
             {
                 this.InProgress = limit;
             }
-            else if (columnName == "Done")
+            else if (columnOrdinal == 2)
             {
                 this.Done = limit;
             }

@@ -40,20 +40,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    string insert = $"INSERT INTO {TableName} (taskId,boardId,title,creationTime,dueDate,description,state,assigneeEmail) VALUES (@taskId,@boardId,@title,@creationTime,@dueDate,@description,@state,@assigneeEmail)";
-                    SqliteParameter taskIdParameter = new SqliteParameter(@"taskId", taskDAL.TaskId);
-                    SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", taskDAL.BoardId);
-                    SqliteParameter titleParameter = new SqliteParameter(@"title", taskDAL.Title);
-                    SqliteParameter creationTimeParameter = new SqliteParameter(@"creationTime", taskDAL.CreationTime);
-                    SqliteParameter dueDateParameter = new SqliteParameter(@"dueDate", taskDAL.DueDate);
-                    SqliteParameter descriptionParameter = new SqliteParameter(@"description", taskDAL.Description);
-                    SqliteParameter stateParameter = new SqliteParameter(@"state", taskDAL.State);
+                    string insert = $"INSERT INTO {TableName} (taskId,boardId,title,creationTime,dueDate,description,state,assigneeEmail) VALUES (@taskIdVal,@boardIdVal,@titleVal,@creationTimeVal,@dueDateVal,@descriptionVal,@stateVal,@assigneeEmailVal)";
+                    SqliteParameter taskIdParameter = new SqliteParameter(@"taskIdVal", taskDAL.TaskId);
+                    SqliteParameter boardIdParameter = new SqliteParameter(@"boardIdVal", taskDAL.BoardId);
+                    SqliteParameter titleParameter = new SqliteParameter(@"titleVal", taskDAL.Title);
+                    SqliteParameter creationTimeParameter = new SqliteParameter(@"creationTimeVal", taskDAL.CreationTime);
+                    SqliteParameter dueDateParameter = new SqliteParameter(@"dueDateVal", taskDAL.DueDate);
+                    SqliteParameter descriptionParameter = new SqliteParameter(@"descriptionVal", taskDAL.Description);
+                    SqliteParameter stateParameter = new SqliteParameter(@"stateVal", taskDAL.State);
                     string assigneeEmail = taskDAL.AssigneeEmail;
                     if (taskDAL.AssigneeEmail == null)
                     {
                         assigneeEmail = "";
                     }
-                    SqliteParameter assigneeEmailParameter = new SqliteParameter(@"assigneeEmail", assigneeEmail);
+                    SqliteParameter assigneeEmailParameter = new SqliteParameter(@"assigneeEmailVal", assigneeEmail);
                     
                     command.CommandText = insert;
                     command.Parameters.Add(taskIdParameter);
@@ -89,14 +89,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns true if the task was deleted successfully</returns>
         public bool Delete(TaskDAL taskDAL)
         {
-            log.Info($"Attempting to delete from the DB task with ID: {taskDAL.TaskId}.");
+            log.Info($"Attempting to delete from the DB task with ID: {taskDAL.TaskId}, in board: {taskDAL.BoardId}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
                 var command = new SqliteCommand
                 {
                     Connection = connection,
-                    CommandText = $"delete from {TableName} where TaskId={taskDAL.TaskId}"
+                    CommandText = $"delete from {TableName} where TaskId={taskDAL.TaskId} and boardId={taskDAL.BoardId}"
                 };
                 try
                 {

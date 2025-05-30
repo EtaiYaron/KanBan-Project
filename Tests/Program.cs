@@ -22,10 +22,10 @@ internal class Program
         BoardTests boardTests = new BoardTests(sf.UserService, sf.BoardService, sf.TaskService);  
         boardTests.BoardRunTests();
         
-        /*
+        
         TaskServiceTests taskTests = new TaskServiceTests(sf.UserService, sf.BoardService, sf.TaskService);  
         taskTests.TaskServiceRunTests();
-        */
+        
 
 
     }
