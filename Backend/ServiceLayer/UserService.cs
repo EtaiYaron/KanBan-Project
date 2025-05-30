@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 //email = email.ToLower();
                 UserBL ubl = userFacade.Login(email, password);
-                Response response = new Response(null, email.ToLower());
+                Response response = new Response(null, email);
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
