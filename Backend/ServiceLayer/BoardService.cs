@@ -35,7 +35,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                ////email = email.ToLower();
                 BoardBL bbl = boardFacade.CreateBoard(email, name);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -57,7 +56,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 BoardBL bbl = boardFacade.DeleteBoard(email, name);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -80,7 +78,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 string name = boardFacade.GetNameOfColumn(email, boardName, columnOrdinal);
                 Response response = new Response(null, name);
                 return JsonSerializer.Serialize(response);
@@ -102,7 +99,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 BoardBL bbl = boardFacade.GetBoard(email, name);
                 Response response = new Response(null, new BoardSL(bbl));
                 return JsonSerializer.Serialize(response);
@@ -123,7 +119,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 List<int> list = boardFacade.GetUserBoards(email);
                 Response response = new Response(null, list.ToArray());
                 return JsonSerializer.Serialize(response);
@@ -147,7 +142,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 BoardBL bbl = boardFacade.LimitTasks(email, name, column, newLimit);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -170,7 +164,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 List<TaskBL> tbl = boardFacade.GetTasksOfColumn(email, boardname, column);
                 List<TaskSL> tsl = new List<TaskSL>();
                 foreach (TaskBL t in tbl)
@@ -197,7 +190,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 List<TaskBL> tbl = boardFacade.GetInProgressTasks(email);
                 List<TaskSL> tsl = new List<TaskSL>();
                 foreach (TaskBL t in tbl)
@@ -226,7 +218,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 int limit = boardFacade.GetColumnLimit(email, boardName, columnOrdinal);
                 Response response = new Response(null, limit);
                 return JsonSerializer.Serialize(response);
@@ -249,7 +240,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 boardFacade.JoinBoard(email, boardId);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -272,7 +262,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
                 boardFacade.LeaveBoard(email, boardId);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
@@ -318,8 +307,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                //email = email.ToLower();
-                //newOwnerEmail = newOwnerEmail.ToLower();
                 boardFacade.ChangeOwner(email, newOwnerEmail, boardname);
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);

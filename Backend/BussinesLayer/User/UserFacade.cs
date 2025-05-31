@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error("Login failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
-            //email = email.ToLower();
+            email = email.ToLower();
             if (password == null)
             {
                 log.Error("Login failed, password can't be null.");
@@ -88,7 +88,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error("Registration failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
-            //email = email.ToLower();
+            email = email.ToLower();
             if (password == null)
             {
                 log.Error("Registration failed, password can't be null.");
@@ -133,6 +133,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error($"Logout failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (!authFacade.isLoggedIn(email))
             {
                 log.Error($"Logout failed, user with email {email} is not logged in.");
@@ -186,7 +187,6 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             users.Clear();
             UserController userController = new UserController();
             userController.DeleteAllUsers();
-            authFacade = new AuthenticationFacade();
             log.Info("All users deleted successfully.");
         }
     }
