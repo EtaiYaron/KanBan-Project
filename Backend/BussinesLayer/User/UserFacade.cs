@@ -166,7 +166,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return Regex.IsMatch(email, EmailRegex, RegexOptions.IgnoreCase);
         }
 
-
+        /// <summary>
+        /// Loads all users from the database into memory.
+        /// </summary>
         public void LoadAllUsers()
         {
             log.Info("Loading all users from the database.");
@@ -181,6 +183,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             log.Info("All users loaded successfully.");
         }
 
+        /// <summary>
+        /// Deletes all users from the system and the database.
+        /// </summary>
         public void DeleteAllUsers()
         { 
             log.Info("Deleting all users from the database.");

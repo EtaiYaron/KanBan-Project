@@ -15,7 +15,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
         private readonly string _connectionString;
-        private readonly string _tableName;
         private const string TableName = "Users";
 
         /// <summary>
@@ -25,7 +24,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
             this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
-            this._tableName = TableName;
         }
 
         /// <summary>

@@ -220,6 +220,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public void UpdateLastBoardId(int lastBoardId)
+        {
+            boardController.UpdateLastBoardId(lastBoardId);
+        }
+
         /// <summary>
         /// This method is used to persist the board to the database.
         /// </summary>
@@ -232,10 +237,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        public BoardController BoardController
-        {
-            get { return boardController; }
-        }
 
     }
 }

@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
             nextBoardId++;
-            curr.BoardDAL.BoardController.UpdateLastBoardId(nextBoardId);
+            curr.BoardDAL.UpdateLastBoardId(nextBoardId);
             curr.BoardDAL.persist();
             curr.JoinUser(email);
             curr.BoardDAL.JoinBoard(email);
@@ -501,7 +501,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
 
         /// <summary>
-        /// This method is used to ensure that the user is logged in.
+        /// This method is used to join a user to a specific board.
         /// </summary>
         /// <param name="email"></param>
         /// <exception cref="InvalidOperationException"></exception>
@@ -701,6 +701,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
         }
 
+        /// <summary>
+        /// Loads all boards and related data from the database.
+        /// </summary>
         public void LoadAllBoards()
         {
             log.Info("Loading all boards from the database.");
@@ -748,6 +751,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             log.Info("Successfully loaded all boards from the database.");
         }
 
+        /// <summary>
+        /// Deletes all boards and related data from the database.
+        /// </summary>
         public void DeleteAllBoards()
         {
             log.Info("Deleting all boards and related data from the database.");

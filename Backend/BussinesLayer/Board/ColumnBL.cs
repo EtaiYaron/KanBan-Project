@@ -49,6 +49,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 maxTasks = value;
             }
         }
+
+        /// <summary>
+        /// This method returns the number of tasks in the column.
+        /// </summary>
+        /// <returns></returns>
         public int GetNumTasks()
         {
             return tasks.Count;
