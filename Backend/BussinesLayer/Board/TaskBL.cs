@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
@@ -13,28 +14,35 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private readonly DateTime creationTime;
         private DateTime? dueDate;
         private string description;
-        private int state;
+        private TaskDAL taskDAL;
+        private string assignee;
 
-        public TaskBL(int taskId, string title, DateTime dueDate, string description)
+        public TaskBL(int taskId, long boardId ,string title, DateTime? dueDate, string description)
         {
             this.taskId = taskId;
             this.title = title;
             this.creationTime = DateTime.Now;
             this.dueDate = dueDate;
             this.description = description;
-            this.state = 0;
+            this.assignee = null;
+            this.taskDAL = new TaskDAL(taskId, boardId, title, dueDate, this.creationTime, description);
         }
 
-        public void EditTask(string title, DateTime dueDate, string description)
+        public TaskBL(TaskDAL taskDAL)
         {
-            this.title = title;
-            this.dueDate = dueDate;
-            this.description = description;
+            this.taskId = taskDAL.TaskId;
+            this.title = taskDAL.Title;
+            this.creationTime = taskDAL.CreationTime;
+            this.dueDate = taskDAL.DueDate;
+            this.description = taskDAL.Description;
+            this.assignee = taskDAL.AssigneeEmail;
+            this.taskDAL = taskDAL;
         }
 
-        public void moveTask(int dest)
-        { 
-            this.taskId = dest; 
+        public string Assignee
+        {
+            get { return this.assignee; }
+            set { this.assignee = value; }
         }
 
 
@@ -66,15 +74,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             get { return this.description; }
             set { this.description = value; }
         }
-        public int State
+
+        public TaskDAL TaskDAL
         {
-            get { return this.state; }
-            set { this.state = value; }
+            get { return this.taskDAL; }
         }
-
-
-
-
-
     }
 }

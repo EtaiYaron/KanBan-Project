@@ -18,6 +18,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private UserFacade userFacade;
         private BoardFacade boardFacade;
 
+        /// <summary>
+        /// Empty Constructor for the ServiceFactory class just for now.
+        /// </summary>
         public ServiceFactory()
         {
             this.authenticationFacade = new AuthenticationFacade();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using log4net;
 
 namespace IntroSE.Kanban.Backend.BussinesLayer.User
@@ -14,14 +15,26 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         private Dictionary<string, UserBL> users;
         private AuthenticationFacade authFacade;
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
+        private const int minlength = 6;
+        private const int maxlength = 20;
+
 
 
         public UserFacade(AuthenticationFacade authFacade)
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
+            //LoadAllUsers();
         }
 
+        /// <summary>
+        /// This method is used to login a user to the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>UserBL object if the login was successful, otherwise null.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public UserBL Login(string email, string password)
         {
             log.Info($"Attempting login for user with email: {email}.");
@@ -30,6 +43,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error("Login failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (password == null)
             {
                 log.Error("Login failed, password can't be null.");
@@ -54,10 +68,18 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Info($"User with email {email}, logged in successfully.");
                 return user;
             }
-            log.Warn($"Login failed for user {email}, incorrect password.");
+            log.Error($"Login failed for user {email}, incorrect password.");
             return null;
         }
 
+        /// <summary>
+        /// Registers a new user with the provided email and password.
+        /// </summary>
+        /// <param name="email">The email address of the user to register.</param>
+        /// <param name="password">The password for the new user.</param>
+        /// <returns>The registered <see cref="UserBL"/> object.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if email or password is null.</exception>
+        /// <exception cref="Exception">Thrown if the email is invalid, password is invalid, or the user already exists.</exception>
         public UserBL Register(string email, string password)
         {
             log.Info($"Attempting to Register user with email: {email} and password: {password}.");
@@ -66,6 +88,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error("Registration failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (password == null)
             {
                 log.Error("Registration failed, password can't be null.");
@@ -95,6 +118,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return user;
         }
 
+        /// <summary>
+        /// Logs out the user with the specified email.
+        /// </summary>
+        /// <param name="email">The email address of the user to log out.</param>
+        /// <returns>The <see cref="UserBL"/> object of the logged out user.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if email is null.</exception>
+        /// <exception cref="Exception">Thrown if the user is not logged in.</exception>
         public UserBL Logout(string email)
         {
             log.Info($"Attempting Logout for user with email: {email}.");
@@ -103,6 +133,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error($"Logout failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (!authFacade.isLoggedIn(email))
             {
                 log.Error($"Logout failed, user with email {email} is not logged in.");
@@ -113,23 +144,56 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return users[email];
         }
 
+        /// <summary>
+        /// Validates the password according to the required rules.
+        /// </summary>
+        /// <param name="password">The password to validate.</param>
+        /// <returns>True if the password is valid; otherwise, false.</returns>
         private bool isValidPassword(string password)
         {
-            if (password.Length < 6 || password.Length > 20) return false;
-            return password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(char.IsDigit);
+            if (password.Length < minlength || password.Length > maxlength) return false;
+            return Regex.IsMatch(password, "[A-Z]") && Regex.IsMatch(password, "[a-z]") && Regex.IsMatch(password, "[0-9]");
         }
 
+        /// <summary>
+        /// Validates the email address format.
+        /// </summary>
+        /// <param name="email">The email address to validate.</param>
+        /// <returns>True if the email is valid; otherwise, false.</returns>
         private bool IsValidEmail(string email)
         {
-            try
+            String EmailRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:(?!\\d+\\.\\d+\\.\\d+\\.\\d+$)(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3}|\\[(\\d{1,3}\\.){3}\\d{1,3}\\])$";
+            return Regex.IsMatch(email, EmailRegex, RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// Loads all users from the database into memory.
+        /// </summary>
+        public void LoadAllUsers()
+        {
+            log.Info("Loading all users from the database.");
+            users.Clear();
+            UserController userController = new UserController();
+            List<UserDAL> userDals = userController.SelectAll();
+            foreach (UserDAL userDal in userDals)
             {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
+                UserBL user = new UserBL(userDal);
+                users[userDal.Email] = user;
             }
-            catch
-            {
-                return false;
-            }
+            log.Info("All users loaded successfully.");
+        }
+
+        /// <summary>
+        /// Deletes all users from the system and the database.
+        /// </summary>
+        public void DeleteAllUsers()
+        { 
+            log.Info("Deleting all users from the database.");
+            users.Clear();
+            UserController userController = new UserController();
+            userController.DeleteAllUsers();
+            log.Info("All users deleted successfully.");
         }
     }
+
 }

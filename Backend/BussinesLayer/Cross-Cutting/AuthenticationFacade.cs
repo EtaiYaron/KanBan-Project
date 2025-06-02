@@ -15,21 +15,32 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting
             this.loggedUsers = new HashSet<string>();
         }
 
+        /// <summary>
+        /// This method is used to login a user to the system.
+        /// </summary>
+        /// <param name="email"></param>
         public void Login(string email)
         {
-            loggedUsers.Add(email);
-            return;
+            loggedUsers.Add(email.ToLower());
         }
 
+        /// <summary>
+        /// This method is used to logout a user from the system.
+        /// </summary>
+        /// <param name="email"></param>
         public void Logout(string email) 
         { 
-            loggedUsers.Remove(email);
-            return;
+            loggedUsers.Remove(email.ToLower());
         }
 
+        /// <summary>
+        /// This method is used to check if a user is logged in to the system.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public bool isLoggedIn(string email)
         {
-            return loggedUsers.Contains(email);
+            return loggedUsers.Contains(email.ToLower());
         }
     }
 }

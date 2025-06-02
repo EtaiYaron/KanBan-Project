@@ -17,11 +17,11 @@ namespace Tests
     {
         private UserService us;
 
-        public UserTests(UserService us) 
-        { 
-            this.us = us; 
+        public UserTests(UserService us)
+        {
+            this.us = us;
         }
-        
+
         public void UserRunTests()
         {
             Console.WriteLine("Running Tests...");
@@ -36,7 +36,7 @@ namespace Tests
             {
                 Console.WriteLine("TestUserRegisterPositiveCase: Failed");
             }
-
+            
             // Test registering another user successfully (Requirement 6)
             tests = TestUserRegisterPositiveCase1();
             if (tests)
@@ -157,12 +157,15 @@ namespace Tests
             {
                 Console.WriteLine("TestUserLogoutNegativeCase1: Failed");
             }
+            
         }
 
+        /// <summary>
+        /// Checks if a user can successfully register with a valid email and password.
+        /// Requirement: 6 (Registration of new users)
+        /// </summary>
         public bool TestUserRegisterPositiveCase()
         {
-            // This test checks if a user can successfully register with a valid email and password.
-            // Requirement checked: 6 - Registration of new users.
             Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
@@ -170,10 +173,13 @@ namespace Tests
             }
             return true;
         }
+
+        /// <summary>
+        /// Checks if a user can successfully register with another valid email and password.
+        /// Requirement: 6 (Registration of new users)
+        /// </summary>
         public bool TestUserRegisterPositiveCase1()
         {
-            // This test checks if a user can successfully register with another valid email and password.
-            // Requirement checked: 6 - Registration of new users.
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
@@ -181,10 +187,13 @@ namespace Tests
             }
             return true;
         }
+
+        /// <summary>
+        /// Checks if registration fails when the password does not meet the validity criteria.
+        /// Requirement: 2 (Valid password rules)
+        /// </summary>
         public bool TestUserRegisterNegativeCase()
         {
-            // This test checks if registration fails when the password does not meet the validity criteria.
-            // Requirement checked: 2 - Valid password rules.
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "amztia1"));
             if (res.ErrorMessage != null)
             {
@@ -192,10 +201,13 @@ namespace Tests
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks if registration fails when the email is invalid.
+        /// Requirement: 3 (Valid email address)
+        /// </summary>
         public bool TestUserRegisterNegativeCase1()
         {
-            // This test checks if registration fails when the email is invalid.
-            // Requirement checked: 3 - Valid email address.
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
@@ -204,10 +216,12 @@ namespace Tests
             return false;
         }
 
+        /// <summary>
+        /// Checks if a user can successfully login with valid credentials.
+        /// Requirement: 7 (Login functionality)
+        /// </summary>
         public bool TestUserLoginPositiveCase()
         {
-            // This test checks if a user can successfully login with valid credentials.
-            // Requirement checked: 7 - Login functionality.
             us.Logout("etaiyaron@gmail.com");
             Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
@@ -216,10 +230,13 @@ namespace Tests
             }
             return true;
         }
+
+        /// <summary>
+        /// Checks if another user can successfully login with valid credentials.
+        /// Requirement: 7 (Login functionality)
+        /// </summary>
         public bool TestUserLoginPositiveCase1()
         {
-            // This test checks if another user can successfully login with valid credentials.
-            // Requirement checked: 7 - Login functionality.
             us.Logout("Amztia@post.co.il");
             Response res = JsonSerializer.Deserialize<Response>(us.Login("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
@@ -229,10 +246,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if login fails when the password is incorrect.
+        /// Requirement: 7 (Login functionality)
+        /// </summary>
         public bool TestUserLoginNegativeCase()
         {
-            // This test checks if login fails when the password is incorrect.
-            // Requirement checked: 7 - Login functionality.
             Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "password1"));
             if (res.ErrorMessage != null)
             {
@@ -240,10 +259,13 @@ namespace Tests
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks if login fails when the email is invalid.
+        /// Requirement: 7 (Login functionality)
+        /// </summary>
         public bool TestUserLoginNegativeCase1()
         {
-            // This test checks if login fails when the email is invalid.
-            // Requirement checked: 7 - Login functionality.
             Response res = JsonSerializer.Deserialize<Response>(us.Login("@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
@@ -251,10 +273,13 @@ namespace Tests
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks if a user can successfully logout.
+        /// Requirement: 7 (Logout functionality)
+        /// </summary>
         public bool TestUserLogoutPositiveCase()
         {
-            // This test checks if a user can successfully logout.
-            // Requirement checked: 7 - Logout functionality.
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("etaiyaron@gmail.com"));
             if (res.ErrorMessage != null)
             {
@@ -262,10 +287,13 @@ namespace Tests
             }
             return true;
         }
+
+        /// <summary>
+        /// Checks if another user can successfully logout after registering.
+        /// Requirements: 6 (Registration logs in the user), 7 (Logout functionality)
+        /// </summary>
         public bool TestUserLogoutPositiveCase1()
         {
-            // This test checks if another user can successfully logout after registering.
-            // Requirement checked: 6 - Registration logs in the user, 7 - Logout functionality.
             us.Register("Psagot@post.co.il", "Psagot2025");
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("Psagot@post.co.il"));
             if (res.ErrorMessage != null)
@@ -275,10 +303,12 @@ namespace Tests
             return true;
         }
 
+        /// <summary>
+        /// Checks if logout fails when the email is invalid.
+        /// Requirement: 7 (Logout functionality)
+        /// </summary>
         public bool TestUserLogoutNegativeCase()
         {
-            // This test checks if logout fails when the email is invalid.
-            // Requirement checked: 7 - Logout functionality.
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("EtaiYaron"));
             if (res.ErrorMessage != null)
             {
@@ -286,10 +316,13 @@ namespace Tests
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks if logout fails when the email format is incorrect.
+        /// Requirement: 7 (Logout functionality)
+        /// </summary>
         public bool TestUserLogoutNegativeCase1()
         {
-            // This test checks if logout fails when the email format is incorrect.
-            // Requirement checked: 7 - Logout functionality.
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@pol"));
             if (res.ErrorMessage != null)
             {
@@ -299,3 +332,4 @@ namespace Tests
         }
     }
 }
+
