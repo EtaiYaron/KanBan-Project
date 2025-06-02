@@ -188,6 +188,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
+        /// <summary>
+        /// This method is used to insert a default board id of 1 into the LastBoardId table.
+        /// </summary>
+        /// <returns></returns>
         public bool InsertBoardId()
         {    
             int res = -1;
@@ -218,6 +222,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
+        /// <summary>
+        /// This method is used to select the last board id from the LastBoardId table in the database.
+        /// </summary>
+        /// <returns></returns>
         public int SelectBoardId()
         {
             log.Info("Attempting to select the last board id from the DB.");
@@ -258,6 +266,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return result;
         }
 
+        /// <summary>
+        /// This method is used to update the last board id in the LastBoardId table in the database.
+        /// </summary>
+        /// <param name="lastBoardId"></param>
+        /// <returns></returns>
         public bool UpdateLastBoardId(int lastBoardId)
         {
             log.Info($"Attempting to update the last board id");
@@ -290,7 +303,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-
+        /// <summary>
+        /// This method is used to delete all boards from the database.
+        /// </summary>
         public void DeleteAllBoards()
         {
             log.Info("Attempting to delete all boards from the DB.");
@@ -315,6 +330,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// This method is used to delete the last board id from the LastBoardId table in the database.
+        /// </summary>
         public void DeleteBoardId()
         {
             log.Info("Attempting to delete board id from the DB.");

@@ -87,6 +87,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                     if (task.Assignee == email)
                     {
                         task.Assignee = null;
+                        task.TaskDAL.AssignTaskToUser(null);  
                     }
                 }
             }
