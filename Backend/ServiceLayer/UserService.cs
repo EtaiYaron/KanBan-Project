@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
-                Response response = new Response(null, email.ToLower());
+                Response response = new Response(null, email);
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
@@ -84,5 +84,35 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return JsonSerializer.Serialize(response);
             }
         }
-    }  
+
+        public string LoadAllUsers()
+        {
+            try
+            {
+                userFacade.LoadAllUsers();
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string DeleteAllUsers()
+        {
+            try
+            {
+                userFacade.DeleteAllUsers();
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+    }
 }

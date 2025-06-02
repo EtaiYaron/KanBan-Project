@@ -15,7 +15,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
         private readonly string _connectionString;
-        private readonly string _tableName;
         private const string TableName = "Users";
 
         /// <summary>
@@ -25,7 +24,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
             this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
-            this._tableName = TableName;
         }
 
         /// <summary>
@@ -139,6 +137,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
             }
             return result;
+        }
+
+        public void DeleteAllUsers()
+        {
+            log.Info("Attempting to delete all users from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all users from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all users: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
         /// <summary>

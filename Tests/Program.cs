@@ -13,18 +13,20 @@ internal class Program
         XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
         ServiceFactory sf = new ServiceFactory();
-        /*
+        
+        
         UserTests userTests = new UserTests(sf.UserService);
         userTests.UserRunTests();
-        */
+        
 
         BoardTests boardTests = new BoardTests(sf.UserService, sf.BoardService, sf.TaskService);  
-        boardTests.BoardRunTests();  
-
-        /*
+        boardTests.BoardRunTests();
+        
+        
         TaskServiceTests taskTests = new TaskServiceTests(sf.UserService, sf.BoardService, sf.TaskService);  
         taskTests.TaskServiceRunTests();
-        */
         
+
+
     }
 }

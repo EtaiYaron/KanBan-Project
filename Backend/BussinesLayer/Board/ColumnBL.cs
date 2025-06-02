@@ -12,12 +12,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private readonly int columnId;
         private readonly string name;
         private int maxTasks;
-        public ColumnBL(int columnId, string name)
+        public ColumnBL(int columnId, string name, int maxTasks=-1)
         {
             tasks = new Dictionary<int, TaskBL>();
             this.columnId = columnId;
             this.name = name;
-            this.maxTasks = -1;
+            this.maxTasks = maxTasks;
         }
         /// <summary>
         /// This method is used to add a task to the board.
@@ -31,6 +31,10 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             tasks.Add(task.TaskId, task);
         }
 
+        /// <summary>
+        /// Removes a task with the specified task ID from the column.
+        /// </summary>
+        /// <param name="taskid">The ID of the task to remove.</param>
         public void RemoveTask(int taskid)
         {
             tasks.Remove(taskid);
@@ -45,6 +49,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 maxTasks = value;
             }
         }
+
+        /// <summary>
+        /// This method returns the number of tasks in the column.
+        /// </summary>
+        /// <returns></returns>
         public int GetNumTasks()
         {
             return tasks.Count;

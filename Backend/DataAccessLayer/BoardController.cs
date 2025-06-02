@@ -110,45 +110,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-        /// <summary>
-        /// This method is used to update a specific attribute of a board in the database.
-        /// </summary>
-        /// <param name="boardDAL"></param>
-        /// <param name="attributeName"></param>
-        /// <param name="attributeValue"></param>
-        /// <returns>true if the update was successful, otherwise false.</returns>
-        public bool Update(BoardDAL boardDAL, string attributeName, int attributeValue)
-        {
-            log.Info($"Attempting to update in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
-            int res = -1;
-            using (var connection = new SqliteConnection(_connectionString))
-            {
-                SqliteCommand command = new SqliteCommand
-                {
-                    Connection = connection,
-                    CommandText = $"UPDATE {TableName} SET {attributeName}=@attributeValue WHERE boardId={boardDAL.BoardId}"
-                };
-
-                try
-                {
-                    command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
-                    connection.Open();
-                    res = command.ExecuteNonQuery();
-                    log.Info($"Successfully updated in the DB board with id: {boardDAL.BoardId}, attribute: {attributeName}, value: {attributeValue}.");
-                }
-                catch (Exception ex)
-                {
-                    log.Error($"Failed to update board with id: {boardDAL.BoardId}. Error: {ex.Message}");
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-            }
-            return res > 0;
-        }
-
 
         /// <summary>
         /// This method is used to delete a board from the database by its BoardDAL object.
@@ -225,6 +186,157 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
             }
             return results;
+        }
+
+        public bool InsertBoardId()
+        {    
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                try
+                {
+                    SqliteCommand command = new SqliteCommand(null, connection);
+                    string insert = "INSERT INTO LastBoardId Values (@boardIdPar)";
+
+                    SqliteParameter id = new SqliteParameter(@"boardIdPar", 1);
+                    command.CommandText = insert;
+                    command.Parameters.Add(id);
+
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to insert 0 to board id as default");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return res > 0;
+        }
+
+        public int SelectBoardId()
+        {
+            log.Info("Attempting to select the last board id from the DB.");
+            int result = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = "SELECT boardId FROM LastBoardId;";
+                SqliteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+                    if (dataReader.Read())
+                    {
+                        result = dataReader.GetInt32(0);
+                        log.Info($"Successfully got the last board id: {result}");
+                    }
+                    else
+                    {
+                        log.Error("No rows found in LastBoardId table.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to select board id. Error: {ex.Message}");
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return result;
+        }
+
+        public bool UpdateLastBoardId(int lastBoardId)
+        {
+            log.Info($"Attempting to update the last board id");
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"UPDATE LastBoardId SET boardId=@lastBoardId"
+                };
+
+                try
+                {
+                    command.Parameters.Add(new SqliteParameter(@"lastBoardId", lastBoardId));
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    log.Info($"Successfully updated last board id");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to update last board id: {lastBoardId}. Error: {ex.Message}");
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
+
+        public void DeleteAllBoards()
+        {
+            log.Info("Attempting to delete all boards from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all boards from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all boards: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        public void DeleteBoardId()
+        {
+            log.Info("Attempting to delete board id from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = "DELETE FROM LastBoardId";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all board id from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting board id: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
 

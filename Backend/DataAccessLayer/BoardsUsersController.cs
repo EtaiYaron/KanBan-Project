@@ -83,6 +83,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                 try
                 {
+                    command.Parameters.Add(new SqliteParameter(@"boardId", boardUserDal.BoardId));
+                    command.Parameters.Add(new SqliteParameter(@"userEmail", boardUserDal.UserEmail));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -120,7 +122,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 };
                 try
                 {
-                    command.Parameters.Add(new SqliteParameter(@"newIsOwner", newIsOwner));
+                    command.Parameters.Add(new SqliteParameter(@"newIsOwner", newIsOwner ? 1 : 0));
+                    command.Parameters.Add(new SqliteParameter(@"boardId", boardUserDal.BoardId));
+                    command.Parameters.Add(new SqliteParameter(@"userEmail", boardUserDal.UserEmail));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"Successfully updated isOwner for boardId: {boardUserDal.BoardId}, email: {boardUserDal.UserEmail} to {newIsOwner}.");
@@ -216,6 +220,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
             }
             return results;
+        }
+
+        public void DeleteAllBoardUsers()
+        {
+            log.Info("Attempting to delete all board users from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all boards users from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all board users: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
 

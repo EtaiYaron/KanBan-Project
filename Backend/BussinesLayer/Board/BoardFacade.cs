@@ -33,7 +33,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             this.boards = new Dictionary<string, Dictionary<string, BoardBL>>();
             this.authenticationFacade = authenticationFacade;
-            this.nextBoardId = 0;
+            this.nextBoardId = 1;
+            //LoadAllBoards();
         }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to create board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             if (string.IsNullOrEmpty(boardname) || string.IsNullOrEmpty(boardname.Trim()))
             {
                 log.Error($"CreateBoard failed, boardName can't be null.");
@@ -64,6 +66,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             BoardBL curr = new BoardBL(nextBoardId, boardname, email);
             boards[email].Add(boardname, curr);
             nextBoardId++;
+            curr.BoardDAL.UpdateLastBoardId(nextBoardId);
             curr.BoardDAL.persist();
             curr.JoinUser(email);
             curr.BoardDAL.JoinBoard(email);
@@ -99,6 +102,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to delete board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             BoardBL curr = boards[email][boardname];
             if (curr.Owner != email)
@@ -143,6 +147,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to move task {taskId} to column {destcolumn} in board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             TaskBL task = board.GetTask(taskId);
@@ -151,7 +156,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"MoveTask failed, task {taskId} doesn't exist in board {boardname}.");
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
-            if (task.Assignee != email)
+            if (task.Assignee!=null && task.Assignee != email)
             {
                 log.Error($"MoveTask failed, only assignee can move task.");
                 throw new ArgumentException("only assignee can move task");
@@ -193,6 +198,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to add task in board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             if (string.IsNullOrEmpty(title.Trim()) || title.Length > maxTitleLength)
@@ -221,7 +227,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             TaskBL task = board.GetTask(nextTaskId);
             task.TaskDAL.persist();
             board.BoardDAL.AddTask(task.TaskDAL);
-            log.Info($"Successfully added task {board.NextTaskId} to board {boardname} for user with email {email}.");
+            log.Info($"Successfully added task {board.NextTaskId-1} to board {boardname} for user with email {email}.");
         }
 
         /// <summary>
@@ -240,6 +246,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to Edit task {taskId} in board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             TaskBL task = board.GetTask(taskId);
@@ -248,7 +255,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"EditTask failed, task {taskId} isn't exist in board {boardname}.");
                 throw new ArgumentException("taskId isn't exist task in this board");
             }
-            if (task.Assignee != email)
+            if (task.Assignee!=null && task.Assignee != email)
             {
                 log.Error($"EditTask failed, only assignee can edit task.");
                 throw new ArgumentException("only assignee can edit task");
@@ -296,6 +303,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get the column name of column with ordinal {columnOrdinal}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardName);
             if (columnOrdinal < backlogOrdinal || columnOrdinal > doneOrdinal)
             {
@@ -315,6 +323,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             log.Info($"successfully got board {boardname} for user with email {email}.");
             return boards[email][boardname];
@@ -332,6 +341,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get task {taskId} from board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             TaskBL task = board.GetTask(taskId);
@@ -354,6 +364,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get all boards for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             List<int> boardIds = new List<int>();
             if (!boards.ContainsKey(email))
             {
@@ -380,6 +391,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to limit tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             if (column > doneOrdinal || column < backlogOrdinal)
             {
@@ -400,7 +412,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"LimitTasks failed, newLimit {newLimit} is lower than current numTasks for user with email {email}.");
                 throw new Exception("there are already more tasks in the column than the new limit.");
             }
-            board.BoardDAL.limitTasksColumn(GetNameOfColumn(email, boardname, column), newLimit);
+
+            board.setColumnLimit(column, newLimit);
+            board.BoardDAL.limitTasksColumn(column, newLimit);
             log.Info($"Successfully limited tasks to {newLimit} in column {column} on board {boardname} for user with email {email}.");
             return board;
         }
@@ -417,6 +431,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get tasks of column {column} on board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             if (column < backlogOrdinal || column > doneOrdinal)
             {
@@ -440,6 +455,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get column limit of column {column} on board {boardname} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             ValidateBoardExists(email, boardname);
             if (column < backlogOrdinal || column > doneOrdinal)
             {
@@ -461,6 +477,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to get in progress tasks for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
 
             List<TaskBL> tasks = new List<TaskBL>();
             if (!boards.ContainsKey(email))
@@ -484,7 +501,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 
 
         /// <summary>
-        /// This method is used to ensure that the user is logged in.
+        /// This method is used to join a user to a specific board.
         /// </summary>
         /// <param name="email"></param>
         /// <exception cref="InvalidOperationException"></exception>
@@ -492,6 +509,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to join board with ID {boardId} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             BoardBL board = GetBoardIfExists(boardId);
             if (board.IsUserInBoard(email))
             {
@@ -526,6 +544,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to leave board with ID {boardId} for user with email {email}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
             BoardBL board = GetBoardIfExists(boardId);
             if (!board.IsUserInBoard(email))
                 throw new Exception("User is not in board");
@@ -551,6 +570,8 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         {
             log.Info($"Attempting to change owner of board {boardname} from {owneremail} to {newOwnerEmail}.");
             EnsureUserIsLoggedIn(owneremail);
+            owneremail = owneremail.ToLower();
+            newOwnerEmail = newOwnerEmail.ToLower();
             ValidateBoardExists(owneremail, boardname);
             BoardBL board = boards[owneremail][boardname];
             if (!board.IsUserInBoard(owneremail) || !board.IsUserInBoard(newOwnerEmail))
@@ -583,10 +604,23 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             return board.Name;
         }
 
+        /// <summary>
+        /// Assigns a task to a user within a board.
+        /// The assigning user must be logged in, both users must be members of the board, and only the current assignee (or unassigned) can reassign the task.
+        /// Updates the assignee in both the business and data access layers.
+        /// </summary>
+        /// <param name="email">The email of the user performing the assignment (must be logged in and a board member).</param>
+        /// <param name="boardname">The name of the board containing the task.</param>
+        /// <param name="taskId">The ID of the task to assign.</param>
+        /// <param name="emailTo">The email of the user to assign the task to (must be a board member).</param>
+        /// <exception cref="Exception">Thrown if either user is not in the board.</exception>
+        /// <exception cref="ArgumentException">Thrown if the task does not exist or if the assigning user is not the current assignee.</exception>
         public void AssignTaskToUser(string email, string boardname, int taskId, string emailTo)
         {
             log.Info($"Attempting to assign task with ID {taskId} from {email} to {emailTo}.");
             EnsureUserIsLoggedIn(email);
+            email = email.ToLower();
+            emailTo = emailTo.ToLower();
             ValidateBoardExists(email, boardname);
             BoardBL board = boards[email][boardname];
             if (!board.IsUserInBoard(email) || !board.IsUserInBoard(emailTo))
@@ -667,7 +701,72 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             }
         }
 
+        /// <summary>
+        /// Loads all boards and related data from the database.
+        /// </summary>
+        public void LoadAllBoards()
+        {
+            log.Info("Loading all boards from the database.");
+            boards.Clear();
+            BoardController boardController = new BoardController();
+            BoardsUsersController boardsUsersController = new BoardsUsersController();
+            TaskController taskController = new TaskController();
+            List<BoardDAL> loadedBoards = boardController.SelectAllBoards();
+            List<BoardsUsersDAL> loadedBoardsUsers = boardsUsersController.SelectAll();
+            List<TaskDAL> loadedTasks = taskController.SelectAll();
+
+            Dictionary<int, BoardBL> boardIdToBoardBL = new Dictionary<int, BoardBL>();
+
+            foreach (BoardDAL boardDAL in loadedBoards)
+            {
+                BoardBL boardBL = new BoardBL(boardDAL);
+                foreach (TaskDAL taskDAL in loadedTasks)
+                {
+                    if (taskDAL.BoardId == boardDAL.BoardId)
+                    {
+                        TaskBL taskBL = new TaskBL(taskDAL);
+                        boardBL.GetColumn(taskDAL.State).AddTask(taskBL);
+                    }
+                }
+                boardIdToBoardBL[boardDAL.BoardId] = boardBL;
+            }
+
+            foreach (BoardsUsersDAL boardsUsersDAL in loadedBoardsUsers)
+            {
+                if (!boards.ContainsKey(boardsUsersDAL.UserEmail))
+                {
+                    boards[boardsUsersDAL.UserEmail] = new Dictionary<string, BoardBL>();
+                }
+                BoardBL boardBL = boardIdToBoardBL[boardsUsersDAL.BoardId];
+                boardBL.JoinUser(boardsUsersDAL.UserEmail);
+                boards[boardsUsersDAL.UserEmail].Add(boardBL.Name, boardBL);
+            }
+
+            this.nextBoardId = boardController.SelectBoardId();
+            if (nextBoardId < 0)
+            {
+                this.nextBoardId = 1;
+                boardController.InsertBoardId();
+            }
+            log.Info("Successfully loaded all boards from the database.");
+        }
+
+        /// <summary>
+        /// Deletes all boards and related data from the database.
+        /// </summary>
+        public void DeleteAllBoards()
+        {
+            log.Info("Deleting all boards and related data from the database.");
+            boards.Clear();
+            this.nextBoardId = 1;
+            BoardController boardController = new BoardController();
+            BoardsUsersController boardsUsersController = new BoardsUsersController();
+            TaskController taskController = new TaskController();
+            boardController.DeleteAllBoards();
+            boardController.DeleteBoardId();
+            boardsUsersController.DeleteAllBoardUsers();
+            taskController.DeleteAllTasks();
+            log.Info("Successfully deleted all boards and related data from the database.");
+        }
     }
-
-
 }

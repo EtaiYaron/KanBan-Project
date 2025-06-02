@@ -279,7 +279,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="email">The email of the user requesting the board name.</param>
         /// <param name="boardId">The unique identifier of the board.</param>
         /// <returns>A response containing the board's name if successful, or an error message if an exception occurs.</returns>
-        public string GetBoardNameById(string email, int boardId)
+        public string GetBoardNameById(int boardId)
         {
             try
             {
@@ -294,11 +294,50 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Changes the owner of a board to a new user.
+        /// The current owner must be logged in, must be the actual owner of the board, and both the current and new owner must be members of the board.
+        /// If the requirements are not met, an exception is thrown.
+        /// </summary>
+        /// <param name="email">The email of the current owner of the board.</param>
+        /// <param name="newOwnerEmail">The email of the new owner to assign.</param>
+        /// <param name="boardname">The name of the board whose ownership is to be changed.</param>
+        /// <returns>An empty response if successful, or an error message if an exception occurs.</returns>
         public string ChangeOwner(string email, string newOwnerEmail, string boardname)
         {
             try
             {
                 boardFacade.ChangeOwner(email, newOwnerEmail, boardname);
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string LoadAllBoards()
+        {
+            try
+            {
+                boardFacade.LoadAllBoards();
+                Response response = new Response();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response response = new Response(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string DeleteAllBoards()
+        {
+            try
+            {
+                boardFacade.DeleteAllBoards();
                 Response response = new Response();
                 return JsonSerializer.Serialize(response);
             }

@@ -24,6 +24,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
+            //LoadAllUsers();
         }
 
         /// <summary>
@@ -71,6 +72,14 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return null;
         }
 
+        /// <summary>
+        /// Registers a new user with the provided email and password.
+        /// </summary>
+        /// <param name="email">The email address of the user to register.</param>
+        /// <param name="password">The password for the new user.</param>
+        /// <returns>The registered <see cref="UserBL"/> object.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if email or password is null.</exception>
+        /// <exception cref="Exception">Thrown if the email is invalid, password is invalid, or the user already exists.</exception>
         public UserBL Register(string email, string password)
         {
             log.Info($"Attempting to Register user with email: {email} and password: {password}.");
@@ -109,6 +118,13 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return user;
         }
 
+        /// <summary>
+        /// Logs out the user with the specified email.
+        /// </summary>
+        /// <param name="email">The email address of the user to log out.</param>
+        /// <returns>The <see cref="UserBL"/> object of the logged out user.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if email is null.</exception>
+        /// <exception cref="Exception">Thrown if the user is not logged in.</exception>
         public UserBL Logout(string email)
         {
             log.Info($"Attempting Logout for user with email: {email}.");
@@ -117,6 +133,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 log.Error($"Logout failed, email can't be null.");
                 throw new ArgumentNullException("email");
             }
+            email = email.ToLower();
             if (!authFacade.isLoggedIn(email))
             {
                 log.Error($"Logout failed, user with email {email} is not logged in.");
@@ -127,16 +144,56 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return users[email];
         }
 
+        /// <summary>
+        /// Validates the password according to the required rules.
+        /// </summary>
+        /// <param name="password">The password to validate.</param>
+        /// <returns>True if the password is valid; otherwise, false.</returns>
         private bool isValidPassword(string password)
         {
             if (password.Length < minlength || password.Length > maxlength) return false;
             return Regex.IsMatch(password, "[A-Z]") && Regex.IsMatch(password, "[a-z]") && Regex.IsMatch(password, "[0-9]");
         }
 
+        /// <summary>
+        /// Validates the email address format.
+        /// </summary>
+        /// <param name="email">The email address to validate.</param>
+        /// <returns>True if the email is valid; otherwise, false.</returns>
         private bool IsValidEmail(string email)
         {
             String EmailRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:(?!\\d+\\.\\d+\\.\\d+\\.\\d+$)(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}|(\\d{1,3}\\.){3}\\d{1,3}|\\[(\\d{1,3}\\.){3}\\d{1,3}\\])$";
             return Regex.IsMatch(email, EmailRegex, RegexOptions.IgnoreCase);
         }
+
+        /// <summary>
+        /// Loads all users from the database into memory.
+        /// </summary>
+        public void LoadAllUsers()
+        {
+            log.Info("Loading all users from the database.");
+            users.Clear();
+            UserController userController = new UserController();
+            List<UserDAL> userDals = userController.SelectAll();
+            foreach (UserDAL userDal in userDals)
+            {
+                UserBL user = new UserBL(userDal);
+                users[userDal.Email] = user;
+            }
+            log.Info("All users loaded successfully.");
+        }
+
+        /// <summary>
+        /// Deletes all users from the system and the database.
+        /// </summary>
+        public void DeleteAllUsers()
+        { 
+            log.Info("Deleting all users from the database.");
+            users.Clear();
+            UserController userController = new UserController();
+            userController.DeleteAllUsers();
+            log.Info("All users deleted successfully.");
+        }
     }
+
 }

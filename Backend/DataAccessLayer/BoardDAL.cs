@@ -154,7 +154,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             if (!allTasks.Any(t => t.TaskId == task.TaskId))
             {
                 allTasks.Add(task);
-                task.persist(this.boardId);
                 NextTaskId++;
             }
         }
@@ -205,20 +204,25 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="columnName"></param>
         /// <param name="limit"></param>
-        public void limitTasksColumn(String columnName, int limit)
+        public void limitTasksColumn(int columnOrdinal, int limit)
         {
-            if (columnName == "backlog")
+            if (columnOrdinal == 0)
             {
                 this.Backlog = limit;
             }
-            else if (columnName == "inProgress")
+            else if (columnOrdinal == 1)
             {
                 this.InProgress = limit;
             }
-            else if (columnName == "done")
+            else if (columnOrdinal == 2)
             {
                 this.Done = limit;
             }
+        }
+
+        public void UpdateLastBoardId(int lastBoardId)
+        {
+            boardController.UpdateLastBoardId(lastBoardId);
         }
 
         /// <summary>
@@ -233,10 +237,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        public BoardController BoardController
-        {
-            get { return boardController; }
-        }
 
     }
 }

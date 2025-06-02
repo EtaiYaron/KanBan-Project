@@ -15,10 +15,9 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         private DateTime? dueDate;
         private string description;
         private TaskDAL taskDAL;
-        private long boardId;
         private string assignee;
 
-        public TaskBL(int taskId, long boardId ,string title, DateTime dueDate, string description)
+        public TaskBL(int taskId, long boardId ,string title, DateTime? dueDate, string description)
         {
             this.taskId = taskId;
             this.title = title;
@@ -27,6 +26,17 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.description = description;
             this.assignee = null;
             this.taskDAL = new TaskDAL(taskId, boardId, title, dueDate, this.creationTime, description);
+        }
+
+        public TaskBL(TaskDAL taskDAL)
+        {
+            this.taskId = taskDAL.TaskId;
+            this.title = taskDAL.Title;
+            this.creationTime = taskDAL.CreationTime;
+            this.dueDate = taskDAL.DueDate;
+            this.description = taskDAL.Description;
+            this.assignee = taskDAL.AssigneeEmail;
+            this.taskDAL = taskDAL;
         }
 
         public string Assignee

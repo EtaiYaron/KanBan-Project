@@ -8,6 +8,7 @@ using System.IO;
 using System.Security.AccessControl;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
 using log4net;
+using Microsoft.VisualBasic;
 
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -40,20 +41,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
 
-                    string insert = $"INSERT INTO {TableName} (taskId,boardId,title,creationTime,dueDate,description,state,assigneeEmail) VALUES (@taskId,@boardId,@title,@creationTime,@dueDate,@description,@state,@assigneeEmail)";
-                    SqliteParameter taskIdParameter = new SqliteParameter(@"taskId", taskDAL.TaskId);
-                    SqliteParameter boardIdParameter = new SqliteParameter(@"boardId", taskDAL.BoardId);
-                    SqliteParameter titleParameter = new SqliteParameter(@"title", taskDAL.Title);
-                    SqliteParameter creationTimeParameter = new SqliteParameter(@"creationTime", taskDAL.CreationTime.ToString());
-                    SqliteParameter dueDateParameter = new SqliteParameter(@"dueDate", taskDAL.DueDate.ToString());
-                    SqliteParameter descriptionParameter = new SqliteParameter(@"description", taskDAL.Description);
-                    SqliteParameter stateParameter = new SqliteParameter(@"state", taskDAL.State);
+                    string insert = $"INSERT INTO {TableName} (taskId,boardId,title,creationTime,dueDate,description,state,assigneeEmail) VALUES (@taskIdVal,@boardIdVal,@titleVal,@creationTimeVal,@dueDateVal,@descriptionVal,@stateVal,@assigneeEmailVal)";
+                    SqliteParameter taskIdParameter = new SqliteParameter(@"taskIdVal", taskDAL.TaskId);
+                    SqliteParameter boardIdParameter = new SqliteParameter(@"boardIdVal", taskDAL.BoardId);
+                    SqliteParameter titleParameter = new SqliteParameter(@"titleVal", taskDAL.Title);
+                    SqliteParameter creationTimeParameter = new SqliteParameter(@"creationTimeVal", taskDAL.CreationTime);
+                    SqliteParameter dueDateParameter = new SqliteParameter(@"dueDateVal", taskDAL.DueDate);
+                    SqliteParameter descriptionParameter = new SqliteParameter(@"descriptionVal", taskDAL.Description);
+                    SqliteParameter stateParameter = new SqliteParameter(@"stateVal", taskDAL.State);
                     string assigneeEmail = taskDAL.AssigneeEmail;
                     if (taskDAL.AssigneeEmail == null)
                     {
                         assigneeEmail = "";
                     }
-                    SqliteParameter assigneeEmailParameter = new SqliteParameter(@"assigneeEmail", assigneeEmail);
+                    SqliteParameter assigneeEmailParameter = new SqliteParameter(@"assigneeEmailVal", assigneeEmail);
                     
                     command.CommandText = insert;
                     command.Parameters.Add(taskIdParameter);
@@ -89,14 +90,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <returns>returns true if the task was deleted successfully</returns>
         public bool Delete(TaskDAL taskDAL)
         {
-            log.Info($"Attempting to delete from the DB task with ID: {taskDAL.TaskId}.");
+            log.Info($"Attempting to delete from the DB task with ID: {taskDAL.TaskId}, in board: {taskDAL.BoardId}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
                 var command = new SqliteCommand
                 {
                     Connection = connection,
-                    CommandText = $"delete from {TableName} where TaskId={taskDAL.TaskId}"
+                    CommandText = $"delete from {TableName} where TaskId={taskDAL.TaskId} and boardId={taskDAL.BoardId}"
                 };
                 try
                 {
@@ -131,11 +132,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SqliteConnection(_connectionString))
             {
                 SqliteCommand command = new SqliteCommand(null, connection);
-                string update = $"UPDATE {TableName} SET {attributeName} = @attributeValue WHERE TaskId = @taskId";
+                string update = $"UPDATE {TableName} SET {attributeName} = @attributeValue WHERE taskId = @taskId";
+                command.CommandText = update;
 
                 try
                 {
-                    command.Parameters.Add(new SqliteParameter(@"attributeValue", attributeValue));
+                    SqliteParameter attribute = new SqliteParameter(@"attributeValue", attributeValue);
+                    command.Parameters.Add(attribute);
+                    SqliteParameter taskId = new SqliteParameter(@"taskId", taskDAL.TaskId);
+                    command.Parameters.Add(taskId);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"Task with ID: {taskDAL.TaskId} updated successfully - Attribute: {attributeName}, Value: {attributeValue}.");
@@ -143,6 +148,36 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 catch (Exception ex)
                 {
                     log.Error($"Error updating task with ID {taskDAL.TaskId}: {ex.Message} - Attribute: {attributeName}, Value: {attributeValue}");
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
+        public bool UpdateDueDate(TaskDAL taskDAL, DateTime? newDueDate)
+        {
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                string update = $"UPDATE {TableName} SET dueDate = @attributeValue WHERE taskId = @taskId";
+                command.CommandText = update;
+
+                try
+                {
+                    SqliteParameter attribute = new SqliteParameter(@"attributeValue", newDueDate);
+                    command.Parameters.Add(attribute);
+                    SqliteParameter taskId = new SqliteParameter(@"taskId", taskDAL.TaskId);
+                    command.Parameters.Add(taskId);
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
                 }
                 finally
                 {
@@ -235,6 +270,29 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return results;
         }
 
+        public void DeleteAllTasks()
+        {
+            log.Info("Attempting to delete all tasks from the DB.");
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                SqliteCommand command = new SqliteCommand(null, connection);
+                command.CommandText = $"DELETE FROM {TableName}";
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    log.Info($"Successfully deleted all tasks from the DB. Rows affected: {rowsAffected}.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Error deleting all tasks: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
 
         /// <summary>
         /// This method is used to convert a data reader to a task.
@@ -250,10 +308,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DateTime dueDate = dataReader.GetDateTime(4);
             string description = dataReader.GetString(5);
             string assigneeEmail = dataReader.GetString(6);
-            return new TaskDAL(taskId, boardId, title, dueDate, creationTime, description)
-            {
-                AssigneeEmail = assigneeEmail
-            };
+            TaskDAL t = new TaskDAL(taskId, boardId, title, dueDate, creationTime, description);
+            t.AssingeeEmail(assigneeEmail);
+            return t;
         }
     }
 }

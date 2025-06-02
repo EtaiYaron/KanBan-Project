@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private string description;
         private int state;
         private long boardId;
-        private string? assigneeEmail;
+        private string assigneeEmail;
         private TaskController TaskController;
         private bool isPersistent;
 
@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="dueDate"></param>
         /// <param name="creationTime"></param>
         /// <param name="description"></param>
-        public TaskDAL(int taskId, long boardId, string title, DateTime dueDate, DateTime creationTime, string description)
+        public TaskDAL(int taskId, long boardId, string title, DateTime? dueDate, DateTime creationTime, string description)
         {
             this.taskId = taskId;
             this.boardId = boardId;
@@ -42,6 +42,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.TaskController = new TaskController();
             this.isPersistent = false;
             this.assigneeEmail = null;
+        }
+
+        public void AssingeeEmail(string email)
+        {
+            this.assigneeEmail = email;
         }
 
         public int TaskId
@@ -69,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 if (isPersistent)
                 {
-                    TaskController.Update(this, "dueDate", "#" + dueDate.ToString() + "#");
+                    TaskController.UpdateDueDate(this, value);
                     dueDate = value; 
                 }
             }
@@ -123,11 +128,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             get { return this.assigneeEmail; }
             set
             {
-                if (isPersistent)
-                {
-                    TaskController.Update(this, "assigneeEmail", value);
-                    this.assigneeEmail = value;
-                }
+                TaskController.Update(this, "assigneeEmail", value);
+                this.assigneeEmail = value;
             }
         }
 
@@ -194,23 +196,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 TaskController.Insert(this);
                 isPersistent = true;
             }
-        }
-
-
-        /// <summary>
-        /// This method is used to persist the task in the database with a specific board ID.
-        /// </summary>
-        /// <param name="boardId"></param>
-        /// <exception cref="Exception"></exception>
-        public void persist(long boardId)
-        {
-            if (!isPersistent)
-            {
-                this.boardId = boardId;
-                TaskController.Insert(this);
-                this.isPersistent = true;
-            }
-            
         }
 
     }
