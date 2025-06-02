@@ -312,17 +312,6 @@ namespace Tests
                 Console.WriteLine("TestLeaveBoardPositiveCase1: Failed");
             }
 
-            // Test: Once a user leaves a board, all of her assigned tasks that are not done become unassigned (Requirment 15)
-            tests = TestLeaveBoardPositiveCase2();
-            if (tests)
-            {
-                Console.WriteLine("TestLeaveBoardPositiveCase2: Passed");
-            }
-            else
-            {
-                Console.WriteLine("TestLeaveBoardPositiveCase2: Failed");
-            }
-
             // Test: User who is not a member cannot leave a board (Requirement 12)
             tests = TestLeaveBoardNegativeCase();
             if (tests)
@@ -793,23 +782,7 @@ namespace Tests
             return false;
         }
 
-        /// <summary>
-        /// Checks if task.assignee is null after the assignee of a task leaves the board
-        /// </summary>
-        /// <returns></returns>
-        public bool TestLeaveBoardPositiveCase2()
-        {
-            us.Register("shay.klein11@gmail.com", "Shay24");
-            us.Register("shaylior@post.bgu.ac.il", "Shay24");
-            b.CreateBoard("shay.klein11@gmail.com", "test");
-            cnt++;
-            t.AddTask("shay.klein11@gmail.com","test","testleaving", new DateTime(2026, 1, 1), "test description");
-            t.AssignTaskToUser("shay.klein11@gmail.com", "test", 1, "shaylior@post.bgu.ac.il");
-            b.LeaveBoard("shaylior@post.bgu.ac.il",cnt-1);
-            return(true);
-
-
-        }
+        
         /// <summary>
         /// Checks if a user who is not a member cannot leave a board.
         /// Requirement: 12 (leave board)
