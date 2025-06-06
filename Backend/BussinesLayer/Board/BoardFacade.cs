@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.boards = new Dictionary<string, Dictionary<string, BoardBL>>();
             this.authenticationFacade = authenticationFacade;
             this.nextBoardId = 1;
-            //LoadAllBoards();
+            LoadAllBoards();
         }
 
         /// <summary>

@@ -1,16 +1,19 @@
 ﻿using IntroSE.Kanban.Backend.BussinesLayer.User;
 
-public class UserSL
+namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    private readonly string email;
-
-    internal UserSL(UserBL ubl)
+    public class UserSL
     {
-        this.email = ubl.Email;
-    }
+        private readonly string email;
 
-    public string Email
-    {
-        get { return email; }
+        internal UserSL(UserBL ubl)
+        {
+            this.email = ubl.Email;
+        }
+
+        public string Email
+        {
+            get { return email; }
+        }
     }
 }
