@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Frontend.View
             UserModel? user = loginVM.Login();
             if (user != null)
             {
-                
+                this.Close();
             }
         }
 
@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Frontend.View
             UserModel? user = loginVM.Register();
             if (user != null)
             {
-                
+                this.Close();
             }
         }
     }
