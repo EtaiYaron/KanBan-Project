@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Frontend.Model;
 
 namespace IntroSE.Kanban.Frontend.Controllers
 {
@@ -26,6 +27,17 @@ namespace IntroSE.Kanban.Frontend.Controllers
                 throw new Exception(res.ErrorMessage);
             }
             return (int[])res.ReturnValue;
+        }
+
+        public BoardModel CreateBoard(string name, string owner)
+        {
+            string response = boardService.CreateBoard(owner, name);
+            Response res = JsonSerializer.Deserialize<Response>(response);
+            if (res.ErrorMessage != null)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            return new BoardModel(name, owner.ToLower());
         }
     }
 }

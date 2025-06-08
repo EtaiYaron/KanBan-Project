@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using IntroSE.Kanban.Frontend.Model;
+using IntroSE.Kanban.Frontend.ViewModel;
 
 namespace IntroSE.Kanban.Frontend.View
 {
@@ -19,9 +21,19 @@ namespace IntroSE.Kanban.Frontend.View
     /// </summary>
     public partial class CreateBoardScreen : Window
     {
+        private CreateBoardVM createBoardVM;
         public CreateBoardScreen()
         {
             InitializeComponent();
+            this.createBoardVM = new CreateBoardVM();
+            this.DataContext = createBoardVM;
+        }
+        private void CreateBoard_Click(object sender, RoutedEventArgs e)
+        {
+            BoardModel? board = createBoardVM.CreateBoard();
+            if (board != null)
+            {
+            }
         }
     }
 }
