@@ -12,12 +12,15 @@ namespace UnitTesting
         Response res;
 
         [OneTimeSetUp]
+        [Order(1)]
         public void Setup()
         {
             ServiceFactory s = new ServiceFactory();
             this.us = s.UserService;
             this.b = s.BoardService;
             this.t = s.TaskService;
+            b.DeleteAllBoards();
+            us.DeleteAllUsers();
             us.Register("shay.klein11@gmail.com", "Admin1");
             b.CreateBoard("shay.klein11@gmail.com", "name");
             t.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 4, 10), "checking if task is created");
@@ -30,6 +33,7 @@ namespace UnitTesting
         /// Requirements: 13 (board member can add), 5 (task attributes)
         /// </summary>
         [Test]
+        [Order(2)]
         public void TestAddTaskPositiveCase()
         {
             res = JsonSerializer.Deserialize<Response>(t.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 6, 10), "checking if task isn't created"));
@@ -46,6 +50,7 @@ namespace UnitTesting
         /// Requirement: 5 (task attributes)
         /// </summary>
         [Test]
+        [Order(3)]
         public void TestAddTaskNegativeCase()
         {
             res = JsonSerializer.Deserialize<Response>(t.AddTask("shay.klein11@gmail.com", "name", "task1", new DateTime(2025, 4, 10), "checking if task isn't created"));
@@ -61,6 +66,7 @@ namespace UnitTesting
         /// Requirements: 20 (only assignee can change), 21 (all data except creation time)
         /// </summary>
         [Test]
+        [Order(4)]
         public void TestEditTaskPositiveCase()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task2", new DateTime(2026, 4, 10), "task is created");
@@ -78,6 +84,7 @@ namespace UnitTesting
         /// Requirements: 20 (only assignee can change), 21 (all data except creation time)
         /// </summary>
         [Test]
+        [Order(5)]
         public void TestEditTaskNegativeCase()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task3", new DateTime(2026, 4, 10), "task is created");
@@ -95,6 +102,7 @@ namespace UnitTesting
         /// Requirement: 19 (only allowed moves, only assignee can move)
         /// </summary>
         [Test]
+        [Order(6)]
         public void TestMoveTaskPositiveCase()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task4", new DateTime(2026, 4, 10), "task is created");
@@ -114,6 +122,7 @@ namespace UnitTesting
         /// Requirement: 19 (only allowed moves, only assignee can move)
         /// </summary>
         [Test]
+        [Order(7)]
         public void TestMoveTaskNegativeCase()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task5", new DateTime(2026, 4, 10), "task is created");
@@ -131,6 +140,8 @@ namespace UnitTesting
         /// This test checks if a task can be retrieved successfully.
         /// Requirement: 5 (task attributes)
         /// </summary>
+        [Test]
+        [Order(8)]
         public void TestGetTaskPositiveCase()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task6", new DateTime(2026, 4, 10), "task is created");
@@ -149,6 +160,7 @@ namespace UnitTesting
         /// Requirement: 5 (task attributes)
         /// </summary>
         [Test]
+        [Order(9)]
         public void TestGetTaskNegativeCase()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task7", new DateTime(2026, 4, 10), "task is created");
@@ -168,6 +180,7 @@ namespace UnitTesting
         /// Requirement: 23 (assignment rules)
         /// </summary>
         [Test]
+        [Order(10)]
         public void TestAssignTaskToUserPositiveCase()
         {
             b.CreateBoard("Shauli@gmail.com", "ABCD");
@@ -189,6 +202,7 @@ namespace UnitTesting
         /// Requirement: 23 (assignment rules)
         /// </summary>
         [Test]
+        [Order(11)]
         public void TestAssignTaskToUserPositiveCase1()
         {
             t.AddTask("Shauli@gmail.com", "ABCD", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
@@ -207,6 +221,7 @@ namespace UnitTesting
         /// Requirement: 23 (assignment rules)
         /// </summary>
         [Test]
+        [Order(12)]
         public void TestAssignTaskToUserNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 2, "shay.klein11@gmail.com"));
@@ -222,6 +237,7 @@ namespace UnitTesting
         /// Requirement: 23 (assignment rules)
         /// </summary>
         [Test]
+        [Order(13)]
         public void TestAssignTaskToUserNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.co", "USA", 0, "DonaldTrump@gmail.com"));
@@ -231,7 +247,5 @@ namespace UnitTesting
             }
             Assert.Fail("TestAssignTaskToUserNegativeCase1 Failed, assigning a task with an invalid user fails");
         }
-
-
     }
 }
