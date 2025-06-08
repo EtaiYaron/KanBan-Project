@@ -16,16 +16,16 @@ using IntroSE.Kanban.Frontend.ViewModel;
 
 namespace IntroSE.Kanban.Frontend.View
 {
-    /// <summary>
-    /// Interaction logic for CreateBoardScreen.xaml
-    /// </summary>
+    /// <summary>  
+    /// Interaction logic for CreateBoardScreen.xaml  
+    /// </summary>  
     public partial class CreateBoardScreen : Window
     {
         private CreateBoardVM createBoardVM;
-        public CreateBoardScreen()
+        public CreateBoardScreen(string email)
         {
             InitializeComponent();
-            this.createBoardVM = new CreateBoardVM();
+            this.createBoardVM = new CreateBoardVM(email);
             this.DataContext = createBoardVM;
         }
         private void CreateBoard_Click(object sender, RoutedEventArgs e)
@@ -34,6 +34,11 @@ namespace IntroSE.Kanban.Frontend.View
             if (board != null)
             {
             }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

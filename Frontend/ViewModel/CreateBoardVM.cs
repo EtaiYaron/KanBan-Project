@@ -16,10 +16,10 @@ namespace IntroSE.Kanban.Frontend.ViewModel
 
         BoardController boardController = ControllerFactory.Instance.BoardController;
 
-        public CreateBoardVM()
+        public CreateBoardVM(string email)
         {
             name = string.Empty;
-            owner = string.Empty;
+            owner = email;
             errorMessage = string.Empty;
         }
 
