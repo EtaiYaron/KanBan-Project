@@ -23,14 +23,14 @@ namespace IntroSE.Kanban.Frontend.View
     {
         private UserModel userModel;
         private BoardScreenVM boardScreenVM;
-        private int[] boards;
+        private int[] boardIds;
 
 
         internal BoardScreen(UserModel userModel)
         {
             InitializeComponent();
             this.userModel = userModel;
-            this.boards = userModel.Boards;
+            this.boardIds = userModel.Boards;
             /*
             var boards = Enumerable.Range(1, userModel.)
                                    .Select(i => $"Board {i}")

@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Frontend.ViewModel
     {
         private string name;
         private string owner;
+        public string email;
         private string errorMessage;
 
         BoardController boardController = ControllerFactory.Instance.BoardController;
@@ -19,6 +20,7 @@ namespace IntroSE.Kanban.Frontend.ViewModel
         public CreateBoardVM(string email)
         {
             name = string.Empty;
+            this.email = email;
             owner = "The owner of this board will be " + email;
             RaisePropertyChanged(nameof(Owner));
             errorMessage = string.Empty;
@@ -33,7 +35,7 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             }
             try
             {
-                return boardController.CreateBoard(name, owner);
+                return boardController.CreateBoard(name, email);
             }
             catch (Exception ex)
             {

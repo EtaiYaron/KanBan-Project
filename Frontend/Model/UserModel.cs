@@ -10,12 +10,13 @@ namespace IntroSE.Kanban.Frontend.Model
     internal class UserModel
     {
         public string Email { get; }
-        public int[] Boards { get; }
+        public List<BoardModel> Boards { get; }
 
         internal UserModel(string userEmail)
         {
             Email = userEmail;
-            //Boards = ControllerFactory.Instance.BoardController.GetUserBoards(userEmail);
+
+            int[] boardIds = ControllerFactory.Instance.BoardController.GetUserBoards(userEmail);
         }
     }
 }

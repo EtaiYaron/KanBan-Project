@@ -29,6 +29,29 @@ namespace IntroSE.Kanban.Frontend.Controllers
             return JsonSerializer.Deserialize<int[]>((JsonElement)res.ReturnValue);
         }
 
+        public string GetBoardName(int id)
+        {
+            string response = boardService.GetBoardNameById(id);
+            Response res = JsonSerializer.Deserialize<Response>(response);
+            if (res.ErrorMessage != null)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            return res.ReturnValue.ToString();
+        }
+
+        public BoardModel GetBoard(string email, string boardName)
+        {
+            string response = boardService.GetBoard(email, boardName);
+            Response res = JsonSerializer.Deserialize<Response>(response);
+            if (res.ErrorMessage != null)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            BoardSL b = JsonSerializer.Deserialize<BoardSL>((JsonElement)res.ReturnValue);
+            return new BoardModel(b.Name, b.Owner);
+        }
+
         public BoardModel CreateBoard(string name, string owner)
         {
             string response = boardService.CreateBoard(owner, name);
