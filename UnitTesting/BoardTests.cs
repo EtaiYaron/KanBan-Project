@@ -10,12 +10,15 @@ namespace UnitTesting
         private int cnt;
 
         [OneTimeSetUp]
+        [Order(1)]
         public void Setup()
         {  
             ServiceFactory s = new ServiceFactory();
             this.us = s.UserService;
             this.b = s.BoardService;
             this.t = s.TaskService;
+            b.DeleteAllBoards();
+            us.DeleteAllUsers();
             cnt = 0;
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
             us.Register("shauli@gmail.com", "Haparlament1");
@@ -26,6 +29,7 @@ namespace UnitTesting
         /// Requirement: 8 (board creation)
         /// </summary>
         [Test]
+        [Order(2)]
         public void TestCreateBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
@@ -41,6 +45,7 @@ namespace UnitTesting
         /// Requirement: 8 (board creation)
         /// </summary>
         [Test]
+        [Order(3)]
         public void TestCreateBoardPositiveCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("shauli@gmail.com", "name1"));
@@ -57,6 +62,7 @@ namespace UnitTesting
         /// Requirement: 10 (unique board names per user)
         /// </summary>
         [Test]
+        [Order(4)]
         public void TestCreateBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
@@ -72,6 +78,7 @@ namespace UnitTesting
         /// Requirement: 8 (board creation)
         /// </summary>
         [Test]
+        [Order(5)]
         public void TestCreateBoardNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.CreateBoard("hauli@gmail.com", "name2"));
@@ -87,6 +94,7 @@ namespace UnitTesting
         /// Requirement: 8 (board deletion)
         /// </summary>
         [Test]
+        [Order(6)]
         public void TestDeleteBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
@@ -102,6 +110,7 @@ namespace UnitTesting
         /// Requirement: 8 (board deletion)
         /// </summary>
         [Test]
+        [Order(7)]
         public void TestDeleteBoardPositiveCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("shauli@gmail.com", "name1"));
@@ -117,6 +126,7 @@ namespace UnitTesting
         /// Requirement: 8 (board deletion)
         /// </summary>
         [Test]
+        [Order(8)]
         public void TestDeleteBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
@@ -132,6 +142,7 @@ namespace UnitTesting
         /// Requirement: 8 (board deletion)
         /// </summary>
         [Test]
+        [Order(9)]
         public void TestDeleteBoardNegativeCase1()
         {
             b.CreateBoard("shauli@gmail.com", "name1");
@@ -149,6 +160,7 @@ namespace UnitTesting
         /// Requirement: 8 (board retrieval)
         /// </summary>
         [Test]
+        [Order(10)]
         public void TestGetBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.GetBoard("yaronet@post.bgu.ac.il", "name"));
@@ -164,6 +176,7 @@ namespace UnitTesting
         /// Requirement: 8 (board retrieval)
         /// </summary>
         [Test]
+        [Order(11)]
         public void TestGetBoardNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.GetBoard("ya", "name"));
@@ -179,6 +192,7 @@ namespace UnitTesting
         /// Requirement: 8 (board retrieval)
         /// </summary>
         [Test]
+        [Order(12)]
         public void TestGetBoardPositiveCase()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "name");
@@ -196,6 +210,7 @@ namespace UnitTesting
         /// Requirement: 8 (board retrieval)
         /// </summary>
         [Test]
+        [Order(13)]
         public void TestGetBoardPositiveCase1()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "name50");
@@ -213,6 +228,7 @@ namespace UnitTesting
         /// Requirement: 11 (task limit)
         /// </summary>
         [Test]
+        [Order(14)]
         public void TestLimitTasksNegativeCase()
         {
             b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 1);
@@ -230,6 +246,7 @@ namespace UnitTesting
         /// Requirement: 11 (task limit)
         /// </summary>
         [Test]
+        [Order(15)]
         public void TestLimitTasksNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 1, 0));
@@ -245,6 +262,7 @@ namespace UnitTesting
         /// Requirement: 11 (task limit)
         /// </summary>
         [Test]
+        [Order(16)]
         public void TestLimitTasksPositiveCase()
         {
             b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 10);
@@ -261,6 +279,7 @@ namespace UnitTesting
         /// Requirement: 11 (task limit)
         /// </summary>
         [Test]
+        [Order(17)]
         public void TestLimitTasksPositiveCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 2, 100));
@@ -276,6 +295,7 @@ namespace UnitTesting
         /// Requirements: 8, 9 (board retrieval)
         /// </summary>
         [Test]
+        [Order(18)]
         public void TestGetUserBoardsPositiveCase()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "Milestone2");
@@ -293,6 +313,7 @@ namespace UnitTesting
         /// Requirements: 8, 12 (board retrieval, join)
         /// </summary>
         [Test]
+        [Order(19)]
         public void TestGetUserBoardsPositiveCase1()
         {
             us.Register("Kobe2424@gmail.com", "Kobe24");
@@ -310,6 +331,7 @@ namespace UnitTesting
         /// Requirements: 8, 9 (board retrieval)
         /// </summary>
         [Test]
+        [Order(20)]
         public void TestGetUserBoardsNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.GetUserBoards("LebronJames@gmail.com"));
@@ -325,6 +347,7 @@ namespace UnitTesting
         /// Requirements: 11, 13 (ownership, permissions)
         /// </summary>
         [Test]
+        [Order(21)]
         public void TestDeleteBoardNegativeCase2()
         {
             b.CreateBoard("shauli@gmail.com", "Mile2");
@@ -342,6 +365,7 @@ namespace UnitTesting
         /// Requirement: 12 (join board)
         /// </summary>
         [Test]
+        [Order(22)]
         public void TestJoinBoardPositiveCase()
         {
             cnt++;
@@ -358,6 +382,7 @@ namespace UnitTesting
         /// Requirement: 12 (join board)
         /// </summary>
         [Test]
+        [Order(23)]
         public void TestJoinBoardPositiveCase1()
         {
             us.Register("DonaldTrump@gmail.com", "UsaPresident2025");
@@ -374,6 +399,7 @@ namespace UnitTesting
         /// Requirement: 12 (join board)
         /// </summary>
         [Test]
+        [Order(24)]
         public void TestJoinBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt + 1));
@@ -389,6 +415,7 @@ namespace UnitTesting
         /// Requirement: 12 (join board)
         /// </summary>
         [Test]
+        [Order(25)]
         public void TestJoinBoardNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.JoinBoard("DonaldTrump@gmail.co", cnt));
@@ -404,6 +431,7 @@ namespace UnitTesting
         /// Requirements: 12, 15 (leave board)
         /// </summary>
         [Test]
+        [Order(26)]
         public void TestLeaveBoardPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
@@ -419,6 +447,7 @@ namespace UnitTesting
         /// Requirements: 13, 14 (ownership transfer, leave)
         /// </summary>
         [Test]
+        [Order(27)]
         public void TestLeaveBoardPositiveCase1()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard");
@@ -438,6 +467,7 @@ namespace UnitTesting
         /// Requirement: 12 (leave board)
         /// </summary>
         [Test]
+        [Order(28)]
         public void TestLeaveBoardNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("DonaldTrump@gmail.com", cnt));
@@ -453,6 +483,7 @@ namespace UnitTesting
         /// Requirement: 14 (owner leave restriction)
         /// </summary>
         [Test]
+        [Order(29)]
         public void TestLeaveBoardNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
@@ -468,6 +499,7 @@ namespace UnitTesting
         /// Requirement: 13 (ownership transfer)
         /// </summary>
         [Test]
+        [Order(30)]
         public void TestChangeOwnerPositiveCase()
         {
             b.JoinBoard("yaronet@post.bgu.ac.il", cnt - 1);
@@ -484,6 +516,7 @@ namespace UnitTesting
         /// Requirement: 13 (ownership transfer)
         /// </summary>
         [Test]
+        [Order(31)]
         public void TestChangeOwnerPositiveCase1()
         {
             b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard2");
@@ -503,6 +536,7 @@ namespace UnitTesting
         /// Requirement: 13 (ownership transfer)
         /// </summary>
         [Test]
+        [Order(32)]
         public void TestChangeOwnerNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
@@ -518,6 +552,7 @@ namespace UnitTesting
         /// Requirement: 13 (ownership transfer)
         /// </summary>
         [Test]
+        [Order(33)]
         public void TestChangeOwnerNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(b.ChangeOwner("DonaldTrump@gmail.com", "shauli@gmail.com", "newBoard2"));
