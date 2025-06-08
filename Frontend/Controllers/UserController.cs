@@ -40,5 +40,15 @@ namespace IntroSE.Kanban.Frontend.Controllers
             return new UserModel(email.ToLower());
         }
 
+        public void Logout(string email)
+        {
+            string response = userService.Logout(email);
+            Response res = JsonSerializer.Deserialize<Response>(response);
+            if (res.ErrorMessage != null)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+        }
+
     }
 }
