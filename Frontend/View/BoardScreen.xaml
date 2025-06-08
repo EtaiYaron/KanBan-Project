@@ -5,12 +5,13 @@
     <Grid>
         <StackPanel Margin="10">
             <Label Content="{Binding Path=EmailMsg, Mode=OneWay}" HorizontalAlignment="Center"/>
-            <ItemsControl x:Name="BoardsList" Margin="10,67,10,85">
+            <ItemsControl ItemsSource="{Binding Boards}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="5">
-                            <TextBlock Text="{Binding}" FontSize="16"/>
-                        </Border>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" Margin="5"/>
+                            <TextBlock Text="{Binding Owner}" Margin="5"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

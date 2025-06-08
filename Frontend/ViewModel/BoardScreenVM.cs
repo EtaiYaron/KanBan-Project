@@ -1,4 +1,5 @@
 ﻿using IntroSE.Kanban.Frontend.Controllers;
+using IntroSE.Kanban.Frontend.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +10,32 @@ namespace IntroSE.Kanban.Frontend.ViewModel
 {
     internal class BoardScreenVM : Notifiable
     {
-
         private string email;
         private string email_msg;
         private string errorMessage;
+        private List<BoardModel> boards;
 
-        BoardController boardController = ControllerFactory.Instance.BoardController;
         UserController userController = ControllerFactory.Instance.UserController;
 
-        public BoardScreenVM(string email)
+        public BoardScreenVM(UserModel um)
         {
-            this.email = email;
+            this.email = um.Email;
             this.email_msg = "Welcome, " + email + "!";
             RaisePropertyChanged(nameof(EmailMsg));
             this.errorMessage = string.Empty;
+            this.boards = um.Boards;
         }
 
         public string EmailMsg
         {
             get => email_msg;
         }
- 
+
+        public List<BoardModel> Boards
+        {
+            get => boards;
+        }
+
         public string ErrorMessage
         {
             get => errorMessage;

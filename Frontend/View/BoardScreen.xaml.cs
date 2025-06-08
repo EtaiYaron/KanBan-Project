@@ -23,21 +23,12 @@ namespace IntroSE.Kanban.Frontend.View
     {
         private UserModel userModel;
         private BoardScreenVM boardScreenVM;
-        private int[] boardIds;
 
 
         internal BoardScreen(UserModel userModel)
         {
             InitializeComponent();
-            this.userModel = userModel;
-            this.boardIds = userModel.Boards;
-            /*
-            var boards = Enumerable.Range(1, userModel.)
-                                   .Select(i => $"Board {i}")
-                                   .ToList();
-            BoardsList.ItemsSource = boards;
-            */
-            boardScreenVM = new BoardScreenVM(userModel.Email);
+            boardScreenVM = new BoardScreenVM(userModel);
             this.DataContext = boardScreenVM;
         }
 

@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Frontend.Controllers
             this.boardService = boardService;
         }
 
-        public int[] GetUserBoards(string email)
+        public int[]? GetUserBoards(string email)
         {
             string response = boardService.GetUserBoards(email);
             Response res = JsonSerializer.Deserialize<Response>(response);
@@ -48,7 +48,7 @@ namespace IntroSE.Kanban.Frontend.Controllers
             {
                 throw new Exception(res.ErrorMessage);
             }
-            BoardSL b = JsonSerializer.Deserialize<BoardSL>((JsonElement)res.ReturnValue);
+            BoardSL b = (BoardSL)(res.ReturnValue);
             return new BoardModel(b.Name, b.Owner);
         }
 

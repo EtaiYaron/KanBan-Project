@@ -15,8 +15,24 @@ namespace IntroSE.Kanban.Frontend.Model
         internal UserModel(string userEmail)
         {
             Email = userEmail;
+            GetBoards();
+        }
 
-            int[] boardIds = ControllerFactory.Instance.BoardController.GetUserBoards(userEmail);
+        private void GetBoards()
+        {
+            int[]? boardIds = ControllerFactory.Instance.BoardController.GetUserBoards(Email);
+            if (boardIds != null)
+            {
+                for (int i = 0; i < boardIds.Length; i++)
+                {
+                    string name = ControllerFactory.Instance.BoardController.GetBoardName(boardIds[i]);
+                    BoardModel board = ControllerFactory.Instance.BoardController.GetBoard(Email, name);
+                    if (board != null)
+                    {
+                        Boards.Add(board);
+                    }
+                }
+            }
         }
     }
 }
