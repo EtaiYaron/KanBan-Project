@@ -228,7 +228,7 @@ namespace UnitTesting
             {
                 Assert.Pass("TestAssignTaskToUserNegativeCase1 passed.");
             }
-            Assert.Fail("TestAssignTaskToUserNegativeCase1 Failed, assigning a task with an invalid user fails";
+            Assert.Fail("TestAssignTaskToUserNegativeCase1 Failed, assigning a task with an invalid user fails");
         }
 
 
