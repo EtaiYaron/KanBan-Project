@@ -3,19 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="BoardScreen" Height="450" Width="800">
     <Grid>
-        <Label Content="{Binding Path=Email, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,367" Width="123"/>
-        <ItemsControl x:Name="BoardsList" Margin="10,67,10,85">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="5">
-                        <TextBlock Text="{Binding}" FontSize="16"/>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Button Content="Create Board" Margin="190,372,538,30" Click="CreateBoard_Click"/>
-        <Button Content="Delete Board" Margin="336,375,400,30" Click="DeleteBoard_Click"/>
-        <Button Content="Logout" Margin="72,374,655,33" Click="Logout_Click"/>
-        <Button Content="View Board" Margin="480,375,244,30" Click="ViewBoard_Click"/>
+        <StackPanel Margin="10">
+            <Label Content="{Binding Path=EmailMsg, Mode=OneWay}" HorizontalAlignment="Center"/>
+            <ItemsControl x:Name="BoardsList" Margin="10,67,10,85">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="5">
+                            <TextBlock Text="{Binding}" FontSize="16"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Create Board" Margin="0,20,0,0" Width="100" Click="CreateBoard_Click"/>
+            <Button Content="Delete Board"  Margin="0,20,0,0" Width="100" Click="DeleteBoard_Click"/>
+            <Button Content="Logout" Margin="0,20,0,0" Width="100" Click="Logout_Click"/>
+            <Button Content="View Board" Margin="0,20,0,0" Width="100" Click="ViewBoard_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

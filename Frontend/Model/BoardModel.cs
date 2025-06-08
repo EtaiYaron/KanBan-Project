@@ -8,13 +8,13 @@ namespace IntroSE.Kanban.Frontend.Model
 {
     internal class BoardModel
     {
-        public String name { get; }
-        public String owner { get; }
+        public string Name { get; }
+        public string Owner { get; }
 
         internal BoardModel(string boardName, string boardOwner)
         {
-            name = boardName;
-            owner = boardOwner;
+            Name = boardName;
+            Owner = boardOwner;
         }
     }
 }

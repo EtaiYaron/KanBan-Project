@@ -19,7 +19,8 @@ namespace IntroSE.Kanban.Frontend.ViewModel
         public CreateBoardVM(string email)
         {
             name = string.Empty;
-            owner = email;
+            owner = "The owner of this board will be " + email;
+            RaisePropertyChanged(nameof(Owner));
             errorMessage = string.Empty;
         }
 
@@ -53,10 +54,6 @@ namespace IntroSE.Kanban.Frontend.ViewModel
         public string Owner
         {
             get { return owner; }
-            set
-            {
-                owner = value;
-            }
         }
 
         public string ErrorMessage

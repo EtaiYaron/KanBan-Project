@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Frontend.Model
         internal UserModel(string userEmail)
         {
             Email = userEmail;
-            Boards = ControllerFactory.Instance.BoardController.GetUserBoards(userEmail);
+            //Boards = ControllerFactory.Instance.BoardController.GetUserBoards(userEmail);
         }
     }
 }

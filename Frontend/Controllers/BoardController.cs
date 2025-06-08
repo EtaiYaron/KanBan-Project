@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Frontend.Controllers
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return (int[])res.ReturnValue;
+            return JsonSerializer.Deserialize<int[]>((JsonElement)res.ReturnValue);
         }
 
         public BoardModel CreateBoard(string name, string owner)

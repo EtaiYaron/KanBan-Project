@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Frontend.ViewModel
     {
 
         private string email;
+        private string email_msg;
         private string errorMessage;
 
         BoardController boardController = ControllerFactory.Instance.BoardController;
@@ -19,13 +20,16 @@ namespace IntroSE.Kanban.Frontend.ViewModel
         public BoardScreenVM(string email)
         {
             this.email = email;
+            this.email_msg = "Welcome, " + email + "!";
+            RaisePropertyChanged(nameof(EmailMsg));
             this.errorMessage = string.Empty;
         }
 
-        public string Email
+        public string EmailMsg
         {
-            get => email;
+            get => email_msg;
         }
+ 
         public string ErrorMessage
         {
             get => errorMessage;

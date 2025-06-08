@@ -22,22 +22,30 @@ namespace IntroSE.Kanban.Frontend.View
     public partial class CreateBoardScreen : Window
     {
         private CreateBoardVM createBoardVM;
+        private string email;
         public CreateBoardScreen(string email)
         {
             InitializeComponent();
+            this.email = email;
             this.createBoardVM = new CreateBoardVM(email);
             this.DataContext = createBoardVM;
         }
+
         private void CreateBoard_Click(object sender, RoutedEventArgs e)
         {
             BoardModel? board = createBoardVM.CreateBoard();
             if (board != null)
             {
+                BoardScreen boardScreen = new BoardScreen(new UserModel(this.email));
+                boardScreen.Show();
+                this.Close();
             }
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
+            BoardScreen boardScreen = new BoardScreen(new UserModel(this.email));
+            boardScreen.Show();
             this.Close();
         }
     }

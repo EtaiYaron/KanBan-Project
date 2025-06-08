@@ -43,9 +43,9 @@ namespace IntroSE.Kanban.Frontend.View
 
         private void CreateBoard_Click(object sender, RoutedEventArgs e)
         {
-            // Logic to add a new board
-            // This could involve calling a method in the BoardController to create a new board
-            // and then updating the UI to reflect the new board.
+            CreateBoardScreen createBoardScreen = new CreateBoardScreen(userModel.Email);
+            createBoardScreen.Show();
+            this.Close();
         }
 
         private void DeleteBoard_Click(object sender, RoutedEventArgs e)
@@ -59,9 +59,9 @@ namespace IntroSE.Kanban.Frontend.View
         {
             if (boardScreenVM.Logout())
             {
-                this.Close();
                 LoginScreen loginScreen = new LoginScreen();
                 loginScreen.Show();
+                this.Close();
             }
         }
 
