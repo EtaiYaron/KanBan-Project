@@ -7,6 +7,7 @@ namespace UnitTesting
         private UserService us;
 
         [OneTimeSetUp]
+        [Order(1)]
         public void Setup()
         {
             ServiceFactory s = new ServiceFactory();
@@ -18,6 +19,7 @@ namespace UnitTesting
         /// Requirement: 6 (Registration of new users)
         /// </summary>
         [Test]
+        [Order(2)]
         public void TestUserRegisterPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
@@ -33,6 +35,7 @@ namespace UnitTesting
         /// Requirement: 6 (Registration of new users)
         /// </summary>
         [Test]
+        [Order(3)]
         public void TestUserRegisterPositiveCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "Amztia1"));
@@ -48,6 +51,7 @@ namespace UnitTesting
         /// Requirement: 2 (Valid password rules)
         /// </summary>
         [Test]
+        [Order(4)]
         public void TestUserRegisterNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "amztia1"));
@@ -63,6 +67,7 @@ namespace UnitTesting
         /// Requirement: 3 (Valid email address)
         /// </summary>
         [Test]
+        [Order(5)]
         public void TestUserRegisterNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
@@ -78,6 +83,7 @@ namespace UnitTesting
         /// Requirement: 7 (Login functionality)
         /// </summary>+
         [Test]
+        [Order(6)]
         public void TestUserLoginPositiveCase()
         {
             us.Logout("etaiyaron@gmail.com");
@@ -94,6 +100,7 @@ namespace UnitTesting
         /// Requirement: 7 (Login functionality)
         /// </summary>
         [Test]
+        [Order(7)]
         public void TestUserLoginPositiveCase1()
         {
             us.Logout("Amztia@post.co.il");
@@ -110,6 +117,7 @@ namespace UnitTesting
         /// Requirement: 7 (Login functionality)
         /// </summary>
         [Test]
+        [Order(8)]
         public void TestUserLoginNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "password1"));
@@ -125,6 +133,7 @@ namespace UnitTesting
         /// Requirement: 7 (Login functionality)
         /// </summary>
         [Test]
+        [Order(9)]
         public void TestUserLoginNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Login("@gmail.com", "Password1"));
@@ -140,6 +149,7 @@ namespace UnitTesting
         /// Requirement: 7 (Logout functionality)
         /// </summary>
         [Test]
+        [Order(10)]
         public void TestUserLogoutPositiveCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("etaiyaron@gmail.com"));
@@ -155,6 +165,7 @@ namespace UnitTesting
         /// Requirements: 6 (Registration logs in the user), 7 (Logout functionality)
         /// </summary>
         [Test]
+        [Order(11)]
         public void TestUserLogoutPositiveCase1()
         {
             us.Register("Psagot@post.co.il", "Psagot2025");
@@ -171,6 +182,7 @@ namespace UnitTesting
         /// Requirement: 7 (Logout functionality)
         /// </summary>
         [Test]
+        [Order(12)]
         public void TestUserLogoutNegativeCase()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("EtaiYaron"));
@@ -186,6 +198,7 @@ namespace UnitTesting
         /// Requirement: 7 (Logout functionality)
         /// </summary>
         [Test]
+        [Order(13)]
         public void TestUserLogoutNegativeCase1()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@pol"));
