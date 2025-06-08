@@ -183,10 +183,11 @@ namespace UnitTesting
         [Order(10)]
         public void TestAssignTaskToUserPositiveCase()
         {
+            us.Register("Shauli@gmail.com", "Password1234");
             b.CreateBoard("Shauli@gmail.com", "ABCD");
             t.AddTask("Shauli@gmail.com", "ABCD", "tasktome", new DateTime(2026, 4, 10), "task is created");
-            cnt = 11;
-            b.JoinBoard("shay.klein11@gmail.com", cnt);
+            cnt++;
+            b.JoinBoard("shay.klein11@gmail.com", 2);
             Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 0, "shay.klein11@gmail.com"));
             id++;
 
@@ -206,7 +207,8 @@ namespace UnitTesting
         public void TestAssignTaskToUserPositiveCase1()
         {
             t.AddTask("Shauli@gmail.com", "ABCD", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
-            b.JoinBoard("DonaldTrump@gmail.com", cnt);
+            us.Register("DonaldTrump@gmail.com", "TrumpHamelech1");
+            b.JoinBoard("DonaldTrump@gmail.com", 2);
             Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 1, "DonaldTrump@gmail.com"));
             id++;
             if (res.ErrorMessage == null)
