@@ -10,11 +10,12 @@ namespace UnitTesting
         private int cnt;
 
         [OneTimeSetUp]
-        public void Setup(UserService us, BoardService b, TaskService t)
-        {      
-            this.us = us;
-            this.b = b;
-            this.t = t;
+        public void Setup()
+        {  
+            ServiceFactory s = new ServiceFactory();
+            this.us = s.UserService;
+            this.b = s.BoardService;
+            this.t = s.TaskService;
             cnt = 0;
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
             us.Register("shauli@gmail.com", "Haparlament1");

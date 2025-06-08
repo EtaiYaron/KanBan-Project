@@ -12,11 +12,12 @@ namespace UnitTesting
         Response res;
 
         [OneTimeSetUp]
-        public void Setup(UserService us, BoardService b, TaskService t)
+        public void Setup()
         {
-            this.us = us;
-            this.b = b;
-            this.t = t;
+            ServiceFactory s = new ServiceFactory();
+            this.us = s.UserService;
+            this.b = s.BoardService;
+            this.t = s.TaskService;
             us.Register("shay.klein11@gmail.com", "Admin1");
             b.CreateBoard("shay.klein11@gmail.com", "name");
             t.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 4, 10), "checking if task is created");

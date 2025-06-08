@@ -4,12 +4,13 @@ namespace UnitTesting
 {
     public class UserTests
     {
-        private UserService _us;
+        private UserService us;
 
         [OneTimeSetUp]
-        public void Setup(UserService userService)
+        public void Setup()
         {
-            _us = userService;
+            ServiceFactory s = new ServiceFactory();
+            this.us = s.UserService;
         }
 
         /// <summary>
@@ -19,7 +20,7 @@ namespace UnitTesting
         [Test]
         public void TestUserRegisterPositiveCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Register("etaiyaron@gmail.com", "Password1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -34,7 +35,7 @@ namespace UnitTesting
         [Test]
         public void TestUserRegisterPositiveCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Register("Amztia@post.co.il", "Amztia1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -49,7 +50,7 @@ namespace UnitTesting
         [Test]
         public void TestUserRegisterNegativeCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Register("Amztia@post.co.il", "amztia1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserRegisterNegativeCase passed.");
@@ -64,7 +65,7 @@ namespace UnitTesting
         [Test]
         public void TestUserRegisterNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Register("Amztiapost.co.il", "Amztia1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserRegisterNegativeCase1 passed");
@@ -79,8 +80,8 @@ namespace UnitTesting
         [Test]
         public void TestUserLoginPositiveCase()
         {
-            _us.Logout("etaiyaron@gmail.com");
-            Response res = JsonSerializer.Deserialize<Response>(_us.Login("etaiyaron@gmail.com", "Password1"));
+            us.Logout("etaiyaron@gmail.com");
+            Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -95,8 +96,8 @@ namespace UnitTesting
         [Test]
         public void TestUserLoginPositiveCase1()
         {
-            _us.Logout("Amztia@post.co.il");
-            Response res = JsonSerializer.Deserialize<Response>(_us.Login("Amztia@post.co.il", "Amztia1"));
+            us.Logout("Amztia@post.co.il");
+            Response res = JsonSerializer.Deserialize<Response>(us.Login("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -111,7 +112,7 @@ namespace UnitTesting
         [Test]
         public void TestUserLoginNegativeCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Login("etaiyaron@gmail.com", "password1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLoginNegativeCase passed");
@@ -126,7 +127,7 @@ namespace UnitTesting
         [Test]
         public void TestUserLoginNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Login("@gmail.com", "Password1"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Login("@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLoginNegativeCase1 passed");
@@ -141,7 +142,7 @@ namespace UnitTesting
         [Test]
         public void TestUserLogoutPositiveCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Logout("etaiyaron@gmail.com"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Logout("etaiyaron@gmail.com"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -156,8 +157,8 @@ namespace UnitTesting
         [Test]
         public void TestUserLogoutPositiveCase1()
         {
-            _us.Register("Psagot@post.co.il", "Psagot2025");
-            Response res = JsonSerializer.Deserialize<Response>(_us.Logout("Psagot@post.co.il"));
+            us.Register("Psagot@post.co.il", "Psagot2025");
+            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Psagot@post.co.il"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -172,7 +173,7 @@ namespace UnitTesting
         [Test]
         public void TestUserLogoutNegativeCase()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Logout("EtaiYaron"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Logout("EtaiYaron"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLogoutNegativeCase passed");
@@ -187,7 +188,7 @@ namespace UnitTesting
         [Test]
         public void TestUserLogoutNegativeCase1()
         {
-            Response res = JsonSerializer.Deserialize<Response>(_us.Logout("Amztia@pol"));
+            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@pol"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLogoutNegativeCase1 passed");
