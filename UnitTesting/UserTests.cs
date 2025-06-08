@@ -8,10 +8,11 @@ namespace UnitTesting
 
         [OneTimeSetUp]
         [Order(1)]
-        public void Setup()
+        public void GlobalSetup()
         {
             ServiceFactory s = new ServiceFactory();
             this.us = s.UserService;
+            us.DeleteAllUsers();
         }
 
         /// <summary>
