@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.owner = owner;
         }
 
-        internal BoardSL() { }
+        public BoardSL() { }
 
         public int BoardId
         {
