@@ -1,0 +1,30 @@
+﻿<Window x:Class="IntroSE.Kanban.Frontend.View.CreateBoardScreen"  
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+       xmlns:local="clr-namespace:IntroSE.Kanban.Frontend.View"  
+       mc:Ignorable="d"  
+       Title="CreateBoardScreen" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Create a New Board" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Content="Board Name:" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Path=Name, Mode=OneWayToSource}"/>
+                <Label Content="{Binding Path=Owner, Mode=OneWay}" Grid.Row="1" Grid.Column="0"/>
+            </Grid>
+            <Button Content="Create" Margin="0,20,0,0" Width="100" HorizontalAlignment="Left" Click="CreateBoard_Click"/>
+            <Button Content="Back" Margin="0,20,0,0" Width="100" HorizontalAlignment="Left" Click="Back_Click"/>
+            <Label Content="{Binding Path=ErrorMessage, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

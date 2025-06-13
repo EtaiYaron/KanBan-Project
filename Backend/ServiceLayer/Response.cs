@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
-    public class Response
+    public class Response<T>
     {
         private string errorMessage;
-        private object returnValue;
+        private T? returnValue;
 
         public Response() { }
 
@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.errorMessage = errorMessage;
         }
-        public Response(string errorMessage, object returnValue)
+        public Response(string errorMessage, T returnValue)
         {
             this.errorMessage = errorMessage;
             this.returnValue = returnValue;
@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             set { this.errorMessage = value; }
         }
 
-        public object ReturnValue
+        public T ReturnValue
         {
             get { return this.returnValue; }
             set { this.returnValue = value; }

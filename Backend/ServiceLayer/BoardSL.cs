@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 
@@ -12,9 +13,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly int boardId;
         private readonly string name;
         private readonly string owner;
-        private readonly int maxTasks0;
-        private readonly int maxTasks1;
-        private readonly int maxTasks2;
 
 
         internal BoardSL(BoardBL bbl)
@@ -23,6 +21,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.name = bbl.Name;
             this.owner = bbl.Owner;
         }
+
+        [JsonConstructor]
+        public BoardSL(int boardId, string name, string owner)
+        {
+            this.boardId = boardId;
+            this.name = name;
+            this.owner = owner;
+        }
+
+        internal BoardSL() { }
 
         public int BoardId
         {
@@ -39,19 +47,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             get { return name; }
         }
 
-        public int MaxTasks0
-        {
-            get { return maxTasks0; }
-        }
-
-        public int MaxTasks1
-        {
-            get { return maxTasks1; }
-        }
-
-        public int MaxTasks2
-        {
-            get { return maxTasks2; }
-        }
     }
 }

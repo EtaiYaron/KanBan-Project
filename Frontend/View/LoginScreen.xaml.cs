@@ -34,7 +34,9 @@ namespace IntroSE.Kanban.Frontend.View
             UserModel? user = loginVM.Login();
             if (user != null)
             {
-                
+                BoardScreen boardScreen = new BoardScreen(user);
+                boardScreen.Show();
+                this.Close();
             }
         }
 
@@ -43,7 +45,9 @@ namespace IntroSE.Kanban.Frontend.View
             UserModel? user = loginVM.Register();
             if (user != null)
             {
-                
+                BoardScreen boardScreen = new BoardScreen(user);
+                boardScreen.Show();
+                this.Close();
             }
         }
     }
