@@ -14,11 +14,14 @@ namespace IntroSE.Kanban.Frontend.ViewModel
         private string email_msg;
         private string errorMessage;
         private List<BoardModel> boards;
+        private UserModel user;
 
         UserController userController = ControllerFactory.Instance.UserController;
+        BoardController boardController = ControllerFactory.Instance.BoardController;
 
         public BoardScreenVM(UserModel um)
         {
+            this.user = um;
             this.email = um.Email;
             this.email_msg = "Welcome, " + email + "!";
             RaisePropertyChanged(nameof(EmailMsg));
@@ -46,27 +49,29 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             }
         }
 
-        public void CreateBoard(string boardName)
+
+        public void DeleteBoard(object board)
         {
-            // Logic to add a board
-            // This could involve calling a method in the BoardController to create a new board
-            // and then updating the UI to reflect the new board.
+            if (board == null)
+            {
+                ErrorMessage = "No Board was selected";
+                return;
+            }
+            try
+            {
+                BoardModel selectedBoard = (BoardModel)board;
+                boardController.DeleteBoard(email, selectedBoard.Name);
+                this.user = new UserModel(this.email);
+                this.boards = user.Boards;
+                RaisePropertyChanged(nameof(Boards));
+                ErrorMessage = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
         }
 
-        public void DeleteBoard(string boardName)
-        {
-            // Logic to delete a board
-            // This could involve calling a method in the BoardController to delete the board
-            // and then updating the UI to reflect the deletion.
-        }
-
-        public void ViewBoard(string boardName)
-        {
-            // Logic to view a board
-            // This could involve navigating to a new window that displays the board details.
-            // You might want to call a method in the BoardController to get the board details
-            // and then update the UI accordingly.
-        }
 
         public bool Logout()
         {

@@ -21,18 +21,18 @@ namespace IntroSE.Kanban.Frontend.Controllers
         public UserModel Login(string email, string password)
         {
             string response = userService.Login(email, password);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            Response<string> res = JsonSerializer.Deserialize<Response<string>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new UserModel(res.ReturnValue.ToString());
+            return new UserModel(res.ReturnValue);
         }
 
         public UserModel Register(string email, string password)
         {
             string response = userService.Register(email, password);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);
@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Frontend.Controllers
         public void Logout(string email)
         {
             string response = userService.Logout(email);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);

@@ -18,44 +18,53 @@ namespace IntroSE.Kanban.Frontend.Controllers
             this.boardService = boardService;
         }
 
-        public int[]? GetUserBoards(string email)
+        public void DeleteBoard(string email, string boardName)
         {
-            string response = boardService.GetUserBoards(email);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            string response = boardService.DeleteBoard(email, boardName);
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return JsonSerializer.Deserialize<int[]>((JsonElement)res.ReturnValue);
+        }
+
+        public int[]? GetUserBoards(string email)
+        {
+            string response = boardService.GetUserBoards(email);
+            Response<int[]> res = JsonSerializer.Deserialize<Response<int[]>>(response);
+            if (res.ErrorMessage != null)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            return res.ReturnValue;
         }
 
         public string GetBoardName(int id)
         {
             string response = boardService.GetBoardNameById(id);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            Response<string> res = JsonSerializer.Deserialize<Response<string>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return res.ReturnValue.ToString();
+            return res.ReturnValue;
         }
 
         public BoardModel GetBoard(string email, string boardName)
         {
             string response = boardService.GetBoard(email, boardName);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            Response<BoardSL> res = JsonSerializer.Deserialize<Response<BoardSL>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);
             }
-            BoardSL b = (BoardSL)(res.ReturnValue);
-            return new BoardModel(b.Name, b.Owner);
+            return new BoardModel(res.ReturnValue);
         }
 
         public BoardModel CreateBoard(string name, string owner)
         {
             string response = boardService.CreateBoard(owner, name);
-            Response res = JsonSerializer.Deserialize<Response>(response);
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(response);
             if (res.ErrorMessage != null)
             {
                 throw new Exception(res.ErrorMessage);

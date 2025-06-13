@@ -28,8 +28,15 @@ namespace IntroSE.Kanban.Frontend.View
         internal BoardScreen(UserModel userModel)
         {
             InitializeComponent();
+            this.userModel = userModel;
             boardScreenVM = new BoardScreenVM(userModel);
             this.DataContext = boardScreenVM;
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            BoardModel selectedBoard = (BoardModel)((DataGridRow)sender).Item;
+            
         }
 
         private void CreateBoard_Click(object sender, RoutedEventArgs e)
@@ -41,9 +48,7 @@ namespace IntroSE.Kanban.Frontend.View
 
         private void DeleteBoard_Click(object sender, RoutedEventArgs e)
         {
-            // Logic to delete the selected board
-            // This could involve calling a method in the BoardController to delete the board
-            // and then updating the UI to reflect the deletion.
+            boardScreenVM.DeleteBoard(this.dataGridView.SelectedItem);
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -54,12 +59,6 @@ namespace IntroSE.Kanban.Frontend.View
                 loginScreen.Show();
                 this.Close();
             }
-        }
-
-        private void ViewBoard_Click(object sender, RoutedEventArgs e)
-        {
-            // Logic to view the selected board
-            // This could involve navigating to a new window that displays the board details.
         }
     }
 }

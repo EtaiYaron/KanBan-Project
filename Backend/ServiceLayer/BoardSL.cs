@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 
@@ -20,6 +21,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.name = bbl.Name;
             this.owner = bbl.Owner;
         }
+
+        [JsonConstructor]
+        public BoardSL(int boardId, string name, string owner)
+        {
+            this.boardId = boardId;
+            this.name = name;
+            this.owner = owner;
+        }
+
+        internal BoardSL() { }
 
         public int BoardId
         {

@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Frontend.Model
         internal UserModel(string userEmail)
         {
             Email = userEmail;
+            Boards = new List<BoardModel>();
             GetBoards();
         }
 
