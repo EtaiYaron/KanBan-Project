@@ -36,8 +36,6 @@ namespace IntroSE.Kanban.Frontend.View
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            BoardScreen boardScreen = new BoardScreen(new UserModel(userModel.Email));
-            boardScreen.Show();
             this.Close();
         }
 

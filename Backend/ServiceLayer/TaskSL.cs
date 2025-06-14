@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly string title;
         private readonly string description;
         private readonly DateTime dueDate;
+        private readonly string assignee;
 
         internal TaskSL(TaskBL tbl)
         {
@@ -19,16 +20,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.title = tbl.Title;
             this.description = tbl.Description;
             this.dueDate = (DateTime)tbl.DueDate;
+            this.assignee = tbl.Assignee;
         }
 
         [JsonConstructor]
-        public TaskSL(int taskId, DateTime creationTime, string title, string description, DateTime dueDate)
+        public TaskSL(int taskId, DateTime creationTime, string title, string description, DateTime dueDate, string assignee)
         {
             this.taskId = taskId;
             this.title = title;
             this.creationTime = creationTime;
             this.dueDate = dueDate;
             this.description = description;
+            this.assignee = assignee;
         }
 
         public TaskSL() { }
@@ -37,6 +40,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public int TaskId
         {
             get { return this.taskId; }
+        }
+
+        public string Assignee
+        {
+            get { return this.assignee; }
         }
 
         public string Title
