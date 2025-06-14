@@ -36,7 +36,9 @@ namespace IntroSE.Kanban.Frontend.View
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             BoardModel selectedBoard = (BoardModel)((DataGridRow)sender).Item;
-            
+            TaskScreen taskScreen = new TaskScreen(userModel, selectedBoard);
+            taskScreen.Show();
+            this.Close();
         }
 
         private void CreateBoard_Click(object sender, RoutedEventArgs e)

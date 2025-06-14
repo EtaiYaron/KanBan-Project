@@ -12,14 +12,12 @@ namespace IntroSE.Kanban.Frontend.Model
         public string Title { get; }
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; }
-        public string Description { get; }
 
         internal TaskModel(TaskSL task)
         {
             Title = task.Title;
             CreationTime = task.CreationTime;
             DueDate = task.DueDate;
-            Description = task.Description;
         }
     }
 }

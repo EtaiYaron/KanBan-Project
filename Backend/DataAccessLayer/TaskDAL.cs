@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="dueDate"></param>
         /// <param name="creationTime"></param>
         /// <param name="description"></param>
-        public TaskDAL(int taskId, long boardId, string title, DateTime? dueDate, DateTime creationTime, string description)
+        public TaskDAL(int taskId, long boardId, string title, DateTime? dueDate, DateTime creationTime, string description, int state)
         {
             this.taskId = taskId;
             this.boardId = boardId;
@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.creationTime = creationTime;
             this.dueDate = dueDate;
             this.description = description;
-            this.state = 0;
+            this.state = state;
             this.TaskController = new TaskController();
             this.isPersistent = false;
             this.assigneeEmail = null;

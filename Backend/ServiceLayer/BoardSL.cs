@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private readonly int boardId;
         private readonly string name;
         private readonly string owner;
+        private readonly List<string> joinedUsers;
 
 
         internal BoardSL(BoardBL bbl)
@@ -20,14 +21,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.boardId = bbl.BoardId;
             this.name = bbl.Name;
             this.owner = bbl.Owner;
+            this.joinedUsers = new List<string>(bbl.JoinedUsers);
         }
 
         [JsonConstructor]
-        public BoardSL(int boardId, string name, string owner)
+        public BoardSL(int boardId, string name, string owner, List<string> joinedUsers)
         {
             this.boardId = boardId;
             this.name = name;
             this.owner = owner;
+            this.joinedUsers = joinedUsers;
         }
 
         public BoardSL() { }
@@ -45,6 +48,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public string Name
         {
             get { return name; }
+        }
+
+        public List<string> JoinedUsers
+        {
+            get { return joinedUsers; }
         }
 
     }

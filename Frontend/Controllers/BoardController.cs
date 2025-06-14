@@ -58,7 +58,7 @@ namespace IntroSE.Kanban.Frontend.Controllers
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new BoardModel(res.ReturnValue);
+            return new BoardModel(email, res.ReturnValue);
         }
 
         public BoardModel CreateBoard(string name, string owner)
@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Frontend.Controllers
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new BoardModel(name, owner.ToLower());
+            return new BoardModel(owner.ToLower(), name, owner.ToLower());
         }
     }
 }

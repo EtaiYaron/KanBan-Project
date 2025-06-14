@@ -262,7 +262,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardFacade.LeaveBoard(email, boardId);
+                boardFacade.LeaveBoard(email, boardId, true);
                 Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }

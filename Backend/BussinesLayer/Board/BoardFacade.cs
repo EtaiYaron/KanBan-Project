@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             {
                 if (val != email)
                 {
-                    LeaveBoard(val, curr.BoardId);
+                    LeaveBoard(val, curr.BoardId, false);
                 }
             }
             for (int i = 0; i < 3; i++)
@@ -538,10 +538,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
         /// <param name="boardId">The ID of the board to leave.</param>
         /// <exception cref="InvalidOperationException">Thrown if the user is not logged in.</exception>
         /// <exception cref="Exception">Thrown if the user is not in the board or is the owner.</exception>
-        public void LeaveBoard(string email, int boardId)
+        public void LeaveBoard(string email, int boardId, bool requiredLoggedIn)
         {
             log.Info($"Attempting to leave board with ID {boardId} for user with email {email}.");
-            EnsureUserIsLoggedIn(email);
+            if (requiredLoggedIn)
+                EnsureUserIsLoggedIn(email);
             email = email.ToLower();
             BoardBL board = GetBoardIfExists(boardId);
             if (!board.IsUserInBoard(email))

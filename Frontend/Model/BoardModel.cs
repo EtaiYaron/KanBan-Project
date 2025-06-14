@@ -12,32 +12,40 @@ namespace IntroSE.Kanban.Frontend.Model
     {
         public string Name { get; }
         public string Owner { get; }
+        private string Email { get; set; }
 
-        private List<TaskModel> BacklogTasks { get; set; }
+        internal List<string> JoinedUsers { get; private set; }
 
-        private List<TaskModel> InProgressTasks { get; set; }
+        internal List<TaskModel> BacklogTasks { get; private set; }
 
-        private List<TaskModel> DoneTasks { get; set; }
+        internal List<TaskModel> InProgressTasks { get; private set; }
 
-        internal BoardModel(BoardSL board)
+        internal List<TaskModel> DoneTasks { get; private set; }
+
+        internal BoardModel(string email, BoardSL board)
         {
+           
             Name = board.Name;
             Owner = board.Owner;
-            GetTasks();
+            Email = email;
+            JoinedUsers = board.JoinedUsers;
+            LoadTasks();
         }
 
-        internal BoardModel(string boardName, string owner)
+        internal BoardModel(string email, string boardName, string owner)
         {
             Name = boardName;
             Owner = owner;
-            GetTasks();
+            Email = email;
+            JoinedUsers = new List<string> { owner };
+            LoadTasks();
         }
 
-        private void GetTasks()
+        private void LoadTasks()
         {
-            BacklogTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Owner, Name, 0);
-            InProgressTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Owner, Name, 1);
-            DoneTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Owner, Name, 2);
+            BacklogTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Email, Name, 0);
+            InProgressTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Email, Name, 1);
+            DoneTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Email, Name, 2);
         }
     }
 }
