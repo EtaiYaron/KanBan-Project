@@ -154,7 +154,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
                 log.Error($"MoveTask failed, task {taskId} doesn't exist in board {boardname}.");
                 throw new ArgumentException("taskId doesn't exist under this board");
             }
-            if (task.Assignee!=null && task.Assignee != email)
+            if (task.Assignee == null || task.Assignee != email)
             {
                 log.Error($"MoveTask failed, only assignee can move task.");
                 throw new ArgumentException("only assignee can move task");

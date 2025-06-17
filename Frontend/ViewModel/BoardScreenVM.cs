@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Frontend.ViewModel
         {
             this.user = um;
             this.email = um.Email;
-            this.email_msg = "Welcome, " + email + "\n";
+            this.email_msg = "Welcome, " + email;
             RaisePropertyChanged(nameof(EmailMsg));
             this.errorMessage = string.Empty;
             this.boards = um.Boards;

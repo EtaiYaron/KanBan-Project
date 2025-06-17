@@ -5,10 +5,16 @@
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
        xmlns:local="clr-namespace:IntroSE.Kanban.Frontend.View"  
        mc:Ignorable="d"  
-       Title="CreateBoardScreen" Height="450" Width="800">
+       Title="Create Board" Height="450" Width="800" Background="#FFFFFF">
     <Grid>
-        <StackPanel Margin="10">
-            <TextBlock Text="Create a New Board" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        <StackPanel Margin="30">
+            <TextBlock Text="Create a New Board" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,20" 
+                       Foreground="#374151"/>
+
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -18,13 +24,62 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Content="Board Name:" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Path=Name, Mode=OneWayToSource}"/>
-                <Label Content="{Binding Path=Owner, Mode=OneWay}" Grid.Row="1" Grid.Column="0"/>
+
+                <Label Content="Board Name:" 
+                       Grid.Row="0" 
+                       Grid.Column="0" 
+                       FontSize="16" 
+                       FontWeight="SemiBold" 
+                       Foreground="#1F2937" 
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" 
+                         Grid.Column="1" 
+                         Margin="10,0,0,10" 
+                         FontSize="14" 
+                         Padding="5" 
+                         Text="{Binding Path=Name, Mode=OneWayToSource}" 
+                         BorderBrush="#D1D5DB" 
+                         BorderThickness="1"/>
+
+                <Label Content="{Binding Path=Owner, Mode=OneWay}" 
+                       Grid.Row="1" 
+                       Grid.ColumnSpan="2" 
+                       FontSize="14" 
+                       Foreground="#6B7280" 
+                       VerticalAlignment="Center" 
+                       Margin="0,10,0,0"/>
             </Grid>
-            <Button Content="Create" Margin="0,20,0,0" Width="100" HorizontalAlignment="Left" Click="CreateBoard_Click"/>
-            <Button Content="Back" Margin="0,20,0,0" Width="100" HorizontalAlignment="Left" Click="Back_Click"/>
-            <Label Content="{Binding Path=ErrorMessage, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        Margin="0,20,0,0">
+                <Button Content="Create" 
+                        Width="120" 
+                        Height="40" 
+                        Background="#10B981" 
+                        Foreground="#FFFFFF" 
+                        FontWeight="Bold" 
+                        BorderBrush="#059669" 
+                        BorderThickness="2" 
+                        Click="CreateBoard_Click" 
+                        Margin="5"/>
+                <Button Content="Back" 
+                        Width="120" 
+                        Height="40" 
+                        Background="#2563EB" 
+                        Foreground="#FFFFFF" 
+                        FontWeight="Bold" 
+                        BorderBrush="#1E40AF" 
+                        BorderThickness="2" 
+                        Click="Back_Click" 
+                        Margin="5"/>
+            </StackPanel>
+
+            <Label Content="{Binding Path=ErrorMessage, Mode=OneWay}" 
+                   Foreground="#DC2626" 
+                   FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,20,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
