@@ -49,7 +49,11 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Deletes the selected board for the user.
+        /// Updates the boards list and error message as needed.
+        /// </summary>
+        /// <param name="board">The board object to delete (should be a <see cref="BoardModel"/>).</param>
         public void DeleteBoard(object board)
         {
             if (board == null)
@@ -72,7 +76,11 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Logs out the current user.
+        /// Updates the error message if logout fails.
+        /// </summary>
+        /// <returns>True if logout was successful; otherwise, false.</returns>
         public bool Logout()
         {
             try

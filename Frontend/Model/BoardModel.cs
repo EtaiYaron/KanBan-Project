@@ -41,6 +41,9 @@ namespace IntroSE.Kanban.Frontend.Model
             LoadTasks();
         }
 
+        /// <summary>
+        /// Loads the tasks for each column from the backend.
+        /// </summary>
         private void LoadTasks()
         {
             BacklogTasks = ControllerFactory.Instance.TaskController.GetTasksOfColumn(Email, Name, 0);

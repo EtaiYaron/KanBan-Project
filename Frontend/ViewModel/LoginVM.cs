@@ -24,6 +24,11 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             errorMessage = string.Empty;
         }
 
+        /// <summary>
+        /// Attempts to log in the user with the provided email and password.
+        /// Updates the error message if login fails.
+        /// </summary>
+        /// <returns>The <see cref="UserModel"/> if login is successful; otherwise, null.</returns>
         internal UserModel? Login()
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
@@ -42,6 +47,11 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             }
         }
 
+        /// <summary>
+        /// Attempts to register a new user with the provided email and password.
+        /// Updates the error message if registration fails.
+        /// </summary>
+        /// <returns>The <see cref="UserModel"/> if registration is successful; otherwise, null.</returns>
         internal UserModel? Register()
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))

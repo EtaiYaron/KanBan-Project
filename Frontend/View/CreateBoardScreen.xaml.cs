@@ -31,6 +31,10 @@ namespace IntroSE.Kanban.Frontend.View
             this.DataContext = createBoardVM;
         }
 
+        /// <summary>
+        /// Handles the Create Board button click event.
+        /// Attempts to create a new board and, if successful, navigates back to the board screen.
+        /// </summary>
         private void CreateBoard_Click(object sender, RoutedEventArgs e)
         {
             BoardModel? board = createBoardVM.CreateBoard();
@@ -42,6 +46,10 @@ namespace IntroSE.Kanban.Frontend.View
             }
         }
 
+        /// <summary>
+        /// Handles the Back button click event.
+        /// Navigates back to the board screen without creating a new board.
+        /// </summary>
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             BoardScreen boardScreen = new BoardScreen(new UserModel(this.email));

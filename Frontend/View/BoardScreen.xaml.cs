@@ -33,6 +33,10 @@ namespace IntroSE.Kanban.Frontend.View
             this.DataContext = boardScreenVM;
         }
 
+        /// <summary>
+        /// Handles double-click events on a board row in the data grid.
+        /// Opens the <see cref="TaskScreen"/> for the selected board and closes the current window.
+        /// </summary>
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             BoardModel selectedBoard = (BoardModel)((DataGridRow)sender).Item;
@@ -41,6 +45,10 @@ namespace IntroSE.Kanban.Frontend.View
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the Create Board button click event.
+        /// Opens the <see cref="CreateBoardScreen"/> and closes the current window.
+        /// </summary>
         private void CreateBoard_Click(object sender, RoutedEventArgs e)
         {
             CreateBoardScreen createBoardScreen = new CreateBoardScreen(userModel.Email);
@@ -48,11 +56,19 @@ namespace IntroSE.Kanban.Frontend.View
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the Delete Board button click event.
+        /// Deletes the selected board using the view model.
+        /// </summary>
         private void DeleteBoard_Click(object sender, RoutedEventArgs e)
         {
             boardScreenVM.DeleteBoard(this.dataGridView.SelectedItem);
         }
 
+        /// <summary>
+        /// Handles the Logout button click event.
+        /// Logs out the user and returns to the login screen if successful.
+        /// </summary>
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
             if (boardScreenVM.Logout())

@@ -34,11 +34,19 @@ namespace IntroSE.Kanban.Frontend.View
             this.DataContext = taskScreenVM;
         }
 
+        /// <summary>
+        /// Handles the Back button click event.
+        /// Closes the current task screen window.
+        /// </summary>
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the window closing event.
+        /// Opens the board screen for the user when the task screen is closed.
+        /// </summary>
         private void TaskScreen_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             BoardScreen boardScreen = new BoardScreen(new UserModel(userModel.Email));
