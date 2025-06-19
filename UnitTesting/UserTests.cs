@@ -21,7 +21,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(2)]
-        public void TestUserRegisterPositiveCase()
+        public void Register_ValidInput()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
@@ -37,7 +37,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(3)]
-        public void TestUserRegisterPositiveCase1()
+        public void Register_ValidInput_OtherUser()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
@@ -53,7 +53,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(4)]
-        public void TestUserRegisterNegativeCase()
+        public void Register_InvalidPassword()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "amztia1"));
             if (res.ErrorMessage != null)
@@ -69,7 +69,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(5)]
-        public void TestUserRegisterNegativeCase1()
+        public void Register_InvalidEmail()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
@@ -85,7 +85,7 @@ namespace UnitTesting
         /// </summary>+
         [Test]
         [Order(6)]
-        public void TestUserLoginPositiveCase()
+        public void Login_ValidInput()
         {
             us.Logout("etaiyaron@gmail.com");
             Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "Password1"));
@@ -102,7 +102,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(7)]
-        public void TestUserLoginPositiveCase1()
+        public void Login_ValidInput_OtherUser()
         {
             us.Logout("Amztia@post.co.il");
             Response res = JsonSerializer.Deserialize<Response>(us.Login("Amztia@post.co.il", "Amztia1"));
@@ -119,7 +119,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(8)]
-        public void TestUserLoginNegativeCase()
+        public void Login_InvalidPassword()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "password1"));
             if (res.ErrorMessage != null)
@@ -135,7 +135,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(9)]
-        public void TestUserLoginNegativeCase1()
+        public void Login_InvalidEmail()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Login("@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
@@ -151,7 +151,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(10)]
-        public void TestUserLogoutPositiveCase()
+        public void Logout_ValidUser()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("etaiyaron@gmail.com"));
             if (res.ErrorMessage != null)
@@ -167,7 +167,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(11)]
-        public void TestUserLogoutPositiveCase1()
+        public void Logout_ValidUser_AfterRegister()
         {
             us.Register("Psagot@post.co.il", "Psagot2025");
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("Psagot@post.co.il"));
@@ -184,7 +184,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(12)]
-        public void TestUserLogoutNegativeCase()
+        public void Logout_InvalidEmail()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("EtaiYaron"));
             if (res.ErrorMessage != null)
@@ -200,7 +200,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(13)]
-        public void TestUserLogoutNegativeCase1()
+        public void Logout_InvalidEmailFormat()
         {
             Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@pol"));
             if (res.ErrorMessage != null)

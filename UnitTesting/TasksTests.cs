@@ -34,7 +34,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(2)]
-        public void TestAddTaskPositiveCase()
+        public void AddTask_ValidTaskToBacklog()
         {
             res = JsonSerializer.Deserialize<Response>(t.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 6, 10), "checking if task isn't created"));
             id++;
@@ -51,7 +51,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(3)]
-        public void TestAddTaskNegativeCase()
+        public void AddTask_InvalidDueDate()
         {
             res = JsonSerializer.Deserialize<Response>(t.AddTask("shay.klein11@gmail.com", "name", "task1", new DateTime(2025, 4, 10), "checking if task isn't created"));
             if (res.ErrorMessage == null)
@@ -67,7 +67,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(4)]
-        public void TestEditTaskPositiveCase()
+        public void EditTask_ValidEdit()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task2", new DateTime(2026, 4, 10), "task is created");
             res = JsonSerializer.Deserialize<Response>(t.EditTask("shay.klein11@gmail.com", "name", id, "task2", new DateTime(2027, 4, 10), "checking if task is edited"));
@@ -85,7 +85,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(5)]
-        public void TestEditTaskNegativeCase()
+        public void EditTask_NonExistentTask()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task3", new DateTime(2026, 4, 10), "task is created");
             id++;
@@ -103,7 +103,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(6)]
-        public void TestMoveTaskPositiveCase()
+        public void MoveTask_ValidMove()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task4", new DateTime(2026, 4, 10), "task is created");
             t.EditTask("shay.klein11@gmail.com", "name", id, "task4", new DateTime(2026, 4, 10), "checking if task is edited");
@@ -123,7 +123,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(7)]
-        public void TestMoveTaskNegativeCase()
+        public void MoveTask_InvalidColumn()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task5", new DateTime(2026, 4, 10), "task is created");
             res = JsonSerializer.Deserialize<Response>(t.MoveTask("shay.klein11@gmail.com", "name", id, 2));
@@ -142,7 +142,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(8)]
-        public void TestGetTaskPositiveCase()
+        public void GetTask_ValidTask()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task6", new DateTime(2026, 4, 10), "task is created");
             res = JsonSerializer.Deserialize<Response>(t.GetTask("shay.klein11@gmail.com", "name", id));
@@ -161,7 +161,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(9)]
-        public void TestGetTaskNegativeCase()
+        public void GetTask_NonExistentTask()
         {
             t.AddTask("shay.klein11@gmail.com", "name", "task7", new DateTime(2026, 4, 10), "task is created");
             id++;
@@ -181,7 +181,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(10)]
-        public void TestAssignTaskToUserPositiveCase()
+        public void AssignTaskToUser_ValidAssignment()
         {
             b.CreateBoard("Shauli@gmail.com", "ABCD");
             t.AddTask("Shauli@gmail.com", "ABCD", "tasktome", new DateTime(2026, 4, 10), "task is created");
@@ -203,7 +203,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(11)]
-        public void TestAssignTaskToUserPositiveCase1()
+        public void AssignTaskToUser_ValidAssignmentOtherUser()
         {
             t.AddTask("Shauli@gmail.com", "ABCD", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
             b.JoinBoard("DonaldTrump@gmail.com", cnt);
@@ -222,7 +222,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(12)]
-        public void TestAssignTaskToUserNegativeCase()
+        public void AssignTaskToUser_NonExistentTask()
         {
             Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 2, "shay.klein11@gmail.com"));
             if (res.ErrorMessage != null)
@@ -238,7 +238,7 @@ namespace UnitTesting
         /// </summary>
         [Test]
         [Order(13)]
-        public void TestAssignTaskToUserNegativeCase1()
+        public void AssignTaskToUser_InvalidUser()
         {
             Response res = JsonSerializer.Deserialize<Response>(t.AssignTaskToUser("Shauli@gmail.co", "USA", 0, "DonaldTrump@gmail.com"));
             if (res.ErrorMessage != null)
