@@ -6,27 +6,31 @@
         xmlns:local="clr-namespace:IntroSE.Kanban.Frontend.View"
         mc:Ignorable="d"
         Closing="TaskScreen_Closing"
-        Title="Task Screen" Height="600" Width="900" Background="#FFFFFF">
+        Title="Task Screen" Height="600" Width="900"
+        Background="#14122E"
+        FontFamily="Segoe UI">
+
     <Grid>
-        <StackPanel Margin="20">
+        <StackPanel Margin="40" HorizontalAlignment="Center" VerticalAlignment="Top" Width="800">
+
             <TextBlock Text="{Binding Path=TaskMsg, Mode=OneWay}" 
                        HorizontalAlignment="Center" 
                        FontSize="28" 
                        FontWeight="Bold" 
-                       Foreground="#374151" />
+                       Foreground="#FFFFFF" />
 
             <Label Content="{Binding Path=Owner, Mode=OneWay}" 
                    FontSize="16" 
                    FontWeight="SemiBold" 
-                   Foreground="#6B7280" 
+                   Foreground="#9CA3AF" 
                    HorizontalAlignment="Center" 
-                   Margin="0,0,0,10"/>
+                   Margin="0,5,0,20"/>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,20">
                 <Label Content="Members of board:" 
                        VerticalAlignment="Center" 
                        FontSize="16" 
-                       Foreground="#374151"/>
+                       Foreground="#E0E1DD"/>
                 <ItemsControl ItemsSource="{Binding JoinedUsers}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -35,11 +39,12 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="#E5E7EB" 
+                            <Border Background="#2C3E50" 
                                     Padding="8" 
-                                    CornerRadius="5">
+                                    CornerRadius="5" 
+                                    Margin="5,0">
                                 <TextBlock Text="{Binding}" 
-                                           Foreground="#374151" />
+                                           Foreground="#FFFFFF"/>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -47,62 +52,89 @@
             </StackPanel>
 
             <StackPanel>
-                <StackPanel>
-                    <Label Content="Backlog Tasks:" 
-                           FontSize="18" 
-                           FontWeight="SemiBold" 
-                           Foreground="#1F2937" />
-                    <DataGrid ItemsSource="{Binding Backlog}" 
-                              AutoGenerateColumns="True" 
-                              HeadersVisibility="Column" 
-                              Margin="0,5,0,0" 
-                              GridLinesVisibility="Horizontal" 
-                              BorderBrush="#D1D5DB" 
-                              BorderThickness="1">
-                    </DataGrid>
-                </StackPanel>
-                <StackPanel>
-                    <Label Content="In Progress Tasks:" 
-                           FontSize="18" 
-                           FontWeight="SemiBold" 
-                           Foreground="#1F2937" 
-                           Margin="0,10,0,0"/>
-                    <DataGrid ItemsSource="{Binding InProgress}" 
-                              AutoGenerateColumns="True" 
-                              HeadersVisibility="Column" 
-                              Margin="0,5,0,0" 
-                              GridLinesVisibility="Horizontal" 
-                              BorderBrush="#D1D5DB" 
-                              BorderThickness="1">
-                    </DataGrid>
-                </StackPanel>
-                <StackPanel>
-                    <Label Content="Done Tasks:" 
-                           FontSize="18" 
-                           FontWeight="SemiBold" 
-                           Foreground="#1F2937" 
-                           Margin="0,10,0,0"/>
-                    <DataGrid ItemsSource="{Binding Done}" 
-                              AutoGenerateColumns="True" 
-                              HeadersVisibility="Column" 
-                              Margin="0,5,0,0" 
-                              GridLinesVisibility="Horizontal" 
-                              BorderBrush="#D1D5DB" 
-                              BorderThickness="1">
-                    </DataGrid>
-                </StackPanel>
+                <Label Content="Backlog Tasks:" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Foreground="#E0E1DD" />
+                <DataGrid ItemsSource="{Binding Backlog}" 
+                          AutoGenerateColumns="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          RowBackground="#1F2937"
+                          AlternatingRowBackground="#2C3E50"
+                          Foreground="#FFFFFF"
+                          Background="#1F2937"
+                          BorderBrush="#374151"
+                          Margin="0,5,0,10"
+                          FontSize="14"/>
+
+                <Label Content="In Progress Tasks:" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Foreground="#E0E1DD" 
+                       Margin="0,10,0,0"/>
+                <DataGrid ItemsSource="{Binding InProgress}" 
+                          AutoGenerateColumns="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          RowBackground="#1F2937"
+                          AlternatingRowBackground="#2C3E50"
+                          Foreground="#FFFFFF"
+                          Background="#1F2937"
+                          BorderBrush="#374151"
+                          Margin="0,5,0,10"
+                          FontSize="14"/>
+
+                <Label Content="Done Tasks:" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Foreground="#E0E1DD" 
+                       Margin="0,10,0,0"/>
+                <DataGrid ItemsSource="{Binding Done}" 
+                          AutoGenerateColumns="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          RowBackground="#1F2937"
+                          AlternatingRowBackground="#2C3E50"
+                          Foreground="#FFFFFF"
+                          Background="#1F2937"
+                          BorderBrush="#374151"
+                          Margin="0,5,0,10"
+                          FontSize="14"/>
             </StackPanel>
-            <Button Content="Back" 
-                    Width="120" 
-                    Height="40" 
-                    Background="#2563EB" 
-                    Foreground="#FFFFFF" 
-                    FontWeight="Bold" 
-                    BorderBrush="#1E40AF" 
-                    BorderThickness="2" 
-                    HorizontalAlignment="Center" 
-                    Margin="0,20,0,0" 
-                    Click="Back_Click" />
+
+            <Button Content="Back"
+                    Width="140" Height="44"
+                    Margin="0,20,0,0"
+                    Click="Back_Click"
+                    FontSize="15" FontWeight="Bold"
+                    Foreground="#14122E" Background="#FFFFFF"
+                    BorderBrush="#8CC6E1" BorderThickness="0"
+                    HorizontalAlignment="Center"
+                    Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="6"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#8CC6E1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
