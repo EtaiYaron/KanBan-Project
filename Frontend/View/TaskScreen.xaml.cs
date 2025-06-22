@@ -52,5 +52,10 @@ namespace IntroSE.Kanban.Frontend.View
             BoardScreen boardScreen = new BoardScreen(new UserModel(userModel.Email));
             boardScreen.Show();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
