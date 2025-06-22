@@ -224,7 +224,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception ex)
             {
-                Response<int> response = new Response<int>(ex.Message);
+                Response<object> response = new Response<object>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
