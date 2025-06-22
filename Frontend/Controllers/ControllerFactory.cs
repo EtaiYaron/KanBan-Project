@@ -14,10 +14,6 @@ namespace IntroSE.Kanban.Frontend.Controllers
         public readonly BoardController BoardController;
         public readonly TaskController TaskController;
 
-        /// <summary>
-        /// Private constructor to prevent external instantiation.
-        /// Initializes all controller instances using the service factory.
-        /// </summary>
         private ControllerFactory()
         {
             ServiceFactory serviceFactory = new ServiceFactory();
