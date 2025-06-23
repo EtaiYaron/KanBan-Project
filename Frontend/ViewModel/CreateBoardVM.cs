@@ -26,6 +26,11 @@ namespace IntroSE.Kanban.Frontend.ViewModel
             errorMessage = string.Empty;
         }
 
+        /// <summary>
+        /// Attempts to create a new board with the specified name for the user.
+        /// Updates the error message if creation fails.
+        /// </summary>
+        /// <returns>The created <see cref="BoardModel"/> if successful; otherwise, null.</returns>
         internal BoardModel? CreateBoard()
         {
             if (string.IsNullOrEmpty(name))

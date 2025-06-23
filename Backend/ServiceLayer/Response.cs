@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class Response<T>
     {
         private string errorMessage;
-        private T? returnValue;
+        private T returnValue;
 
         public Response() { }
 

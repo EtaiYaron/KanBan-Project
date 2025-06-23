@@ -224,7 +224,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception ex)
             {
-                Response<int> response = new Response<int>(ex.Message);
+                Response<object> response = new Response<object>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
@@ -262,7 +262,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                boardFacade.LeaveBoard(email, boardId);
+                boardFacade.LeaveBoard(email, boardId, true);
                 Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }

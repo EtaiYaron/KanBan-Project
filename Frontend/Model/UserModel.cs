@@ -19,6 +19,15 @@ namespace IntroSE.Kanban.Frontend.Model
             GetBoards();
         }
 
+        /// <summary>
+        /// Retrieves all boards that the user is a member of and populates the <see cref="Boards"/> list.
+        /// For each board ID associated with the user, this method fetches the board's name and details,
+        /// then adds the corresponding <see cref="BoardModel"/> to the user's boards collection.
+        /// </summary>
+        /// <remarks>
+        /// This method is called during user model initialization. It may result in multiple backend calls,
+        /// one for each board the user is a member of.
+        /// </remarks>
         private void GetBoards()
         {
             int[]? boardIds = ControllerFactory.Instance.BoardController.GetUserBoards(Email);
