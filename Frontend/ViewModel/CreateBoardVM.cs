@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using IntroSE.Kanban.Frontend.Controllers;
+using IntroSE.Kanban.Frontend.Model;
+
+namespace IntroSE.Kanban.Frontend.ViewModel
+{
+    internal class CreateBoardVM : Notifiable
+    {
+        private string name;
+        private string owner;
+        public string email;
+        private string errorMessage;
+
+        BoardController boardController = ControllerFactory.Instance.BoardController;
+
+        public CreateBoardVM(string email)
+        {
+            name = string.Empty;
+            this.email = email;
+            owner = "The owner of this board will be " + email;
+            RaisePropertyChanged(nameof(Owner));
+            errorMessage = string.Empty;
+        }
+
+        /// <summary>
+        /// Attempts to create a new board with the specified name for the user.
+        /// Updates the error message if creation fails.
+        /// </summary>
+        /// <returns>The created <see cref="BoardModel"/> if successful; otherwise, null.</returns>
+        internal BoardModel? CreateBoard()
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                ErrorMessage = "Name cannot be empty.";
+                return null;
+            }
+            try
+            {
+                return boardController.CreateBoard(name, email);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                return null;
+            }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+            }
+        }
+
+        public string Owner
+        {
+            get { return owner; }
+        }
+
+        public string ErrorMessage
+        {
+            get { return errorMessage; }
+            set
+            {
+                errorMessage = value;
+                RaisePropertyChanged(nameof(ErrorMessage));
+            }
+        }
+
+
+    }
+}

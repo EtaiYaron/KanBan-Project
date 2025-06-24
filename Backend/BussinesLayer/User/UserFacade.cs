@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
-            //LoadAllUsers();
+            LoadAllUsers();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 return user;
             }
             log.Error($"Login failed for user {email}, incorrect password.");
-            return null;
+            throw new Exception("Invalid password!");
         }
 
         /// <summary>
