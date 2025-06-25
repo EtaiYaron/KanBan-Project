@@ -41,5 +41,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public TaskService TaskService { 
             get { return this.taskService; }}
 
+        [Assembly: InternalsVisibleTo("UnitTesting")]
+        internal UserFacade UserFacade
+        {
+            get { return this.userFacade; }
+        }
+
+        [Assembly: InternalsVisibleTo("UnitTesting")]
+        internal BoardFacade BoardFacade
+        {
+            get { return this.boardFacade; }
+        }
+
     }
 }

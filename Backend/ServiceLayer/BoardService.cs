@@ -349,11 +349,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return JsonSerializer.Serialize(response);
             }
         }
-
-        [Assembly: InternalsVisibleTo("UnitTesting")]
-        internal BoardFacade GetBoardFacade()
-        {
-            return boardFacade;
-        }
     }
 }

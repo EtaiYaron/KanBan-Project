@@ -1,13 +1,14 @@
 using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
 using System.Text.Json;
+
 namespace UnitTesting
 {
     public class BoardTests
     {
         private BoardFacade b;
-        private UserService us;
-        private TaskService t; 
+        private UserFacade us;
         private int cnt;
 
         [OneTimeSetUp]
@@ -15,9 +16,8 @@ namespace UnitTesting
         public void Setup()
         {
             ServiceFactory service = new ServiceFactory();
-            us = service.UserService;
-            this.b = service.BoardService.GetBoardFacade();
-            this.t = service.TaskService;
+            this.us = service.UserFacade;
+            this.b = service.BoardFacade;
             us.DeleteAllUsers();
             b.DeleteAllBoards();
             cnt = 0;
@@ -33,15 +33,19 @@ namespace UnitTesting
         [Order(2)]
         public void CreateBoard_ValidUserAndName()
         {
+            bool passed = false;
             try
             {
                 b.CreateBoard("yaronet@post.bgu.ac.il", "name");
-                Assert.Pass("CreateBoard_ValidUserAndName passed");
+                passed = true;
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
             }
+
+            if (passed)
+                Assert.Pass("CreateBoard_ValidUserAndName passed");
         }
 
         /// <summary>
@@ -52,15 +56,19 @@ namespace UnitTesting
         [Order(3)]
         public void CreateBoard_ValidOtherUserAndName()
         {
+            bool passed = false;  
             try
             {
                 b.CreateBoard("shauli@gmail.com", "name1");
-                Assert.Pass("CreateBoard_ValidOtherUserAndName passed");
+                passed = true;
             }
             catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
             }
+
+            if (passed)
+                Assert.Pass("CreateBoard_ValidOtherUserAndName passed");
         }
 
         /// <summary>
@@ -272,7 +280,7 @@ namespace UnitTesting
             {
                 b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 1);
                 b.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
-                t.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "test limis tasks");
+                b.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "test limis tasks");
                 Assert.Fail("There is limit 1 for tasks in backlog in this board");
             }
             catch (Exception)
