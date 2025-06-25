@@ -449,7 +449,7 @@ namespace UnitTesting
             try
             {
                 cnt++;
-                b.JoinBoard("yaronet@post.bgu.ac.il", cnt);
+                b.JoinBoard("yaronet@post.bgu.ac.il", cnt+1);
                 
             }
             catch (Exception ex)
@@ -530,7 +530,7 @@ namespace UnitTesting
         {
             try
             {
-                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt);
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt+1);
                 
             }
             catch (Exception ex)
@@ -552,9 +552,9 @@ namespace UnitTesting
             {
                 b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard");
                 cnt++;
-                b.JoinBoard("DonaldTrump@gmail.com", cnt);
+                b.JoinBoard("DonaldTrump@gmail.com", cnt + 1);
                 b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard");
-                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt);
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt + 1);
                 
             }
             catch (Exception ex)
@@ -574,14 +574,14 @@ namespace UnitTesting
         {
             try
             {
-                b.LeaveBoard("DonaldTrump@gmail.com", cnt);
+                b.LeaveBoard("DonaldTrump@gmail.com", cnt+ 1);
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Assert.Pass("LeaveBoard_NotMember passed");
             }
-            Assert.Fail("There is no such user in board");
+            Assert.Fail("There is no such user in board"+cnt);
         }
 
         /// <summary>
@@ -613,8 +613,8 @@ namespace UnitTesting
         public void ChangeOwner_TransferToMember()
         {
             try
-            {
-                b.JoinBoard("yaronet@post.bgu.ac.il", cnt - 1);
+            {     
+                b.JoinBoard("yaronet@post.bgu.ac.il", 7);
                 b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2");
                 
             }
@@ -637,7 +637,7 @@ namespace UnitTesting
             {
                 b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard2");
                 cnt++;
-                b.JoinBoard("DonaldTrump@gmail.com", cnt);
+                b.JoinBoard("DonaldTrump@gmail.com", cnt+1);
                 b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard2");
                 
             }
