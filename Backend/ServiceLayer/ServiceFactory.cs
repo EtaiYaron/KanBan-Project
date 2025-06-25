@@ -40,5 +40,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public TaskService TaskService { 
             get { return this.taskService; }}
+
     }
 }
