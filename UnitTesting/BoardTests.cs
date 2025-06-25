@@ -18,9 +18,13 @@ namespace UnitTesting
             us = service.UserService;
             this.b = service.BoardService.GetBoardFacade();
             this.t = service.TaskService;
+            us.DeleteAllUsers();
+            b.DeleteAllBoards();
             cnt = 0;
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
             us.Register("shauli@gmail.com", "Haparlament1");
+            
+
         }
 
         /// <summary>
