@@ -23,8 +23,6 @@ namespace UnitTesting
             cnt = 0;
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
             us.Register("shauli@gmail.com", "Haparlament1");
-            
-
         }
 
         /// <summary>
@@ -78,7 +76,7 @@ namespace UnitTesting
                 b.CreateBoard("yaronet@post.bgu.ac.il", "name");
                 Assert.Fail("There is alredy board under the same name.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("CreateBoard_DuplicateNameForUser passed");
             }
@@ -97,7 +95,7 @@ namespace UnitTesting
                 b.CreateBoard("hauli@gmail.com", "name2");
                 Assert.Fail("There is no user under this name.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("CreateBoard_InvalidUser passed");
             }
@@ -154,7 +152,7 @@ namespace UnitTesting
                 b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
                 Assert.Fail("Board alredy been deleted");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("DeleteBoard_NonExistentBoard passed");
             }
@@ -175,7 +173,7 @@ namespace UnitTesting
                 b.DeleteBoard("shauli@gmail.com", "name");
                 Assert.Fail("Board name is not correct");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("DeleteBoard_MismatchedName passed");
             }
@@ -194,7 +192,7 @@ namespace UnitTesting
                 b.GetBoard("yaronet@post.bgu.ac.il", "name");
                 Assert.Fail("There is no Board under this name");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("GetBoard_NonExistentBoard passed");
             }
@@ -213,7 +211,7 @@ namespace UnitTesting
                 b.GetBoard("ya", "name");
                 Assert.Fail("There is no such email");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("GetBoard_InvalidUser passed");
             }
@@ -277,7 +275,7 @@ namespace UnitTesting
                 t.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "test limis tasks");
                 Assert.Fail("There is limit 1 for tasks in backlog in this board");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("LimitTasks_ExceedLimit passed");
             }
@@ -296,7 +294,7 @@ namespace UnitTesting
                 b.LimitTasks("yaronet@post.bgu.ac.il", "name", 1, 0);
                 Assert.Fail("Limit can't be 0");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("LimitTasks_InvalidLimit passed");
             }
@@ -396,7 +394,7 @@ namespace UnitTesting
                 b.GetUserBoards("LebronJames@gmail.com");
                 Assert.Fail("There is no such email");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("GetUserBoards_NonExistentUser passed");
             }
@@ -417,7 +415,7 @@ namespace UnitTesting
                 b.DeleteBoard("yaronet@post.bgu.ac.il", "Mile2");
                 Assert.Fail("user tried to delete is not owner");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("DeleteBoard_NonOwner passed");
             }
@@ -476,7 +474,7 @@ namespace UnitTesting
                 b.JoinBoard("yaronet@post.bgu.ac.il", cnt + 1);
                 Assert.Fail("There is no such board id");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("JoinBoard_NonExistentBoard passed");
             }
@@ -495,7 +493,7 @@ namespace UnitTesting
                 b.JoinBoard("DonaldTrump@gmail.co", cnt);
                 Assert.Fail("User alredy in board");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("TestJoinBoardNegativeCase1 passed");
             }
@@ -556,7 +554,7 @@ namespace UnitTesting
                 b.LeaveBoard("DonaldTrump@gmail.com", cnt);
                 Assert.Fail("There is no such user in board");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("LeaveBoard_NotMember passed");
             }            
@@ -575,7 +573,7 @@ namespace UnitTesting
                 b.LeaveBoard("yaronet@post.bgu.ac.il", cnt);
                 Assert.Fail("Owner can't leave board");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("LeaveBoard_Owner passed");
             }
@@ -636,7 +634,7 @@ namespace UnitTesting
                 b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2");
                 Assert.Fail("Non-owner cannot transfer board ownership.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("ChangeOwner_NonOwner passed");
             }            
@@ -655,7 +653,7 @@ namespace UnitTesting
                 b.ChangeOwner("DonaldTrump@gmail.com", "shauli@gmail.com", "newBoard2");
                 Assert.Fail("Cannot transfer board to user that isn't in board");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.Pass("ChangeOwner_TransferToNonMember passed");
             }           
