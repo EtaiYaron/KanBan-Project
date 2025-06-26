@@ -1,24 +1,25 @@
+using IntroSE.Kanban.Backend.BussinesLayer.Board;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
 using System.Text.Json;
+
 namespace UnitTesting
 {
     public class BoardTests
     {
-        private UserService us;
-        private BoardService b;
-        private TaskService t;
+        private BoardFacade b;
+        private UserFacade us;
         private int cnt;
 
         [OneTimeSetUp]
         [Order(1)]
         public void Setup()
-        {  
-            ServiceFactory s = new ServiceFactory();
-            this.us = s.UserService;
-            this.b = s.BoardService;
-            this.t = s.TaskService;
-            b.DeleteAllBoards();
+        {
+            ServiceFactory service = new ServiceFactory();
+            this.us = service.UserFacade;
+            this.b = service.BoardFacade;
             us.DeleteAllUsers();
+            b.DeleteAllBoards();
             cnt = 0;
             us.Register("yaronet@post.bgu.ac.il", "Admin1");
             us.Register("shauli@gmail.com", "Haparlament1");
@@ -32,12 +33,15 @@ namespace UnitTesting
         [Order(2)]
         public void CreateBoard_ValidUserAndName()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestCreateBoardPositiveCase passed");
+                b.CreateBoard("yaronet@post.bgu.ac.il", "name");
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("CreateBoard_ValidUserAndName passed");
         }
 
         /// <summary>
@@ -48,13 +52,15 @@ namespace UnitTesting
         [Order(3)]
         public void CreateBoard_ValidOtherUserAndName()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.CreateBoard("shauli@gmail.com", "name1"));
-            cnt++;
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestCreateBoardPositiveCase1 passed");
+                b.CreateBoard("shauli@gmail.com", "name1");
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("CreateBoard_ValidOtherUserAndName passed");
         }
 
         /// <summary>
@@ -65,12 +71,15 @@ namespace UnitTesting
         [Order(4)]
         public void CreateBoard_DuplicateNameForUser()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.CreateBoard("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("There is alredy board under the same name.");
+                b.CreateBoard("yaronet@post.bgu.ac.il", "name"); 
             }
-            Assert.Pass("TestCreateBoardNegativeCase passed");
+            catch (Exception)
+            {
+                Assert.Pass("CreateBoard_DuplicateNameForUser passed");
+            }
+            Assert.Fail("There is alredy board under the same name.");
         }
 
         /// <summary>
@@ -81,12 +90,16 @@ namespace UnitTesting
         [Order(5)]
         public void CreateBoard_InvalidUser()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.CreateBoard("hauli@gmail.com", "name2"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("There is no user this name.");
+                b.CreateBoard("hauli@gmail.com", "name2");
+                
             }
-            Assert.Pass("TestCreateBoardNegativeCase1 passed");
+            catch (Exception)
+            {
+                Assert.Pass("CreateBoard_InvalidUser passed");
+            }
+            Assert.Fail("There is no user under this name.");
         }
 
         /// <summary>
@@ -97,12 +110,16 @@ namespace UnitTesting
         [Order(6)]
         public void DeleteBoard_ValidUserAndName()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Fail(res.ErrorMessage);
+                b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
+                
             }
-            Assert.Pass("TestDeleteBoardPositiveCase passed");
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("DeleteBoard_ValidUserAndName passed");
         }
 
         /// <summary>
@@ -113,12 +130,16 @@ namespace UnitTesting
         [Order(7)]
         public void DeleteBoard_ValidOtherUserAndName()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.DeleteBoard("shauli@gmail.com", "name1"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Fail(res.ErrorMessage);
+                b.DeleteBoard("shauli@gmail.com", "name1");
+                
             }
-            Assert.Pass("TestDeleteBoardPositiveCase1 passed");
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("DeleteBoard_ValidOtherUserAndName passed");
         }
 
         /// <summary>
@@ -129,12 +150,16 @@ namespace UnitTesting
         [Order(8)]
         public void DeleteBoard_NonExistentBoard()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.DeleteBoard("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("Board alredy been deleted");
+                b.DeleteBoard("yaronet@post.bgu.ac.il", "name");
+                
             }
-            Assert.Pass("TestDeleteBoardNegativeCase passed");
+            catch (Exception)
+            {
+                Assert.Pass("DeleteBoard_NonExistentBoard passed");
+            }
+            Assert.Fail("Board alredy been deleted");
         }
 
         /// <summary>
@@ -145,14 +170,18 @@ namespace UnitTesting
         [Order(9)]
         public void DeleteBoard_MismatchedName()
         {
-            b.CreateBoard("shauli@gmail.com", "name1");
-            cnt++;
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.DeleteBoard("shauli@gmail.com", "name"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("Board name is not correct");
+                b.CreateBoard("shauli@gmail.com", "name1");
+                cnt++;
+                b.DeleteBoard("shauli@gmail.com", "name");
+               
             }
-            Assert.Pass("TestDeleteBoardNegativeCase1 passed");
+            catch (Exception)
+            {
+                Assert.Pass("DeleteBoard_MismatchedName passed");
+            }
+            Assert.Fail("Board name is not correct");
         }
 
         /// <summary>
@@ -163,12 +192,16 @@ namespace UnitTesting
         [Order(10)]
         public void GetBoard_NonExistentBoard()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetBoard("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestGetBoardNegativeCase passed");
+                b.GetBoard("yaronet@post.bgu.ac.il", "name");
+                
             }
-            Assert.Fail("There is no Board under this name"); ;
+            catch (Exception)
+            {
+                Assert.Pass("GetBoard_NonExistentBoard passed");
+            }
+            Assert.Fail("There is no Board under this name");
         }
 
         /// <summary>
@@ -179,10 +212,14 @@ namespace UnitTesting
         [Order(11)]
         public void GetBoard_InvalidUser()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetBoard("ya", "name"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestGetBoardNegativeCase1 passed");
+                b.GetBoard("ya", "name");
+                
+            }
+            catch (Exception)
+            {
+                Assert.Pass("GetBoard_InvalidUser passed");
             }
             Assert.Fail("There is no such email");
         }
@@ -195,14 +232,18 @@ namespace UnitTesting
         [Order(12)]
         public void GetBoard_ExistingBoard()
         {
-            b.CreateBoard("yaronet@post.bgu.ac.il", "name");
-            cnt++;
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetBoard("yaronet@post.bgu.ac.il", "name"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Fail(res.ErrorMessage);
+                b.CreateBoard("yaronet@post.bgu.ac.il", "name");
+                cnt++;
+                b.GetBoard("yaronet@post.bgu.ac.il", "name");
+                
             }
-            Assert.Pass("TestGetBoardPositiveCase passed");
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("GetBoard_ExistingBoard passed");
         }
 
         /// <summary>
@@ -213,15 +254,20 @@ namespace UnitTesting
         [Order(13)]
         public void GetBoard_ExistingOtherBoard()
         {
-            b.CreateBoard("yaronet@post.bgu.ac.il", "name50");
-            cnt++;
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetBoard("yaronet@post.bgu.ac.il", "name50"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Fail(res.ErrorMessage);
+                b.CreateBoard("yaronet@post.bgu.ac.il", "name50");
+                cnt++;
+                b.GetBoard("yaronet@post.bgu.ac.il", "name50");
+                
             }
-            Assert.Pass("TestGetBoardPositiveCase1 passed");
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("GetBoard_ExistingOtherBoard passed");
         }
+        
 
         /// <summary>
         /// Checks if limiting tasks in a column to one and adding 2 tasks fails.
@@ -231,14 +277,18 @@ namespace UnitTesting
         [Order(14)]
         public void LimitTasks_ExceedLimit()
         {
-            b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 1);
-            t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "test limis tasks"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("There is limit 1 for tasks in this board");
+                b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 1);
+                b.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
+                b.AddTask("yaronet@post.bgu.ac.il", "name", "task2", new DateTime(2026, 4, 10), "test limis tasks");
+                
             }
-            Assert.Pass("TestLimitTasksNegativeCase passed");
+            catch (Exception)
+            {
+                Assert.Pass("LimitTasks_ExceedLimit passed");
+            }
+            Assert.Fail("There is limit 1 for tasks in backlog in this board");
         }
 
         /// <summary>
@@ -249,12 +299,16 @@ namespace UnitTesting
         [Order(15)]
         public void LimitTasks_InvalidLimit()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 1, 0));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("Limit can't be 0");
+                b.LimitTasks("yaronet@post.bgu.ac.il", "name", 1, 0);
+                
             }
-            Assert.Pass("TestLimitTasksNegativeCase1 passed");
+            catch (Exception)
+            {
+                Assert.Pass("LimitTasks_InvalidLimit passed");
+            }
+            Assert.Fail("Limit can't be 0");
         }
 
         /// <summary>
@@ -265,13 +319,17 @@ namespace UnitTesting
         [Order(16)]
         public void LimitTasks_ValidLimitAndAddTask()
         {
-            b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 10);
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(t.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Fail(res.ErrorMessage);
+                b.LimitTasks("yaronet@post.bgu.ac.il", "name", 0, 10);
+                b.AddTask("yaronet@post.bgu.ac.il", "name", "task1", new DateTime(2026, 4, 10), "test limis tasks");
+                
             }
-            Assert.Pass("TestLimitTasksPositiveCase passed");
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("LimitTasks_ValidLimitAndAddTask passed");
         }
 
         /// <summary>
@@ -282,12 +340,16 @@ namespace UnitTesting
         [Order(17)]
         public void LimitTasks_HighLimit()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.LimitTasks("yaronet@post.bgu.ac.il", "name", 2, 100));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Fail(res.ErrorMessage);
+                b.LimitTasks("yaronet@post.bgu.ac.il", "name", 2, 100);
+                
             }
-            Assert.Pass("TestLimitTasksPositiveCase1 passed");
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("LimitTasks_HighLimit passed");
         }
 
         /// <summary>
@@ -298,14 +360,18 @@ namespace UnitTesting
         [Order(18)]
         public void GetUserBoards_ExistingUser()
         {
-            b.CreateBoard("yaronet@post.bgu.ac.il", "Milestone2");
-            cnt++;
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetUserBoards("yaronet@post.bgu.ac.il"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestGetUserBoardsPositiveCase passed");
+                b.CreateBoard("yaronet@post.bgu.ac.il", "Milestone2");
+                cnt++;
+                b.GetUserBoards("yaronet@post.bgu.ac.il");
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("GetUserBoards_ExistingUser passed");
         }
 
         /// <summary>
@@ -316,14 +382,18 @@ namespace UnitTesting
         [Order(19)]
         public void GetUserBoards_JoinedUser()
         {
-            us.Register("Kobe2424@gmail.com", "Kobe24");
-            b.JoinBoard("Kobe2424@gmail.com", cnt);
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetUserBoards("Kobe2424@gmail.com"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestGetUserBoardsPositiveCase1 passed");
+                us.Register("Kobe2424@gmail.com", "Kobe24");
+                b.JoinBoard("Kobe2424@gmail.com", cnt);
+                b.GetUserBoards("Kobe2424@gmail.com");
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("GetUserBoards_JoinedUser passed");
         }
 
         /// <summary>
@@ -334,12 +404,16 @@ namespace UnitTesting
         [Order(20)]
         public void GetUserBoards_NonExistentUser()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.GetUserBoards("LebronJames@gmail.com"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestGetUserBoardsNegativeCase passed");
+                b.GetUserBoards("LebronJames@gmail.com");
+                
             }
-            Assert.Fail("There is no such user");
+            catch (Exception)
+            {
+                Assert.Pass("GetUserBoards_NonExistentUser passed");
+            }
+            Assert.Fail("There is no such email");
         }
 
         /// <summary>
@@ -350,12 +424,16 @@ namespace UnitTesting
         [Order(21)]
         public void DeleteBoard_NonOwner()
         {
-            b.CreateBoard("shauli@gmail.com", "Mile2");
-            cnt++;
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.DeleteBoard("yaronet@post.bgu.ac.il", "Mile2"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestDeleteBoardNegativeCase2 passed");
+                b.CreateBoard("shauli@gmail.com", "Mile2");
+                cnt++;
+                b.DeleteBoard("yaronet@post.bgu.ac.il", "Mile2");
+                
+            }
+            catch (Exception)
+            {
+                Assert.Pass("DeleteBoard_NonOwner passed");
             }
             Assert.Fail("user tried to delete is not owner");
         }
@@ -368,13 +446,17 @@ namespace UnitTesting
         [Order(22)]
         public void JoinBoard_ExistingBoard()
         {
-            cnt++;
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestJoinBoardPositiveCase passed");
+                cnt++;
+                b.JoinBoard("yaronet@post.bgu.ac.il", cnt+1);
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("JoinBoard_ExistingBoard passed");
         }
 
         /// <summary>
@@ -385,13 +467,17 @@ namespace UnitTesting
         [Order(23)]
         public void JoinBoard_ExistingOtherBoard()
         {
-            us.Register("DonaldTrump@gmail.com", "UsaPresident2025");
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.JoinBoard("DonaldTrump@gmail.com", cnt));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestJoinBoardPositiveCase1 passed");
+                us.Register("DonaldTrump@gmail.com", "UsaPresident2025");
+                b.JoinBoard("DonaldTrump@gmail.com", cnt);
+               
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("JoinBoard_ExistingOtherBoard passed");
         }
 
         /// <summary>
@@ -402,12 +488,16 @@ namespace UnitTesting
         [Order(24)]
         public void JoinBoard_NonExistentBoard()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.JoinBoard("yaronet@post.bgu.ac.il", cnt + 1));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestJoinBoardNegativeCase passed");
+                b.JoinBoard("yaronet@post.bgu.ac.il", cnt + 1);
+                
             }
-            Assert.Pass("There is no such board id");
+            catch (Exception)
+            {
+                Assert.Pass("JoinBoard_NonExistentBoard passed");
+            }
+            Assert.Fail("There is no such board id");
         }
 
         /// <summary>
@@ -418,8 +508,12 @@ namespace UnitTesting
         [Order(25)]
         public void JoinBoard_InvalidUser()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.JoinBoard("DonaldTrump@gmail.co", cnt));
-            if (res.ErrorMessage != null)
+            try
+            {
+                b.JoinBoard("DonaldTrump@gmail.co", cnt);
+                
+            }
+            catch (Exception)
             {
                 Assert.Pass("TestJoinBoardNegativeCase1 passed");
             }
@@ -434,12 +528,16 @@ namespace UnitTesting
         [Order(26)]
         public void LeaveBoard_JoinedUser()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestLeaveBoardPositiveCase passed");
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt+1);
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("LeaveBoard_JoinedUser passed");
         }
 
         /// <summary>
@@ -450,16 +548,20 @@ namespace UnitTesting
         [Order(27)]
         public void LeaveBoard_OwnerTransferAndLeave()
         {
-            b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard");
-            cnt++;
-            b.JoinBoard("DonaldTrump@gmail.com", cnt);
-            b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard");
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestLeaveBoardPositiveCase1 passed");
+                b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard");
+                cnt++;
+                b.JoinBoard("DonaldTrump@gmail.com", cnt + 1);
+                b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard");
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt + 1);
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("LeaveBoard_OwnerTransferAndLeave passed");
         }
 
         /// <summary>
@@ -470,12 +572,16 @@ namespace UnitTesting
         [Order(28)]
         public void LeaveBoard_NotMember()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.LeaveBoard("DonaldTrump@gmail.com", cnt));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestLeaveBoardNegativeCase passed");
+                b.LeaveBoard("DonaldTrump@gmail.com", cnt+ 1);
+                
             }
-            Assert.Fail("Owner can't leave board");
+            catch (Exception ex)
+            {
+                Assert.Pass("LeaveBoard_NotMember passed");
+            }
+            Assert.Fail("There is no such user in board"+cnt);
         }
 
         /// <summary>
@@ -486,12 +592,16 @@ namespace UnitTesting
         [Order(29)]
         public void LeaveBoard_Owner()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.LeaveBoard("yaronet@post.bgu.ac.il", cnt));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestLeaveBoardNegativeCase1 passed");
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt);
+                
             }
-            Assert.Fail("There is no such user in board");
+            catch (Exception)
+            {
+                Assert.Pass("LeaveBoard_Owner passed");
+            }
+            Assert.Fail("Owner can't leave board");
         }
 
         /// <summary>
@@ -502,13 +612,17 @@ namespace UnitTesting
         [Order(30)]
         public void ChangeOwner_TransferToMember()
         {
-            b.JoinBoard("yaronet@post.bgu.ac.il", cnt - 1);
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
-            if (res.ErrorMessage == null)
-            {
-                Assert.Pass("TestChangeOwnerPositiveCase passed");
+            try
+            {     
+                b.JoinBoard("yaronet@post.bgu.ac.il", 7);
+                b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2");
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("ChangeOwner_TransferToMember passed");
         }
 
         /// <summary>
@@ -519,16 +633,19 @@ namespace UnitTesting
         [Order(31)]
         public void ChangeOwner_TransferToNewlyJoinedMember()
         {
-            b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard2");
-            cnt++;
-            b.JoinBoard("DonaldTrump@gmail.com", cnt);
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard2"));
-
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestChangeOwnerPositiveCase1 passed");
+                b.CreateBoard("yaronet@post.bgu.ac.il", "newBoard2");
+                cnt++;
+                b.JoinBoard("DonaldTrump@gmail.com", cnt+1);
+                b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard2");
+                
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("ChangeOwner_TransferToNewlyJoinedMember passed");
         }
 
         /// <summary>
@@ -539,10 +656,14 @@ namespace UnitTesting
         [Order(32)]
         public void ChangeOwner_NonOwner()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestChangeOwnerNegativeCase passed");
+                b.ChangeOwner("shauli@gmail.com", "yaronet@post.bgu.ac.il", "Mile2");
+               
+            }
+            catch (Exception)
+            {
+                Assert.Pass("ChangeOwner_NonOwner passed");
             }
             Assert.Fail("Non-owner cannot transfer board ownership.");
         }
@@ -555,10 +676,14 @@ namespace UnitTesting
         [Order(33)]
         public void ChangeOwner_TransferToNonMember()
         {
-            Response<object> res = JsonSerializer.Deserialize<Response<object>>(b.ChangeOwner("DonaldTrump@gmail.com", "shauli@gmail.com", "newBoard2"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestChangeOwnerNegativeCase1 passed");
+                b.ChangeOwner("DonaldTrump@gmail.com", "shauli@gmail.com", "newBoard2");
+                
+            }
+            catch (Exception)
+            {
+                Assert.Pass("ChangeOwner_TransferToNonMember passed");
             }
             Assert.Fail("Cannot transfer board to user that isn't in board");
         }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Common;
 using System.Linq;
+using System.Net.Security;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -12,6 +15,7 @@ using IntroSE.Kanban.Backend.DataAccessLayer;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using log4net;
 
+[assembly: InternalsVisibleTo("UnitTesting")]
 namespace IntroSE.Kanban.Backend.BussinesLayer.Board
 {
     internal class BoardFacade
