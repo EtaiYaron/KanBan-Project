@@ -1,31 +1,31 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.BussinesLayer.Board;
+using IntroSE.Kanban.Backend.BussinesLayer.User;
+using IntroSE.Kanban.Backend.ServiceLayer;
 using System.Text.Json;
 namespace UnitTesting
 {
     public class TasksTests
     {
-        private UserService us;
-        private BoardService b;
-        private TaskService t;
+        private BoardFacade b;
+        private UserFacade us;
         private int cnt;
         private int id;
-        Response<object> res;
 
         [OneTimeSetUp]
         [Order(1)]
         public void Setup()
         {
-            ServiceFactory s = new ServiceFactory();
-            this.us = s.UserService;
-            this.b = s.BoardService;
-            this.t = s.TaskService;
-            b.DeleteAllBoards();
+            ServiceFactory service = new ServiceFactory();
+            this.us = service.UserFacade;
+            this.b = service.BoardFacade;
             us.DeleteAllUsers();
-            us.Register("shay.klein11@gmail.com", "Admin1");
-            b.CreateBoard("shay.klein11@gmail.com", "name");
-            t.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 4, 10), "checking if task is created");
+            b.DeleteAllBoards();
             cnt = 0;
             id = 0;
+            us.Register("yaronet@post.bgu.ac.il", "Admin1");
+            us.Register("shauli@gmail.com", "Haparlament1");
+            us.Register("shay.klein11@gmail.com", "Admin1");
+            b.CreateBoard("shay.klein11@gmail.com", "name");
         }
 
         /// <summary>
@@ -36,13 +36,15 @@ namespace UnitTesting
         [Order(2)]
         public void AddTask_ValidTaskToBacklog()
         {
-            res = JsonSerializer.Deserialize<Response<object>>(t.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 6, 10), "checking if task isn't created"));
-            id++;
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestAddTaskPositiveCase passed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task0", new DateTime(2026, 6, 10), "checking if task isn't created");
+                id++;
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex) {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("AddTask_ValidTaskToBacklog passed.");
         }
 
         /// <summary>
@@ -53,13 +55,17 @@ namespace UnitTesting
         [Order(3)]
         public void AddTask_InvalidDueDate()
         {
-            res = JsonSerializer.Deserialize<Response<object>>(t.AddTask("shay.klein11@gmail.com", "name", "task1", new DateTime(2025, 4, 10), "checking if task isn't created"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("TestAddTaskNegativeCase failed, Creating a new task with invalid data(past due date) should have failed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task1", new DateTime(2025, 4, 10), "checking if task isn't created");
             }
-            Assert.Pass("TestAddTaskNegativeCase passed.");
+            catch(Exception ex)
+            {
+                Assert.Pass("AddTask_InvalidDueDate passed.");
+            }
+            Assert.Fail("AddTask_InvalidDueDate failed, Creating a new task with invalid data(past due date) should have failed.");    
         }
+
 
         /// <summary>
         /// This test checks if a task can be edited successfully.
@@ -69,14 +75,17 @@ namespace UnitTesting
         [Order(4)]
         public void EditTask_ValidEdit()
         {
-            t.AddTask("shay.klein11@gmail.com", "name", "task2", new DateTime(2026, 4, 10), "task is created");
-            res = JsonSerializer.Deserialize<Response<object>>(t.EditTask("shay.klein11@gmail.com", "name", id, "task2", new DateTime(2027, 4, 10), "checking if task is edited"));
-            id++;
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestEditTaskPositiveCase passed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task2", new DateTime(2026, 4, 10), "task is created");
+                b.EditTask("shay.klein11@gmail.com", "name", id, "task2", new DateTime(2027, 4, 10), "checking if task is edited");
+                id++;
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("EditTask_ValidEdit passed.");
         }
 
         /// <summary>
@@ -87,14 +96,17 @@ namespace UnitTesting
         [Order(5)]
         public void EditTask_NonExistentTask()
         {
-            t.AddTask("shay.klein11@gmail.com", "name", "task3", new DateTime(2026, 4, 10), "task is created");
-            id++;
-            res = JsonSerializer.Deserialize<Response<object>>(t.EditTask("shay.klein11@gmail.com", "name", id + 1, "task3", new DateTime(2026, 4, 10), "checking if task is edited"));
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("TestEditTaskNegativeCase Failed, editing a non-existent task should have failed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task3", new DateTime(2026, 4, 10), "task is created");
+                id++;
+                b.EditTask("shay.klein11@gmail.com", "name", id + 1, "task3", new DateTime(2026, 4, 10), "checking if task is edited");
             }
-            Assert.Pass("TestEditTaskNegativeCase passed.");
+            catch(Exception ex)
+            {
+                Assert.Pass("EditTask_NonExistentTask passed");
+            }
+            Assert.Fail("EditTask_NonExistentTask Failed, editing a non-existent task should have failed.");
         }
 
         /// <summary>
@@ -105,15 +117,17 @@ namespace UnitTesting
         [Order(6)]
         public void MoveTask_InvalidColumn()
         {
-            t.AddTask("shay.klein11@gmail.com", "name", "task5", new DateTime(2026, 4, 10), "task is created");
-            res = JsonSerializer.Deserialize<Response<object>>(t.MoveTask("shay.klein11@gmail.com", "name", id, 2));
-            id++;
-
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("TestMoveTaskNegativeCase Failed, moving a task to an invalid column should have failed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task5", new DateTime(2026, 4, 10), "task is created");
+                b.MoveTask("shay.klein11@gmail.com", "name", id, 2);
+                id++;
             }
-            Assert.Pass("TestMoveTaskNegativeCase passed.");
+            catch(Exception ex)
+            {
+                Assert.Pass("MoveTask_InvalidColumn passed.");
+            }
+            Assert.Fail("TestMoveTaskNegativeCase Failed, moving a task to an invalid column should have failed.");
         }
 
         /// <summary>
@@ -124,15 +138,17 @@ namespace UnitTesting
         [Order(7)]
         public void GetTask_ValidTask()
         {
-            t.AddTask("shay.klein11@gmail.com", "name", "task6", new DateTime(2026, 4, 10), "task is created");
-            res = JsonSerializer.Deserialize<Response<object>>(t.GetTask("shay.klein11@gmail.com", "name", id));
-            id++;
-
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestGetTaskPositiveCase passed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task6", new DateTime(2026, 4, 10), "task is created");
+                b.GetTask("shay.klein11@gmail.com", "name", id);
+                id++;
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("GetTask_ValidTask passed.");
         }
 
         /// <summary>
@@ -143,15 +159,17 @@ namespace UnitTesting
         [Order(8)]
         public void GetTask_NonExistentTask()
         {
-            t.AddTask("shay.klein11@gmail.com", "name", "task7", new DateTime(2026, 4, 10), "task is created");
-            id++;
-            res = JsonSerializer.Deserialize<Response<object>>(t.GetTask("shay.klein11@gmail.com", "name", id + 1));
-
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Fail("TestGetTaskNegativeCase Failed, GetTask with a non-existent task should have failed.");
+                b.AddTask("shay.klein11@gmail.com", "name", "task7", new DateTime(2026, 4, 10), "task is created");
+                id++;
+                b.GetTask("shay.klein11@gmail.com", "name", id + 1);
             }
-            Assert.Pass("TestGetTaskNegativeCase passed.");
+            catch(Exception ex)
+            {
+                Assert.Pass("GetTask_NonExistentTask passed.");
+            }
+            Assert.Fail("GetTask_NonExistentTask Failed, GetTask with a non-existent task should have failed.");
         }
 
 
@@ -163,19 +181,21 @@ namespace UnitTesting
         [Order(9)]
         public void AssignTaskToUser_ValidAssignment()
         {
-            us.Register("Shauli@gmail.com", "Password1234");
-            b.CreateBoard("Shauli@gmail.com", "ABCD");
-            t.AddTask("Shauli@gmail.com", "ABCD", "tasktome", new DateTime(2026, 4, 10), "task is created");
-            cnt++;
-            b.JoinBoard("shay.klein11@gmail.com", 2);
-            res = JsonSerializer.Deserialize<Response<object>>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 0, "shay.klein11@gmail.com"));
-            id++;
-
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestAssignTaskToUserPositiveCase passed.");
+                //us.Register("Shauli@gmail.com", "Password1234");
+                b.CreateBoard("Shauli@gmail.com", "ABCD");
+                b.AddTask("Shauli@gmail.com", "ABCD", "tasktome", new DateTime(2026, 4, 10), "task is created");
+                cnt++;
+                b.JoinBoard("shay.klein11@gmail.com", 2);
+                b.AssignTaskToUser("Shauli@gmail.com", "ABCD", 0, "shay.klein11@gmail.com");
+                id++;
             }
-            Assert.Fail(res.ErrorMessage);
+            catch(Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("AssignTaskToUser_ValidAssignment passed.");
         }
 
         /// <summary>
@@ -186,16 +206,19 @@ namespace UnitTesting
         [Order(10)]
         public void AssignTaskToUser_ValidAssignmentOtherUser()
         {
-            t.AddTask("Shauli@gmail.com", "ABCD", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
-            us.Register("DonaldTrump@gmail.com", "TrumpHamelech1");
-            b.JoinBoard("DonaldTrump@gmail.com", 2);
-            res = JsonSerializer.Deserialize<Response<object>>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 1, "DonaldTrump@gmail.com"));
-            id++;
-            if (res.ErrorMessage == null)
+            try
             {
-                Assert.Pass("TestAssignTaskToUserPositiveCase1 passed.");
+                b.AddTask("Shauli@gmail.com", "ABCD", "task for trump", new DateTime(2026, 4, 10), "task is for donald");
+                us.Register("DonaldTrump@gmail.com", "TrumpHamelech1");
+                b.JoinBoard("DonaldTrump@gmail.com", 2);
+                b.AssignTaskToUser("Shauli@gmail.com", "ABCD", 1, "DonaldTrump@gmail.com");
+                id++;
             }
-            Assert.Fail(res.ErrorMessage);
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+            Assert.Pass("AssignTaskToUser_ValidAssignmentOtherUser passed.");
         }
 
         /// <summary>
@@ -206,12 +229,15 @@ namespace UnitTesting
         [Order(11)]
         public void AssignTaskToUser_NonExistentTask()
         {
-            res = JsonSerializer.Deserialize<Response<object>>(t.AssignTaskToUser("Shauli@gmail.com", "ABCD", 2, "shay.klein11@gmail.com"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestAssignTaskToUserNegativeCase passed.");
+                b.AssignTaskToUser("Shauli@gmail.com", "ABCD", 2, "shay.klein11@gmail.com");
             }
-            Assert.Fail("TestAssignTaskToUserNegativeCase Failed, assigning a non-existent task should have failed.");
+            catch(Exception ex)
+            {
+                Assert.Pass("AssignTaskToUser_NonExistentTask passed.");
+            }
+            Assert.Fail("AssignTaskToUser_NonExistentTask Failed, assigning a non-existent task should have failed.");
         }
 
         /// <summary>
@@ -222,12 +248,15 @@ namespace UnitTesting
         [Order(12)]
         public void AssignTaskToUser_InvalidUser()
         {
-            res = JsonSerializer.Deserialize<Response<object>>(t.AssignTaskToUser("Shauli@gmail.co", "USA", 0, "DonaldTrump@gmail.com"));
-            if (res.ErrorMessage != null)
+            try
             {
-                Assert.Pass("TestAssignTaskToUserNegativeCase1 passed.");
+                b.AssignTaskToUser("Shauli@gmail.co", "USA", 0, "DonaldTrump@gmail.com");
             }
-            Assert.Fail("TestAssignTaskToUserNegativeCase1 Failed, assigning a task with an invalid user fails");
+            catch(Exception ex)
+            {
+                Assert.Pass("AssignTaskToUser_InvalidUser passed.");
+            }
+            Assert.Fail("AssignTaskToUser_InvalidUser Failed, assigning a task with an invalid user fails");
         }
     }
 }
