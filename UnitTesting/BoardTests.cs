@@ -530,7 +530,7 @@ namespace UnitTesting
         {
             try
             {
-                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt+1);
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt+1, true);
                 
             }
             catch (Exception ex)
@@ -554,7 +554,7 @@ namespace UnitTesting
                 cnt++;
                 b.JoinBoard("DonaldTrump@gmail.com", cnt + 1);
                 b.ChangeOwner("yaronet@post.bgu.ac.il", "DonaldTrump@gmail.com", "newBoard");
-                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt + 1);
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt + 1, true);
                 
             }
             catch (Exception ex)
@@ -574,7 +574,7 @@ namespace UnitTesting
         {
             try
             {
-                b.LeaveBoard("DonaldTrump@gmail.com", cnt+ 1);
+                b.LeaveBoard("DonaldTrump@gmail.com", cnt+ 1, true);
                 
             }
             catch (Exception ex)
@@ -594,7 +594,7 @@ namespace UnitTesting
         {
             try
             {
-                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt);
+                b.LeaveBoard("yaronet@post.bgu.ac.il", cnt, true);
                 
             }
             catch (Exception)
