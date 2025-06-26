@@ -23,7 +23,7 @@ namespace UnitTesting
         [Order(2)]
         public void Register_ValidInput()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Register("etaiyaron@gmail.com", "Password1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Register("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -39,7 +39,7 @@ namespace UnitTesting
         [Order(3)]
         public void Register_ValidInput_OtherUser()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "Amztia1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Register("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -55,7 +55,7 @@ namespace UnitTesting
         [Order(4)]
         public void Register_InvalidPassword()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztia@post.co.il", "amztia1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Register("Amztia@post.co.il", "amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserRegisterNegativeCase passed.");
@@ -71,7 +71,7 @@ namespace UnitTesting
         [Order(5)]
         public void Register_InvalidEmail()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Register("Amztiapost.co.il", "Amztia1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Register("Amztiapost.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserRegisterNegativeCase1 passed");
@@ -88,7 +88,7 @@ namespace UnitTesting
         public void Login_ValidInput()
         {
             us.Logout("etaiyaron@gmail.com");
-            Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "Password1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Login("etaiyaron@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -105,7 +105,7 @@ namespace UnitTesting
         public void Login_ValidInput_OtherUser()
         {
             us.Logout("Amztia@post.co.il");
-            Response res = JsonSerializer.Deserialize<Response>(us.Login("Amztia@post.co.il", "Amztia1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Login("Amztia@post.co.il", "Amztia1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -121,7 +121,7 @@ namespace UnitTesting
         [Order(8)]
         public void Login_InvalidPassword()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Login("etaiyaron@gmail.com", "password1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Login("etaiyaron@gmail.com", "password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLoginNegativeCase passed");
@@ -137,7 +137,7 @@ namespace UnitTesting
         [Order(9)]
         public void Login_InvalidEmail()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Login("@gmail.com", "Password1"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Login("@gmail.com", "Password1"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLoginNegativeCase1 passed");
@@ -153,7 +153,7 @@ namespace UnitTesting
         [Order(10)]
         public void Logout_ValidUser()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Logout("etaiyaron@gmail.com"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Logout("etaiyaron@gmail.com"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -170,7 +170,7 @@ namespace UnitTesting
         public void Logout_ValidUser_AfterRegister()
         {
             us.Register("Psagot@post.co.il", "Psagot2025");
-            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Psagot@post.co.il"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Logout("Psagot@post.co.il"));
             if (res.ErrorMessage != null)
             {
                 Assert.Fail(res.ErrorMessage);
@@ -186,7 +186,7 @@ namespace UnitTesting
         [Order(12)]
         public void Logout_InvalidEmail()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Logout("EtaiYaron"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Logout("EtaiYaron"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLogoutNegativeCase passed");
@@ -202,7 +202,7 @@ namespace UnitTesting
         [Order(13)]
         public void Logout_InvalidEmailFormat()
         {
-            Response res = JsonSerializer.Deserialize<Response>(us.Logout("Amztia@pol"));
+            Response<object> res = JsonSerializer.Deserialize<Response<object>>(us.Logout("Amztia@pol"));
             if (res.ErrorMessage != null)
             {
                 Assert.Pass("TestUserLogoutNegativeCase1 passed");

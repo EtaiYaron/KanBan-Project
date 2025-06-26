@@ -307,8 +307,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DateTime creationTime = dataReader.GetDateTime(3);
             DateTime dueDate = dataReader.GetDateTime(4);
             string description = dataReader.GetString(5);
-            string assigneeEmail = dataReader.GetString(6);
-            TaskDAL t = new TaskDAL(taskId, boardId, title, dueDate, creationTime, description);
+            int state = dataReader.GetInt32(6);
+            string assigneeEmail = dataReader.GetString(7);
+            TaskDAL t = new TaskDAL(taskId, boardId, title, dueDate, creationTime, description, state);
             t.AssingeeEmail(assigneeEmail);
             return t;
         }

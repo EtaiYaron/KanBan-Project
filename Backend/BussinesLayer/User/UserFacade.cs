@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
                 return user;
             }
             log.Error($"Login failed for user {email}, incorrect password.");
-            return null;
+            throw new Exception("Invalid password!");
         }
 
         /// <summary>

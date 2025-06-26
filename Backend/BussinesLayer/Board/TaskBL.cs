@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.Board
             this.dueDate = dueDate;
             this.description = description;
             this.assignee = null;
-            this.taskDAL = new TaskDAL(taskId, boardId, title, dueDate, this.creationTime, description);
+            this.taskDAL = new TaskDAL(taskId, boardId, title, dueDate, this.creationTime, description, 0);
         }
 
         public TaskBL(TaskDAL taskDAL)

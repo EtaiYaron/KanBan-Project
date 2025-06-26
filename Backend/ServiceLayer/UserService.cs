@@ -34,12 +34,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Login(email, password);
-                Response response = new Response(null, email);
+                Response<string> response = new Response<string>(null, email);
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                Response response = new Response(ex.Message);
+                Response<string> response = new Response<string>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
@@ -55,12 +55,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Register(email, password);
-                Response response = new Response();
+                Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                Response response = new Response(ex.Message);
+                Response<object> response = new Response<object>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
@@ -75,12 +75,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Logout(email);
-                Response response = new Response();
+                Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                Response response = new Response(ex.Message);
+                Response<object> response = new Response<object>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
@@ -90,12 +90,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userFacade.LoadAllUsers();
-                Response response = new Response();
+                Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                Response response = new Response(ex.Message);
+                Response<object> response = new Response<object>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
@@ -105,12 +105,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userFacade.DeleteAllUsers();
-                Response response = new Response();
+                Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {
-                Response response = new Response(ex.Message);
+                Response<object> response = new Response<object>(ex.Message);
                 return JsonSerializer.Serialize(response);
             }
         }
