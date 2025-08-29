@@ -82,7 +82,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         /// <exception cref="Exception">Thrown if the email is invalid, password is invalid, or the user already exists.</exception>
         public UserBL Register(string email, string password)
         {
-            log.Info($"Attempting to Register user with email: {email} and password: {password}.");
+            log.Info($"Attempting to Register user with email: {email} and password.");
             if (email == null)
             {
                 log.Error("Registration failed, email can't be null.");
