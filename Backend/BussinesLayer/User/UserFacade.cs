@@ -108,7 +108,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             if (users.ContainsKey(email))
             {
                 log.Error($"Registration failed, user with email {email} alreay exists.");
-                throw new Exception("User " + email + "already exist");
+                throw new Exception("User " + email + " already exist");
             }
 
             UserBL user = new UserBL(email, password);
