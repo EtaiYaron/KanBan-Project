@@ -9,24 +9,36 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     internal class UserDAL
     {
         private string email;
-        private string password;
+        private string passwordHash;
+        private string salt;
         private UserController userController;
         public string UserEmailColumnName = "Email";
-        public string UserPasswordColumnName = "Password";
+        public string UserPasswordHashColumnName = "PasswordHash";
+        public string UserSaltColumnName = "Salt";
         private bool isPersistent;
 
-
         /// <summary>
-        /// This is the constructor for the UserDAL class.
+        /// Constructor for new user (registration) with hash and salt.
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        public UserDAL(string email, string password)
+        public UserDAL(string email, string passwordHash, string salt)
         {
             this.email = email;
-            this.password = password;
+            this.passwordHash = passwordHash;
+            this.salt = salt;
             userController = new UserController();
             isPersistent = false;
+        }
+
+        /// <summary>
+        /// Constructor for loading user from DB (with hash and salt).
+        /// </summary>
+        public UserDAL(string email, string passwordHash, string salt, bool isPersistent = true)
+        {
+            this.email = email;
+            this.passwordHash = passwordHash;
+            this.salt = salt;
+            userController = new UserController();
+            this.isPersistent = isPersistent;
         }
 
         public string Email
@@ -34,9 +46,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             get { return email; }
         }
 
-        public string Password
+        public string PasswordHash
         {
-            get { return password; }
+            get { return passwordHash; }
+        }
+
+        public string Salt
+        {
+            get { return salt; }
         }
 
         /// <summary>

@@ -17,43 +17,32 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private readonly string _connectionString;
         private const string TableName = "Users";
 
-        /// <summary>
-        /// This is the constructor for the UserController class.
-        /// </summary>
         public UserController()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
-            this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
+            this._connectionString = $"Data Source={path}";
         }
 
-        /// <summary>
-        /// This method is used to insert a user into the database.
-        /// </summary>
-        /// <param name="userDal"></param>
-        /// <returns>true if the user inserted successfully into the database</returns>
         public bool Insert(UserDAL userDal)
         {
-            log.Info($"Attempting to insert to the DB user with email: {userDal.Email} and password: {userDal.Password}.");
+            log.Info($"Attempting to insert to the DB user with email: {userDal.Email}.");
             int res = -1;
             using (var connection = new SqliteConnection(_connectionString))
             {
                 try
                 {
                     connection.Open();
-
-                    SqliteCommand command = new SqliteCommand(null, connection);
-                    string insert = $"INSERT INTO {TableName} (email,password) Values (@emailVal, @passwordVal)";
-
-                    SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
-                    SqliteParameter passwordParameter = new SqliteParameter(@"passwordVal", userDal.Password);
+                    var command = connection.CreateCommand();
+                    string insert = $"INSERT INTO {TableName} (email, passwordHash, salt) VALUES (@Email, @PasswordHash, @Salt)";
                     command.CommandText = insert;
-                    command.Parameters.Add(emailParameter);
-                    command.Parameters.Add(passwordParameter);
-
+                    command.Parameters.AddWithValue("@Email", userDal.Email);
+                    command.Parameters.AddWithValue("@PasswordHash", userDal.PasswordHash);
+                    command.Parameters.AddWithValue("@Salt", userDal.Salt);
                     res = command.ExecuteNonQuery();
                     log.Info($"User with email: {userDal.Email} inserted successfully into the DB.");
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     log.Error($"Failed to insert user with email: {userDal.Email}. Error: {ex.Message}");
                 }
                 finally
@@ -61,15 +50,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Close();
                 }
             }
-
             return res > 0;
         }
 
-        /// <summary>
-        /// This method is used to delete a user from the database.
-        /// </summary>
-        /// <param name="userDal"></param>
-        /// <<returns>true if the user deleted successfully from the database</returns>
         public bool Delete(UserDAL userDal)
         {
             log.Info($"Attempting to delete user with email: {userDal.Email}.");
@@ -78,11 +61,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 try
                 {
-                    SqliteCommand command = new SqliteCommand(null, connection);
-                    string delete = $"DELETE FROM {TableName} WHERE email = @emailVal";
-                    SqliteParameter emailParameter = new SqliteParameter(@"emailVal", userDal.Email);
+                    var command = connection.CreateCommand();
+                    string delete = $"DELETE FROM {TableName} WHERE email = @Email";
                     command.CommandText = delete;
-                    command.Parameters.Add(emailParameter);
+                    command.Parameters.AddWithValue("@Email", userDal.Email);
                     connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"User with email: {userDal.Email} deleted successfully from the DB.");
@@ -99,25 +81,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-
-        /// <summary>
-        /// This method is used to select all users from the database.
-        /// </summary>
-        /// <<returns>List of all users in the database</returns>
         public List<UserDAL> SelectAll()
         {
             log.Info("Attempting to select all users from the DB.");
             List<UserDAL> result = new List<UserDAL>();
             using (var connection = new SqliteConnection(_connectionString))
             {
-                SqliteCommand command = new SqliteCommand(null, connection);
-                command.CommandText = $"SELECT * FROM {TableName}";
+                var command = connection.CreateCommand();
+                command.CommandText = $"SELECT email, passwordHash, salt FROM {TableName}";
                 SqliteDataReader dataReader = null;
                 try
                 {
                     connection.Open();
                     dataReader = command.ExecuteReader();
-
                     while (dataReader.Read())
                     {
                         result.Add(ConvertReaderToUserDAL(dataReader));
@@ -130,10 +106,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 finally
                 {
-                    if (dataReader != null)
-                    {
-                        dataReader.Close();
-                    }
+                    dataReader?.Close();
                 }
             }
             return result;
@@ -144,7 +117,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             log.Info("Attempting to delete all users from the DB.");
             using (var connection = new SqliteConnection(_connectionString))
             {
-                SqliteCommand command = new SqliteCommand(null, connection);
+                var command = connection.CreateCommand();
                 command.CommandText = $"DELETE FROM {TableName}";
                 try
                 {
@@ -163,14 +136,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        /// <summary>
-        /// This method is used to convert a SqliteDataReader to a UserDAL object.
-        /// </summary>
-        /// <param name="dataReader"></param>
-        /// <returns>UserDAL object</returns>
         private UserDAL ConvertReaderToUserDAL(SqliteDataReader dataReader)
         {
-            return new UserDAL(dataReader.GetString(0), dataReader.GetString(1));
+            string email = dataReader.GetString(0);
+            string passwordHash = dataReader.GetString(1);
+            string salt = dataReader.GetString(2);
+            return new UserDAL(email, passwordHash, salt);
         }
     }
 }
