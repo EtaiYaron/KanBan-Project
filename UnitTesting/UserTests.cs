@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+using IntroSE.Kanban.Backend.ServiceLayer;
 using System.Text.Json;
 namespace UnitTesting
 {
@@ -208,6 +209,42 @@ namespace UnitTesting
                 Assert.Pass("TestUserLogoutNegativeCase1 passed");
             }
             Assert.Fail("TestUserLogoutNegativeCase1 Failed, logout when the email format is incorrect should have failed.");
+        }
+
+        /// <summary>
+        /// Checks the full flow of password reset: requesting a reset, using the reset token to set a new password,
+        /// and verifying that the user can log in with the new password and not with the old one.
+        /// Requirements: Password reset via token
+        /// </summary>
+        [Test]
+        [Order(14)]
+        public void PasswordReset_FullFlow()
+        {
+            string email = "resetuser@test.com";
+            string originalPassword = "OldPass1";
+            string newPassword = "NewPass2";
+            us.Register(email, originalPassword);
+            
+            string resetToken = us.RequestPasswordReset(email);
+            Assert.IsNotNull(resetToken, "Reset token should not be null.");
+            Console.WriteLine("Reset token: " + resetToken);
+
+            var controller = new PasswordResetRequestController();
+            var dal = controller.SelectByToken(resetToken);
+            Console.WriteLine("DAL found: " + (dal != null));
+
+            string resetResponse = us.ResetPassword(resetToken, newPassword);
+            Response<object> resetRes = JsonSerializer.Deserialize<Response<object>>(resetResponse);
+            Assert.IsNull(resetRes.ErrorMessage, "Failed to reset password: " + resetRes.ErrorMessage);
+
+            us.Logout(email);
+            Response<object> oldLoginRes = JsonSerializer.Deserialize<Response<object>>(us.Login(email, originalPassword));
+            Assert.IsNotNull(oldLoginRes.ErrorMessage, "Login with old password should fail after reset.");
+            
+            Response<object> newLoginRes = JsonSerializer.Deserialize<Response<object>>(us.Login(email, newPassword));
+            Assert.IsNull(newLoginRes.ErrorMessage, "Login with new password should succeed after reset.");
+
+            Assert.Pass("Password reset full flow passed.");
         }
     }
 }

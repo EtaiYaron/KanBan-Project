@@ -19,8 +19,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public UserController()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
-            this._connectionString = $"Data Source={path}";
+            this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
         }
 
         public bool Insert(UserDAL userDal)

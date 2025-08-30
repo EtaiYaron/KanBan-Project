@@ -223,7 +223,16 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
 
         internal void ResetPassword(string token, string newPassword)
         {
-            passwordResetService.ResetPassword(token, newPassword);
+            var (email, hash, salt) = passwordResetService.ResetPassword(token, newPassword);
+            if (email != null && users.ContainsKey(email.ToLower()))
+            {
+                users[email.ToLower()].SetPassword(hash, salt);
+            }
+            else
+            {
+                log.Error("ResetPassword failed, invalid token or user does not exist.");
+                throw new Exception("Invalid token or user does not exist.");
+            }
         }
     }
 

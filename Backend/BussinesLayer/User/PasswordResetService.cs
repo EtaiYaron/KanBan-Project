@@ -24,20 +24,19 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             string token = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32));
             DateTime expires = DateTime.UtcNow.AddHours(1);
             var requestDal = new PasswordResetRequestDAL(email, token, expires);
-            requestDal.Insert();
+            _resetController.Insert(requestDal);
             return token;
         }
 
-        public bool ResetPassword(string token, string newPassword)
+        public (string email, string hash, string salt) ResetPassword(string token, string newPassword)
         {
             var request = _resetController.SelectByToken(token);
             if (request == null || request.ExpiresAt < DateTime.UtcNow)
-                return false;
-
+                return (null, null, null);
             var (hash, salt) = PasswordHasher.HashPassword(newPassword);
             _userController.UpdatePassword(request.Email, hash, salt);
             _resetController.DeleteByToken(token);
-            return true;
+            return (request.Email, hash, salt);
         }
     }
 }

@@ -91,8 +91,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 string token = userFacade.RequestPasswordReset(email);
-                Response<string> response = new Response<string>(null, token);
-                return JsonSerializer.Serialize(response);
+                return token;
             }
             catch (Exception ex)
             {
@@ -106,13 +105,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 userFacade.ResetPassword(token, newPassword);
-                Response<object> response = new Response<object>();
-                return JsonSerializer.Serialize(response);
+                return JsonSerializer.Serialize(new Response<object>(null));
             }
             catch (Exception ex)
             {
-                Response<object> response = new Response<object>(ex.Message);
-                return JsonSerializer.Serialize(response);
+                return JsonSerializer.Serialize(new Response<object>(ex.Message));
             }
         }
 

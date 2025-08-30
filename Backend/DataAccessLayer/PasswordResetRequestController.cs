@@ -17,25 +17,28 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public PasswordResetRequestController()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
-            _connectionString = $"Data Source={path}";
+            this._connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "kanban.db")}";
         }
 
         public bool Insert(PasswordResetRequestDAL reqDal)
         {
             log.Info($"Inserting password reset request for email: {reqDal.Email}");
-            int res = -1;
+            int res;
             using (var connection = new SqliteConnection(_connectionString))
             {
+                res = -1;
+                SqliteCommand command = new SqliteCommand(null, connection);
                 try
                 {
-                    connection.Open();
-                    var command = connection.CreateCommand();
-                    string insert = $"INSERT INTO {TableName} (email, token, expiresAt) VALUES (@Email, @Token, @ExpiresAt)";
+                    string insert = $"INSERT INTO {TableName} (email, token, expiresAt) VALUES (@email, @token, @expiresAt)";
+                    SqliteParameter emailParameter = new SqliteParameter(@"email", reqDal.Email);
+                    SqliteParameter tokenParameter = new SqliteParameter(@"token", reqDal.Token);
+                    SqliteParameter expiresAtParameter = new SqliteParameter(@"expiresAt", reqDal.ExpiresAt);
                     command.CommandText = insert;
-                    command.Parameters.AddWithValue("@Email", reqDal.Email);
-                    command.Parameters.AddWithValue("@Token", reqDal.Token);
-                    command.Parameters.AddWithValue("@ExpiresAt", reqDal.ExpiresAt.ToString("o"));
+                    command.Parameters.Add(emailParameter);
+                    command.Parameters.Add(tokenParameter);
+                    command.Parameters.Add(expiresAtParameter);
+                    connection.Open();
                     res = command.ExecuteNonQuery();
                     log.Info($"Inserted password reset request for {reqDal.Email}");
                 }
