@@ -38,6 +38,12 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             return PasswordHasher.Verify(password, salt, passwordHash);
         }
 
+        internal void SetPassword(string hash, string salt)
+        {
+            this.passwordHash = hash;
+            this.salt = salt;
+        }
+
         public string Email { get { return this.email; } }
         public UserDAL UserDAL { get { return this.userDAL; } }
     }

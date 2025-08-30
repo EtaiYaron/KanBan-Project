@@ -17,6 +17,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         private static readonly ILog log = LogManager.GetLogger(typeof(UserFacade));
         private const int minlength = 6;
         private const int maxlength = 20;
+        private PasswordResetService passwordResetService; 
 
 
 
@@ -24,6 +25,7 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         {
             this.users = new Dictionary<string, UserBL>();
             this.authFacade = authFacade;
+            this.passwordResetService = new PasswordResetService();
             LoadAllUsers();
         }
 
@@ -145,6 +147,30 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
         }
 
         /// <summary>
+        /// Requests a password reset for the given user email. Returns the reset token if successful.
+        /// </summary>
+        /// <param name="email">The email of the user requesting the password reset.</param>
+        /// <returns>The password reset token.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if email is null.</exception>
+        /// <exception cref="Exception">Thrown if user does not exist.</exception>
+        public string RequestPasswordReset(string email)
+        {
+            log.Info($"Requesting password reset for email: {email}");
+            if (email == null)
+            {
+                log.Error("RequestPasswordReset failed, email can't be null.");
+                throw new ArgumentNullException(nameof(email));
+            }
+            email = email.ToLower();
+            if (!users.ContainsKey(email))
+            {
+                log.Error($"RequestPasswordReset failed, user with email {email} doesn't exist.");
+                throw new Exception("User does not exist.");
+            }
+            return passwordResetService.RequestPasswordReset(email);
+        }
+
+        /// <summary>
         /// Validates the password according to the required rules.
         /// </summary>
         /// <param name="password">The password to validate.</param>
@@ -193,6 +219,11 @@ namespace IntroSE.Kanban.Backend.BussinesLayer.User
             UserController userController = new UserController();
             userController.DeleteAllUsers();
             log.Info("All users deleted successfully.");
+        }
+
+        internal void ResetPassword(string token, string newPassword)
+        {
+            passwordResetService.ResetPassword(token, newPassword);
         }
     }
 

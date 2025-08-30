@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BussinesLayer.Cross_Cutting;
 using IntroSE.Kanban.Backend.BussinesLayer.User;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -75,6 +76,36 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 UserBL ubl = userFacade.Logout(email);
+                Response<object> response = new Response<object>();
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response<object> response = new Response<object>(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string RequestPasswordReset(string email)
+        {
+            try
+            {
+                string token = userFacade.RequestPasswordReset(email);
+                Response<string> response = new Response<string>(null, token);
+                return JsonSerializer.Serialize(response);
+            }
+            catch (Exception ex)
+            {
+                Response<string> response = new Response<string>(ex.Message);
+                return JsonSerializer.Serialize(response);
+            }
+        }
+
+        public string ResetPassword(string token, string newPassword)
+        {
+            try
+            {
+                userFacade.ResetPassword(token, newPassword);
                 Response<object> response = new Response<object>();
                 return JsonSerializer.Serialize(response);
             }

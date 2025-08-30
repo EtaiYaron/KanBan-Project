@@ -136,6 +136,39 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public bool UpdatePassword(string email, string passwordHash, string salt)
+        {
+            log.Info($"Attempting to update password for user with email: {email}.");
+            int res = -1;
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    string update = $"UPDATE {TableName} SET passwordHash = @PasswordHash, salt = @Salt WHERE email = @Email";
+                    command.CommandText = update;
+                    command.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                    command.Parameters.AddWithValue("@Salt", salt);
+                    command.Parameters.AddWithValue("@Email", email);
+                    res = command.ExecuteNonQuery();
+                    if (res > 0)
+                        log.Info($"Password updated successfully for user with email: {email}.");
+                    else
+                        log.Warn($"No user found with email: {email} to update password.");
+                }
+                catch (Exception ex)
+                {
+                    log.Error($"Failed to update password for user with email: {email}. Error: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
         private UserDAL ConvertReaderToUserDAL(SqliteDataReader dataReader)
         {
             string email = dataReader.GetString(0);
